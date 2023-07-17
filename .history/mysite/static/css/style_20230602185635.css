@@ -1,0 +1,5 @@
+.post-image-blur {
+    filter: blur(64px);
+    transition: all 300ms;
+}
+

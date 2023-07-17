@@ -1,0 +1,30 @@
+{% load static %}
+
+<div class="mdui-col-sm-3">
+  <div class="mdui-card">
+    <div class="mdui-card-media mdui-shadow-3 mdui-hoverable">
+      {% if user.post_img1 %}
+      {% if user.show_view %}
+      <img src="/media/{{user.post_img1}}" class="post-image post-image-blur mdui-img-fluid" />
+      {% else %}
+      <img src="/media/{{user.post_img1}}" class="post-image mdui-img-fluid" />
+      {% endif %}
+      {% endif %}
+      <div class="mdui-card-media-covered">
+        <div class="mdui-card-primary">
+          <div class="mdui-card-primary-title">
+            {{nike_name}}
+            <span style="font-size: 12px">@{{username}}</span>
+          </div>
+          <div class="mdui-card-primary-subtitle mdui-text-truncate">
+            {{content}}
+          </div>
+        </div>
+        <div class="mdui-card-actions">
+          <a class="mdui-btn mdui-ripple mdui-ripple-white" href="{% url 'fan:post_detail' user.id %}">View</a>
+          <a class="mdui-btn mdui-ripple mdui-ripple-white btn-toggle-blur">Toggle blur</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

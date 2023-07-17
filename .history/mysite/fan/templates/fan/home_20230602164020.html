@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>Noel</title>
+    <link rel="stylesheet" href="/static/css/bulma.css" />
+    <style>
+      .post-image-hidden {
+        display: none;
+        transition: all 200ms;
+    }
+
+    .box {
+      width: 85%;
+      padding: auto;
+      margin: auto;
+      transition: box-shadow 200ms;
+    }
+
+    .box:hover {
+      box-shadow: 5px 5px 15px lightgray;
+      transition: box-shadow 200ms;
+    }
+
+    .btn-trigger-hidden {
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      border: none;
+      transition: all 200ms;
+    }
+
+    .btn-trigger-hidden:hover {
+      background-color: lightgray;
+      border-radius: 5px;
+      text-align: center;
+      border: none;
+      transition: all 200ms;
+    }
+  </style>
+</head>
+
+<body>
+  {% csrf_token %}
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="{% url 'fan:home' %}">
+        <img src="/media/default/logo.png" style="width: 140px">
+      </a>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="true" href="{% url 'fan:edit' %}">
+        <button class="button is-ghost">发布帖子</button>
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="true" href="{% url 'fan:editava' %}">
+        <button class="button is-ghost">上传头像</button>
+      </a>
+    </div>
+
+
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="{% url 'fan:home' %}">
+          主页
+        </a>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            编辑...
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'fan:edit' %}">
+              帖子
+            </a>
+            <a class="navbar-item" href="{% url 'fan:editava' %}">
+              头像
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+
+          <a class="button is-primary" href="{% url 'fan:login' %}">
+            <strong>登录</strong>
+          </a>
+          <a class="button is-light" href="{% url 'fan:register' %}">
+            注册
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+  </nav>
+  <div>
+    <h1 style="font-family:ZoomlaShuaisong-A028; font-weight:600; font-size: 24px;padding-left:25%">欢迎你: {{user_name1}} 😊</h1>
+    <h1 style="font-family:ZoomlaShuaisong-A028; font-weight:400; font-size: 24px;padding-left:55%">第<strong>{{uid1}}</strong>颗星星 繁星归处将永远留有你的位置</h1>
+
+
+    <hr>
+    <blockquote>
+      <h1 style="font-family:ZoomlaShuaisong-A028; font-weight:300; font-size: 15px;padding:4px">每一个人，只要活着，就会不停的失去。</h1>
+    </blockquote>
+    <hr>
+  </div>
+
+  {% for user in user_list1 %}
+  {% include "fan/content_base.html" with username=user.post_owner content=user.post_content nike_name=user.owner_profile title=user.owner_profile.title user_img1=user.owner_profile.img user_img=user%}
+  {% endfor %}
+
+  <script>
+    document.querySelectorAll('.btn-trigger-hidden').forEach(i => {
+      i.addEventListener('click', (event) => {
+        event.target.parentElement.querySelector('.post-image').classList.toggle('post-image-hidden');
+      })
+    })
+  </script>
+</body>
+
+</html>

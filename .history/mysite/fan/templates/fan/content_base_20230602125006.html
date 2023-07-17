@@ -1,0 +1,82 @@
+{% load static %}
+
+<script type="text/javascript">
+
+  window.onclick = function (e) {
+    // 获取点击元素对象
+    element = document.elementFromPoint(e.clientX, e.clientY);
+    // 获取点击元素的类名并弹窗显示
+    //alert(element.title);
+  }
+</script>
+<link rel="stylesheet" href="/static/css/bulma.css" />
+<div class="box">
+  <article class="media">
+    <div class="media-left">
+      <figure>
+        <img src="/media/{{ user_img1 }}" style="width: 80px; height: 80px">
+      </figure>
+    </div>
+
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <strong>{{nike_name}}</strong>
+          <span class="tag is-dark">{{title}}</span>
+          <br>
+          <small>@{{username}}</small>
+        </p>
+      </div>
+      <div>
+        {{content}}
+      </div>
+      <br/>
+      {% if user.post_img1 or user.post_img2 or user.post_img3 or user.post_img4 or user.post_img5 or user.post_img6 %}
+      <button class="btn-trigger-hidden">
+        显示/隐藏图片
+      </button>
+      <br />
+      {% endif %}
+      <hr>
+      <div class="post-image post-image-hidden">
+        {% if user.post_img1 %}
+        {% include "fan/img_base.html" with post_img=user.post_img1%}
+        {% endif %}
+        {% if user.post_img2 %}
+        {% include "fan/img_base.html" with post_img=user.post_img2%}
+        {% endif %}
+        {% if user.post_img3 %}
+        {% include "fan/img_base.html" with post_img=user.post_img3%}
+        {% endif %}
+        {% if user.post_img4 %}
+        {% include "fan/img_base.html" with post_img=user.post_img4%}
+        {% endif %}
+        {% if user.post_img5 %}
+        {% include "fan/img_base.html" with post_img=user.post_img4%}
+        {% endif %}
+        {% if user.post_img6 %}
+        {% include "fan/img_base.html" with post_img=user.post_img4%}
+        {% endif %}
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item" aria-label="reply">
+            <span class="icon is-small">
+              <i class="fas fa-reply" aria-hidden="true"></i>
+            </span>
+          </a>
+          <a class="level-item" aria-label="retweet">
+            <span class="icon is-small">
+              <i class="fas fa-retweet" aria-hidden="true"></i>
+            </span>
+          </a>
+          <a class="level-item" aria-label="like">
+            <span class="icon is-small">
+              <i class="fas fa-heart" aria-hidden="true"></i>
+            </span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </article>
+</div>

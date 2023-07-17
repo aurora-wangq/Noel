@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    {% include "fan/components/head.html" %}
+    <style>
+
+    </style>
+</head>
+
+<body class="mdui-appbar-with-toolbar">
+    {% csrf_token %}
+
+    {% include "fan/components/appbar.html" with page="Home" %}
+
+    {% include "fan/components/drawer.html" %}
+
+    
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="box">
+            <h2>登录😎</h2>
+            <div class="input-box">
+                <label>账号</label>
+                <input type="text" name="username" />
+            </div>
+            <div class="input-box">
+                <label>密码</label>
+                <input type="password" name="password" />
+            </div>
+            <div class="btn-box">
+
+                <div>
+                    <button style="width:250px">登录</button>
+                </div>
+
+            </div>
+            <div style="padding:10px">
+
+                <a style="text-decoration: none;color:#9b6f36;" href="{% url 'fan:register' %}">注册</a>
+
+            </div>
+
+            <script type="text/javascript">
+
+            </script>
+    </form>
+</body>
+
+</html>

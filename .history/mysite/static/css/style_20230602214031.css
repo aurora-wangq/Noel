@@ -1,0 +1,10 @@
+.mdui-card > .post-image-blur {
+    filter: blur(64px);
+    transition: filter 300ms;
+}
+
+.mdui-card > .post-image {
+    height: 300px;
+    object-fit: cover;
+    transition: filter 300ms;
+}

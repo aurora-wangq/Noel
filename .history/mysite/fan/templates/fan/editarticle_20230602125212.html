@@ -1,0 +1,141 @@
+{% load static %}
+<link rel="stylesheet" href="/static/css/bulma.css" />
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>编辑帖子</title>
+
+</head>
+
+<body>
+
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="{% url 'fan:home' %}">
+        <img src="/media/default/logo.png" style="width: 140px">
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="{% url 'fan:home' %}">
+          主页
+        </a>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            编辑...
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'fan:edit' %}">
+              帖子
+            </a>
+            <a class="navbar-item" href="{% url 'fan:editava' %}">
+              头像
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+
+          <a class="button is-primary" href="{% url 'fan:login' %}">
+            <strong>登录</strong>
+          </a>
+          <a class="button is-light" href="{% url 'fan:register' %}">
+            注册
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+  </nav>
+
+
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <textarea rows="30%" cols="250%" name="content" placeholder="在此输入内容"></textarea>
+    <div style="float:left">
+
+      <div class="file is-primary" style="padding:20px">
+        <label class="file-label">
+          <input class="file-input" type="file" name="post_img1" accept="image/*">
+          <span class="file-cta">
+            <span>
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              上传图片
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <div class="file is-primary" style="padding:20px">
+        <label class="file-label">
+          <input class="file-input" type="file" name="post_img2" accept="image/*">
+          <span class="file-cta">
+            <span>
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              上传图片
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <div class="file is-primary" style="padding:20px">
+        <label class="file-label">
+          <input class="file-input" type="file" name="post_img3" accept="image/*">
+          <span class="file-cta">
+            <span>
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              上传图片
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <div class="file is-primary" style="padding:20px">
+        <label class="file-label">
+          <input class="file-input" type="file" name="post_img4" accept="image/*">
+          <span class="file-cta">
+            <span>
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              上传图片
+            </span>
+          </span>
+        </label>
+      </div>
+
+    </div>
+
+    <div style="float:right;padding:20px">
+      <button class="button is-ghost">发布</button>
+    </div>
+
+  </form>
+
+</body>
+
+</html>

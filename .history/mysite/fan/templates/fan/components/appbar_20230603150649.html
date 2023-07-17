@@ -1,0 +1,37 @@
+<header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-blue-200">
+        <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '.mdui-drawer'}">
+            <i class="mdui-icon material-icons">menu</i>
+        </a>
+        <a href="{% url 'fan:home' %}" class="mdui-typo-headline">AenCommunity</a>
+        <a class="mdui-typo-title">{{page}}</a>
+        <div class="mdui-toolbar-spacer"></div>
+        <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#account-menu'}">
+            <i class="mdui-icon material-icons">account_circle</i>
+        </a>
+        <ul class="mdui-menu" id="account-menu">
+            <li class="mdui-menu-item">
+                <a href="{% url 'fan:user_page' %}" class="mdui-ripple">My profile<a>
+            </li>
+            <li class="mdui-divider"></li>
+            <li class="mdui-menu-item">
+                <a href="{% url 'fan:login' %}" class="mdui-ripple">Log in</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="{% url 'fan:register' %}" class="mdui-ripple">Sign up</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a class="mdui-ripple" id="button-logout">Log out</a>
+            </li>
+
+            <script>
+                document.getElementById('button-logout').addEventListener('click', e => {
+                    document.cookie.split(';').forEach(function (c) {
+                        document.cookie = c.trim().split('=')[0] + '=;' + 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+                    })
+                    window.location.reload()
+                })
+            </script>
+        </ul>
+    </div>
+</header>

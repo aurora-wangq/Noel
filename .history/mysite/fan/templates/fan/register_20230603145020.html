@@ -1,0 +1,39 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    {% include "fan/components/head.html" %}
+</head>
+<body>
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="box">
+        <h2>注册😎</h2>
+
+        <div class="input-box">
+            <label>用户名</label>
+            <input type="text" name="username" placeholder="用户名用来登录"/>
+        </div>
+        <div class="input-box">
+            <label>昵称</label>
+            <input type="text" name="nike_name" placeholder="昵称是"/>
+        </div>
+        <div class="input-box">
+            <label>密码</label>
+            <input type="password" name="password" placeholder="输入你的密码"/>
+        </div>
+        <div class="btn-box">
+
+            <div>
+                <button style="width:250px">注册</button>
+            </div>
+
+    </div>
+
+<script type="text/javascript">
+
+</script>
+</form>
+</body>
+</html>

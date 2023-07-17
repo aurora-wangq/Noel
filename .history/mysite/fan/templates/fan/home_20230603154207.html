@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    .mdui-col-sm-3 {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+  </style>
+  {% include "fan/components/head.html" %}
+</head>
+
+<body class="mdui-appbar-with-toolbar">
+  {% csrf_token %}
+
+  {% include "fan/components/appbar.html" with page="Home" %}
+
+  {% include "fan/components/drawer.html" %}
+
+  <button class="mdui-fab mdui-fab-fixed mdui-ripple" mdui-dialog="{target: '#new-post-dialog'}" style="z-index:999">
+    <i class="mdui-icon material-icons">add</i>
+  </button>
+
+  <div class="mdui-dialog" id="new-post-dialog">
+    <div class="mdui-dialog-title">New post</div>
+    <div class="mdui-dialog-content">
+      <form action="/edit/" method="post" enctype="multipart/form-data" id="submit-form">
+        {% csrf_token %}
+        <div class="mdui-container">
+          <div class="mdui-row">
+            <div class="mdui-textfield">
+              <i class="mdui-icon material-icons">text_fields</i>
+              <textarea class="mdui-textfield-input" name="content" rows="3" placeholder="Content"></textarea>
+            </div>
+          </div>
+
+          <br />
+
+          <div>
+            <i class="mdui-icon material-icons">visibility</i>
+            <label class="mdui-checkbox" style="margin-left: 24px">
+              <input type="checkbox" name="show_view" value="true" />
+              <i class="mdui-checkbox-icon"></i> Blur
+            </label>
+          </div>
+
+          <br />
+
+          <div>
+            <i class="mdui-icon material-icons">file_upload</i>
+            <input name="post_img1" type="file" accept="image/*" style="margin-left: 24px" />
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <div class="mdui-dialog-actions">
+      <button class="mdui-btn mdui-ripple" mdui-dialog-close>cancel</button>
+      <button class="mdui-btn mdui-ripple" id="submit-button">submit</button>
+    </div>
+  </div>
+
+  <div class="mdui-container">
+
+    <h1 class="mdui-float-left" style="font-weight:600; font-size: 24px">
+      欢迎你:{{user_name1}} 😊</h1>
+    <h1 class="mdui-float-right" style="font-weight:400; font-size: 24px;">第<strong>{{uid1}}</strong>颗星星 繁星归处将永远留有你的位置
+    </h1>
+
+    <br>
+    <br>
+
+    <blockquote>
+      <h1 style="font-weight:300; font-size: 15px;padding:4px">
+        每一个人，只要活着，就会不停的失去。
+      </h1>
+    </blockquote>
+
+    <div class="mdui-row">
+
+      {% for user in user_list1 %}
+
+      {% include "fan/content_base.html" with username=user.post_owner content=user.post_content nike_name=user.owner_profile title=user.owner_profile.title user_img1=user.owner_profile.img user_img=user%}
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+  <script>
+    document.querySelectorAll('.btn-toggle-blur').forEach(i => {
+      i.addEventListener('click', (event) => {
+        event.target.parentElement.parentElement.parentElement.querySelector('img').classList.toggle('post-image-blur');
+      })
+    })
+
+    document.querySelector('#submit-button').addEventListener('click', e => {
+      var e = document.querySelector('form')
+      if (e.querySelector('input[type="file"]').value === '') {
+        mdui.snackbar('File cannot be empty')
+        return
+      }
+      e.submit()
+    })
+  </script>
+
+  <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+</body>
+
+</html>

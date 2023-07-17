@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>Noel</title>
+    <link rel="stylesheet" href="/static/css/bulma.css" />
+    <!-- MDUI CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css"
+      integrity="sha384-cLRrMq39HOZdvE0j6yBojO4+1PrHfB7a9l5qLcmRm/fiWXYY+CndJPmyu5FV/9Tw" crossorigin="anonymous" />
+    
+    <!-- MDUI JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"
+      integrity="sha384-gCMZcshYKOGRX9r6wbDrvF+TcCCswSHFucUzUPwka+Gr+uHgjlYvkABr95TCOz3A" crossorigin="anonymous"></script>
+    <style>
+      .post-image-hidden {
+        display: none;
+        transition: all 200ms;
+    }
+
+    .box {
+      width: 85%;
+      padding: auto;
+      margin: auto;
+      transition: box-shadow 200ms;
+    }
+
+    .box:hover {
+      box-shadow: 5px 5px 15px lightgray;
+      transition: box-shadow 200ms;
+    }
+
+    .btn-trigger-hidden {
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      border: none;
+      transition: all 200ms;
+    }
+
+    .btn-trigger-hidden:hover {
+      background-color: lightgray;
+      border-radius: 5px;
+      text-align: center;
+      border: none;
+      transition: all 200ms;
+    }
+  </style>
+</head>
+
+<body class="mdui-appbar-with-toolbar mdui-drawer-body-left">
+  {% csrf_token %}
+  <div class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-indigo">
+      <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '.mdui-drawer'}">
+        <i class="mdui-icon material-icons">menu</i>
+      </a>
+      <a href="javascript:;" class="mdui-typo-headline">MDUI</a>
+      <a href="javascript:;" class="mdui-typo-title">Home</a>
+      <div class="mdui-toolbar-spacer"></div>
+      <a href="javascript:;" class="mdui-btn mdui-btn-icon">
+        <i class="mdui-icon material-icons">account_circle</i>
+      </a>
+    </div>
+  </div>
+
+<ul class="mdui-menu">
+  <li class="mdui-menu-item">
+    <a href="javascript:;" class="mdui-ripple">Avatar...</a>
+  </li>
+  <li class="mdui-divider"></li>
+  <li class="mdui-menu-item">
+    <a href="javascript:;" class="mdui-ripple">Log in</a>
+  </li>
+  <li class="mdui-menu-item">
+    <a href="javascript:;" class="mdui-ripple">Sign up</a>
+  </li>
+</ul>
+
+  <div class="mdui-drawer mdui-drawer-close">
+    <ul class="mdui-list">
+      <a class="mdui-list-item mdui-ripple" href="{% url 'fan:home' %}">
+        <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+        <div class="mdui-list-item-content">首页</div>
+      </a>
+      <a class="mdui-list-item mdui-ripple" href="{% url 'fan:edit' %}">
+        <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+        <div class="mdui-list-item-content">发布</div>
+      </a>
+      <a class="mdui-list-item mdui-ripple" href="/home">
+        <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+        <div class="mdui-list-item-content">头像</div>
+      </a>
+    </ul>
+  </div>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="{% url 'fan:home' %}">
+        <img src="/media/default/logo.png" style="width: 140px">
+      </a>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="true" href="{% url 'fan:edit' %}">
+        <button class="button is-ghost">发布帖子</button>
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="true" href="{% url 'fan:editava' %}">
+        <button class="button is-ghost">上传头像</button>
+      </a>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+
+          <a class="button is-primary" href="{% url 'fan:login' %}">
+            <strong>登录</strong>
+          </a>
+          <a class="button is-light" href="{% url 'fan:register' %}">
+            注册
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+  </nav>
+  <div>
+    <h1 style="font-family:ZoomlaShuaisong-A028; font-weight:600; font-size: 24px;padding-left:25%">欢迎你: {{user_name1}} 😊</h1>
+    <h1 style="font-family:ZoomlaShuaisong-A028; font-weight:400; font-size: 24px;padding-left:55%">第<strong>{{uid1}}</strong>颗星星 繁星归处将永远留有你的位置</h1>
+
+
+    <hr>
+    <blockquote>
+      <h1 style="font-family:ZoomlaShuaisong-A028; font-weight:300; font-size: 15px;padding:4px">每一个人，只要活着，就会不停的失去。</h1>
+    </blockquote>
+    <hr>
+  </div>
+
+  {% for user in user_list1 %}
+  {% include "fan/content_base.html" with username=user.post_owner content=user.post_content nike_name=user.owner_profile title=user.owner_profile.title user_img1=user.owner_profile.img user_img=user%}
+  {% endfor %}
+
+  <script>
+    document.querySelectorAll('.btn-trigger-hidden').forEach(i => {
+      i.addEventListener('click', (event) => {
+        event.target.parentElement.querySelector('.post-image').classList.toggle('post-image-hidden');
+      })
+    })
+  </script>
+</body>
+
+</html>

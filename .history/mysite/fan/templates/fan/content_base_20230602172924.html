@@ -1,0 +1,98 @@
+{% load static %}
+
+<!-- <link rel="stylesheet" href="/static/css/bulma.css" /> -->
+<div class="mdui-row">
+  <div cass="mdui-col-sm-6 mdui-col-md-4">
+    <div class="mdui-card">
+      <div class="mdui-card-media">
+        <img src="/media/{{user.post_img1}}" style="width: 120px" />
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">
+              {{nike_name}}
+              <span style="font-size: 12px">@{{username}}</span>
+            </div>
+            <div class="mdui-card-primary-subtitle">
+              {{content}}
+            </div>
+            <div class="mdui-card-actions">
+              <a class="mdui-btn mdui-ripple mdui-ripple-white" href="{{post_img1}}">VIEW</a>
+              <a class="mdui-btn mdui-ripple mdui-ripple-white">Disable blur</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+<div class="box">
+  <article class="media">
+    <div class="media-left">
+      <figure>
+        <img src="/media/{{ user_img1 }}" style="width: 80px; height: 80px">
+      </figure>
+    </div>
+
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <strong>{{nike_name}}</strong>
+          <span class="tag is-dark">{{title}}</span>
+          <br>
+          <small>@{{username}}</small>
+        </p>
+      </div>
+      <div>
+        {{content}}
+      </div>
+      <br/>
+      {% if user.post_img1 or user.post_img2 or user.post_img3 or user.post_img4 or user.post_img5 or user.post_img6 %}
+      <button class="btn-trigger-hidden">
+        显示/隐藏图片
+      </button>
+      {% endif %}
+      <hr>
+      <div class="post-image post-image-hidden">
+        {% if user.post_img1 %}
+        {% include "fan/img_base.html" with post_img=user.post_img1%}
+        {% endif %}
+        {% if user.post_img2 %}
+        {% include "fan/img_base.html" with post_img=user.post_img2%}
+        {% endif %}
+        {% if user.post_img3 %}
+        {% include "fan/img_base.html" with post_img=user.post_img3%}
+        {% endif %}
+        {% if user.post_img4 %}
+        {% include "fan/img_base.html" with post_img=user.post_img4%}
+        {% endif %}
+        {% if user.post_img5 %}
+        {% include "fan/img_base.html" with post_img=user.post_img4%}
+        {% endif %}
+        {% if user.post_img6 %}
+        {% include "fan/img_base.html" with post_img=user.post_img4%}
+        {% endif %}
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item" aria-label="reply">
+            <span class="icon is-small">
+              <i class="fas fa-reply" aria-hidden="true"></i>
+            </span>
+          </a>
+          <a class="level-item" aria-label="retweet">
+            <span class="icon is-small">
+              <i class="fas fa-retweet" aria-hidden="true"></i>
+            </span>
+          </a>
+          <a class="level-item" aria-label="like">
+            <span class="icon is-small">
+              <i class="fas fa-heart" aria-hidden="true"></i>
+            </span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </article>
+</div>
+-->

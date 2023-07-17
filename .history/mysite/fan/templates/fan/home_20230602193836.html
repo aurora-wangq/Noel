@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Noel</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+</head>
+
+<body class="mdui-appbar-with-toolbar">
+  {% csrf_token %}
+
+  <header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-blue-200">
+      <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '.mdui-drawer'}">
+        <i class="mdui-icon material-icons">menu</i>
+      </a>
+      <a href="javascript:;" class="mdui-typo-headline">AenCommunity</a>
+      <a href="javascript:;" class="mdui-typo-title">Home</a>
+      <div class="mdui-toolbar-spacer"></div>
+      <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#new-post-dialog'}">
+        <i class="mdui-icon material-icons">add</i>
+      </a>
+      <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#account-menu'}">
+        <i class="mdui-icon material-icons">account_circle</i>
+      </a>
+      <ul class="mdui-menu" id="account-menu">
+        <li class="mdui-menu-item">
+          <a href="{% url 'fan:editava' %}" class="mdui-ripple">Avatar...</a>
+        </li>
+        <li class="mdui-divider"></li>
+        <li class="mdui-menu-item">
+          <a href="{% url 'fan:login' %}" class="mdui-ripple">Log in</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="{% url 'fan:register' %}" class="mdui-ripple">Sign up</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="mdui-drawer mdui-drawer-close">
+    <ul class="mdui-list">
+      <a class="mdui-list-item mdui-ripple" href="{% url 'fan:home' %}">
+        <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+        <div class="mdui-list-item-content">首页</div>
+      </a>
+      <a class="mdui-list-item mdui-ripple" href="{% url 'fan:edit' %}">
+        <i class="mdui-list-item-icon mdui-icon material-icons">add</i>
+        <div class="mdui-list-item-content">发布</div>
+      </a>
+    </ul>
+  </div>
+
+  <div class="mdui-dialog" id="new-post-dialog">
+    <div class="mdui-dialog-title">New post</div>
+    <div class="mdui-dialog-content">
+      <form action="/edit/" method="post" enctype="multipart/form-data" id="submit-form">
+        {% csrf_token %}
+        <div class="mdui-container">
+
+          <div class="mdui-textfield mdui-textfield-floating-label">
+            <i class="mdui-icon material-icons">text_fields</i>
+            <label class="mdui-textfield-label">Content</label>
+            <input class="mdui-textfield-input" name="content" />
+          </div>
+          <i class="mdui-icon material-icons">visibility</i>
+          <label class="mdui-checkbox">
+            <input type="checkbox" name="show_view" value="true" />
+            <i class="mdui-checkbox-icon"></i>
+            Blur
+          </label>
+          <br />
+          <i class="mdui-icon material-icons">file_upload</i>
+          <input name="post_img1" type="file" accept="image/*" />
+        </div>
+      </form>
+    </div>
+    <div class="mdui-dialog-actions">
+      <button class="mdui-btn mdui-ripple">cancel</button>
+      <button class="mdui-btn mdui-ripple" onclick="document.querySelector('#submit-form').submit()">submit</button>
+    </div>
+  </div>
+
+  <div class="mdui-container">
+
+    <div class="mdui-row">
+      <div class="mdui-col-sm-4">
+        <h1 style="font-weight:600; font-size: 24px">欢迎你:{{user_name1}} 😊</h1>
+      </div>
+    </div>
+    <div class="mdui-row">
+      <div class="mdui-col-sm-4 mdui-col-offset-sm-8">
+        <h1 style="font-weight:400; font-size: 24px; text-align:right">第<strong>{{uid1}}</strong>颗星星 繁星归处将永远留有你的位置</h1>
+      </div>
+    </div>
+
+    <hr>
+    <blockquote>
+      <h1 style="font-weight:300; font-size: 15px;padding:4px">每一个人，只要活着，就会不停的失去。
+      </h1>
+    </blockquote>
+    <hr>
+
+    <div class="mdui-row">
+
+      {% for user in user_list1 %}
+      {% include "fan/content_base.html" with username=user.post_owner content=user.post_content nike_name=user.owner_profile title=user.owner_profile.title user_img1=user.owner_profile.img user_img=user%}
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+  <script>
+    document.querySelectorAll('.btn-toggle-blur').forEach(i => {
+      i.addEventListener('click', (event) => {
+        event.target.parentElement.parentElement.parentElement.querySelector('img').classList.toggle('post-image-blur');
+      })
+    })
+  </script>
+
+  <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+</body>
+
+</html>
