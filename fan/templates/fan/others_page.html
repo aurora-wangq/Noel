@@ -24,10 +24,31 @@
             backdrop-filter: blur(64px) brightness(200%);
         }
 
+        .profile-view:hover {
+            border: none;
+            background: white;
+            padding: 70px 0;
+            opacity: 1;
+            border-radius: 4px;
+            transition: all .3s;
+        }
+
+        .profile-view>* {
+            opacity: 0;
+            transition: all .3s;
+        }
+
+        .profile-view:hover>* {
+            opacity: 1;
+            transition: all .3s;
+        }
+
         .profile-view {
-            backdrop-filter: blur(16px);
+            border: 1px dotted white;
+            background: none;
             padding: 70px 0;
             border-radius: 4px;
+            transition: all .3s;
         }
 
         .avatar {
@@ -72,11 +93,14 @@
         </div>
 
         <div class="mdui-row mdui-valign" style="padding-top: 12px">
-            <div class="mdui-col-xs-3 mdui-col-offset-xs-2"><i
-                    class="mdui-icon material-icons" style="color:black">description</i>签名：{{sign}}</div>
-            <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">location_on</i>位置：{{address}}</div>
-            <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">today</i>生日：{{birthday}}</div>
-            <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">account_circle</i>UID：{{uid}}</div>
+            <div class="mdui-col-xs-3 mdui-col-offset-xs-2"><i class="mdui-icon material-icons"
+                    style="color:black">description</i>签名：{{sign}}</div>
+            <div class="mdui-col-xs-2" style="color:black"><i
+                    class="mdui-icon material-icons">location_on</i>位置：{{address}}</div>
+            <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">today</i>生日：{{birthday}}
+            </div>
+            <div class="mdui-col-xs-2" style="color:black"><i
+                    class="mdui-icon material-icons">account_circle</i>UID：{{uid}}</div>
         </div>
 
         <br />
