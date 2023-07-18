@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from PIL import Image
 from django.utils import timezone
 
 
 # Create your models here.
-
 
 class UserProfile(models.Model):
 
@@ -27,6 +27,7 @@ class Post(models.Model):
     owner_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     post_content = models.CharField('帖子内容', max_length=10000, blank=True)
     post_img1 = models.ImageField('帖子图片1', upload_to='post_images', blank=True, null=True)
+
     show_view = models.BooleanField('预览图是否模糊', default=False)
 
 class Comment(models.Model):
