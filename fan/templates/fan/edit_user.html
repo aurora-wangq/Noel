@@ -1,147 +1,144 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="/static/css/bulma.css" />
-
-
 
 <html>
 
 <head>
 
-    {% include "fan/components/head.html" %}
+  {% include "fan/components/head.html" %}
 
-    <style>
-        html {
-            background-image: url('/media/{{ backimg }}');
-            height: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
+  <link rel="stylesheet" href="/static/css/bulma.css" />
+  <style>
+    html {
+      background-image: url('/media/{{ backimg }}');
+      height: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
 
-        body {
-            background: none;
-            margin: 0%;
-        }
+    body {
+      background: none;
+      margin: 0%;
+    }
 
-        .mdui-drawer {
-            backdrop-filter: blur(64px) brightness(200%);
-        }
+    .profile-view {
+      border: none;
+      background: white;
+      padding: 70px 0;
+      opacity: 1;
+      border-radius: 4px;
+      transition: all .3s;
+    }
 
-        .profile-view {
-            backdrop-filter: blur(16px);
-            padding: 70px 0;
-            border-radius: 4px;
-        }
-
-        .avatar {
-            width: 64px;
-        }
-    </style>
+    .avatar {
+      width: 64px;
+    }
+  </style>
 
 </head>
 
 <body class="mdui-appbar-with-toolbar">
 
-    {% csrf_token %}
+  {% include "fan/components/appbar.html" with page="编辑资料" %}
 
-    {% include "fan/components/appbar.html" with page="编辑资料" %}
+  {% include "fan/components/drawer.html" %}
 
-    {% include "fan/components/drawer.html" %}
-
-    <div class="mdui-container profile-view mdui-hoverable">
-        <div class="mdui-row mdui-valign">
-            <div class="mdui-col-xs-1 mdui-col-offset-xs-1">
-                <img class="avatar mdui-img-circle" src="/media/{{avatar}}" />
-            </div>
-            <div class="mdui-col-xs-4">
-                <span style="font-weight: 600; font-size: 24px">{{nike_name}}</span>
-                {% if title %}
-                <div class="mdui-chip" style="margin-left: 12px;">
-                    <span class="mdui-chip-title">{{title}}</span>
-                </div>
-                {% endif %}
-                <br/>
-                @{{username}}
-            </div>
+  <div class="mdui-container profile-view mdui-hoverable" style="opacity: 100%;">
+    <div class="mdui-row mdui-valign">
+      <div class="mdui-col-xs-1 mdui-col-offset-xs-1">
+        <img class="avatar mdui-img-circle" src="/media/{{avatar}}" />
+      </div>
+      <div class="mdui-col-xs-4">
+        <span style="font-weight: 600; font-size: 24px">{{nike_name}}</span>
+        {% if title %}
+        <div class="mdui-chip" style="margin-left: 12px;">
+          <span class="mdui-chip-title">{{title}}</span>
         </div>
-
-        <div class="mdui-row mdui-valign" style="padding-top: 12px">
-            <div class="mdui-col-xs-3 mdui-col-offset-xs-2"><i class="mdui-icon material-icons">description</i>签名：{{sign}}</div>
-            <div class="mdui-col-xs-2"><i class="mdui-icon material-icons">location_on</i>位置：{{address}}</div>
-            <div class="mdui-col-xs-2"><i class="mdui-icon material-icons">today</i>生日：{{birthday}}</div>
-            <div class="mdui-col-xs-2"><i class="mdui-icon material-icons">account_circle</i>UID：{{uid}}</div>
-        </div>
-
-        <div class="mdui-row">
-            <div class="mdui-col-xs-6 mdui-col-offset-xs-2 mdui-typo" style="font-size: 24px">
-                {{desc}}
-            </div>
-        </div>
-
+        {% endif %}
+        <br />
+        @{{username}}
+      </div>
     </div>
 
-    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <div class="mdui-row mdui-valign" style="padding-top: 12px">
+      <div class="mdui-col-xs-3 mdui-col-offset-xs-2"><i class="mdui-icon material-icons">description</i>签名：{{sign}}
+      </div>
+      <div class="mdui-col-xs-2"><i class="mdui-icon material-icons">location_on</i>位置：{{address}}</div>
+      <div class="mdui-col-xs-2"><i class="mdui-icon material-icons">today</i>生日：{{birthday}}</div>
+      <div class="mdui-col-xs-2"><i class="mdui-icon material-icons">account_circle</i>UID：{{uid}}</div>
+    </div>
+
+    <div class="mdui-row">
+      <div class="mdui-col-xs-6 mdui-col-offset-xs-2 mdui-typo" style="font-size: 24px">
+        {{desc}}
+      </div>
+    </div>
+
+    <form action="{% url 'fan:editp' %}" method="post" enctype="multipart/form-data" style="width: 75%"
+      class="mdui-center">
+      {% csrf_token %}
+      <div class="mdui-textfield mdui-textfield-floating-label">
+        <label class="mdui-textfield-label">昵称</label>
+        <input class="mdui-textfield-input" type="text" name="nike_name" />
+      </div>
+      <div class="mdui-textfield mdui-textfield-floating-label">
+        <label class="mdui-textfield-label">位置</label>
+        <input class="mdui-textfield-input" type="text" name="address" />
+      </div>
+      <div class="mdui-textfield mdui-textfield-floating-label">
+        <label class="mdui-textfield-label">签名</label>
+        <input class="mdui-textfield-input" type="text" name="sign" />
+      </div>
+      <div class="mdui-textfield">
+        <label class="mdui-textfield-label">生日</label>
+        <input class="mdui-textfield-input" type="date" name="birthday" />
+      </div>
+
+      <div class="mdui-textfield mdui-textfield-floating-label">
+        <label class="mdui-textfield-label">简介</label>
+        <textarea class="mdui-textfield-input" type="text" name="desc"> </textarea>
+      </div>
+
+      <div class="file">
+        <label class="file-label">
+          <input class="file-input" type="file" name="img">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="mdui-icon material-icons">&#xe864;</i>
+            </span>
+            <span class="file-label">
+              更改头像
+            </span>
+          </span>
+        </label>
+        <label class="file-label">
+          <input class="file-input" type="file" name="backimg">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="mdui-icon material-icons">&#xe864;</i>
+            </span>
+            <span class="file-label">
+              更改背景
+            </span>
+          </span>
+        </label>
+      </div>
 
 
+      <div class="mdui-row">
+        <div class="mdui-col-offset-xs-11">
+          <button class="mdui-btn mdui-ripple">
+            <i class="mdui-icon material-icons">save</i>
+            保存
+          </button>
+        </div>
+      </div>
 
-        <form action="{% url 'fan:editp' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div style="padding-left: 12.5%">
+    </form>
 
+  </div>
 
-                            <hr>
-                昵称 <input class="input is-danger" type="text" name="nike_name" placeholder="{{nike_name}}" style="width:500px;color:pink">
-<hr>
-               位置 <input class="input is-danger" type="text" placeholder="{{address}}" name="address" style="width:500px;color:pink">
-<hr>
-               签名 <input class="input is-danger" type="text" placeholder="{{sign}}" name="sign" style="width:500px;color:pink">
-<hr>
-            生日 <input class="input is-danger" type="date"  name="birthday" style="width:500px">
-
-<hr>
-                简介 <div style="width:1000px;padding-left: 2.4%">
-                <textarea name="desc" placeholder="{{desc}}" style="color:pink;width:1000px;height:100px"></textarea>
-            </div>
-            <hr>
-
-<div class="file" style="padding-left: 2.4%">
-  <label class="file-label">
-    <input class="file-input" type="file" name="img">
-    <span class="file-cta">
-      <span class="file-icon">
-        <i class="mdui-icon material-icons">&#xe864;</i>
-      </span>
-      <span class="file-label">
-        更改头像
-      </span>
-    </span>
-  </label>
-</div>
-<hr>
-<div class="file" style="padding-left: 2.4%">
-  <label class="file-label">
-    <input class="file-input" type="file" name="backimg">
-    <span class="file-cta">
-      <span class="file-icon">
-        <i class="mdui-icon material-icons">&#xe864;</i>
-      </span>
-      <span class="file-label">
-        更改背景
-      </span>
-    </span>
-  </label>
-</div>
-
-
-<div style="padding-left: 90%;">
-    <button class="button is-danger is-light">保存</button>
-</div>
-
-
-            </div>
-
-        </form>
-
+  <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
 </body>
 

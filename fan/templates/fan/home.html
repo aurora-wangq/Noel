@@ -5,10 +5,10 @@
 <html>
 
 <head>
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
 
-<link rel="bookmark" href="{% static 'favicon.ico' %}"/>
+  <link rel="bookmark" href="{% static 'favicon.ico' %}" />
   {% include "fan/components/head.html" %}
   <style>
     .mdui-grid-tile>a>.post-image-blur {
@@ -47,7 +47,7 @@
   </style>
 </head>
 
-<body class="mdui-appbar-with-toolbar " >
+<body class="mdui-appbar-with-toolbar ">
   {% csrf_token %}
 
   {% include "fan/components/appbar.html" with page="首页" %}
@@ -84,19 +84,19 @@
           <br />
 
           <div>
-                        <div class="file">
-  <label class="file-label" >
-    <input class="file-input" type="file" name="post_img1">
-    <span class="file-cta">
-      <span class="file-icon">
-        <i class="mdui-icon material-icons">&#xe3e0;</i>
-      </span>
-      <span class="file-label" style="padding: 20px">
-        选择图片....
-      </span>
-    </span>
-  </label>
-</div>
+            <div class="file">
+              <label class="file-label">
+                <input class="file-input" type="file" name="post_img1">
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="mdui-icon material-icons">&#xe3e0;</i>
+                  </span>
+                  <span class="file-label" style="padding: 20px">
+                    选择图片....
+                  </span>
+                </span>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -111,20 +111,20 @@
   <div class="mdui-container">
 
 
-<hr>
-<div class="mdui-divider"></div>
-      <h1 style="font-weight:300; font-size: 30px;padding:4px; text-align:center">每一个人，只要活着，就会不停的失去。
-      </h1>
-   <div class="mdui-divider"></div>
+    <hr>
+    <div class="mdui-divider"></div>
+    <h1 style="font-weight:300; font-size: 30px;padding:4px; text-align:center">每一个人，只要活着，就会不停的失去。
+    </h1>
+    <div class="mdui-divider"></div>
     <hr>
 
     <div class="mdui-row">
 
       {% for user in user_list1 %} {% for num in like_num_list1 %}
-        {% if forloop.counter == forloop.parentloop.counter %}
+      {% if forloop.counter == forloop.parentloop.counter %}
       {% include "fan/content_base.html" with username=user.post_owner content=user.post_content nike_name=user.owner_profile title=user.owner_profile.title user_img1=user.owner_profile.img user_img=user like=num%}
-        {% endif %}
-        {% endfor %}
+      {% endif %}
+      {% endfor %}
       {% endfor %}
 
     </div>
@@ -159,19 +159,16 @@
       var elem = document.querySelector('form')
       if (elem.querySelector('input[type="file"]').value === '') {
         mdui.snackbar('File cannot be empty')
-        return
+        e.target.disabled = false;
+        return;
       }
-      elem.submit()
+      elem.submit();
     })
   </script>
 
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 </body>
-<footer>
 
-      <h1 style="font-weight:300; font-size: 15px;padding:20px; text-align:center">
-        <a style="color:black" href="{% url 'fan:others_page' 1 %}">@Noel</a> <a style="color:black" href="{% url 'fan:others_page' 2 %}">@AenStarAX</a> <a style="color:black" href="{% url 'fan:others_page' 17 %}">@MoveToEx</a> | 2023
-      </h1>
+{% include "fan/components/footer.html" %}
 
-</footer>
 </html>
