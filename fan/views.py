@@ -87,7 +87,7 @@ def editarticle_view(request):
         (x, y) = im.size
         x1 = 360
         y1 = int(y * x1 / x)
-        path1 = './media_/' + str(new_post.post_img1)
+        path1 = './thumbnail/' + str(new_post.post_img1)
         out = im.resize((x1, y1), Image.ANTIALIAS)
         out.save(path1)
         #print("vwadawdawdaw", str(new_post.post_img1))

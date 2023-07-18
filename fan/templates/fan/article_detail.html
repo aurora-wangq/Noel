@@ -62,7 +62,7 @@
     <div class="mdui-row mdui-valign" style="height: 48px">
       <div class="mdui-col-offset-xs-1 mdui-col-xs-1">
         <a href="/user/{{uid}}">
-        <img src="/media/{{ user_profile.img }}" class="avatar" />
+          <img src="/media/{{ user_profile.img }}" class="avatar" />
         </a>
       </div>
       <div class="mdui-col-xs-8">
@@ -72,18 +72,18 @@
 
 
         <div>
-                    {% if title_level == 1 %}
-                    {% include "fan/master_title.html" with title=title %}
-                    {% endif %}
-                    {% if title_level == 2 %}
-                    {% include "fan/admin_title.html" with title=title %}
-                    {% endif %}
-                    {% if title_level == 3 %}
-                    {% include "fan/special_title.html" with title=title %}
-                    {% endif %}
-                    {% if title_level == 4 %}
-                    {% include "fan/normal_title.html" with title=title %}
-                    {% endif %}
+          {% if title_level == 1 %}
+          {% include "fan/master_title.html" with title=title %}
+          {% endif %}
+          {% if title_level == 2 %}
+          {% include "fan/admin_title.html" with title=title %}
+          {% endif %}
+          {% if title_level == 3 %}
+          {% include "fan/special_title.html" with title=title %}
+          {% endif %}
+          {% if title_level == 4 %}
+          {% include "fan/normal_title.html" with title=title %}
+          {% endif %}
         </div>
 
         <span class="username">@{{username}}</span>
@@ -104,11 +104,11 @@
       <img class="post-image mdui-center" src="/media/{{ post.post_img1 }}">
     </div>
   </div>
-<hr>
+  <hr>
   <div class="mdui-grid-tile-buttons" style="padding-left:73% ;">
-        <button class="mdui-btn mdui-btn-icon btn-toggle-blur mdui-ripple" onclick="like_or_not()" >
-          <i class="mdui-icon material-icons" id="icon">favorite{% if liked == 0 %}_border{% endif %}</i>
-        </button>
+    <button class="mdui-btn mdui-btn-icon btn-toggle-blur mdui-ripple" onclick="like_or_not()">
+      <i class="mdui-icon material-icons" id="icon">favorite{% if liked == 0 %}_border{% endif %}</i>
+    </button>
   </div>
 
   <div class="mdui-container">
@@ -117,7 +117,8 @@
         <form action="" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="mdui-textfield">
-            <textarea class="mdui-textfield-input" id="input-comment" name="comment_text" placeholder="说点难听的~"></textarea>
+            <textarea class="mdui-textfield-input" id="input-comment" name="comment_text"
+              placeholder="说点难听的~"></textarea>
           </div>
         </form>
       </div>
@@ -128,7 +129,7 @@
 
 
     {% for comment in comment_list1 %}
-    <div class="mdui-row mdui-valign" style="padding-top: 24px; padding-bottom: 24px; height: 48px;">
+    <div class="mdui-row mdui-valign">
       <div class="mdui-col-offset-xs-2 mdui-col-xs-1">
         <a href="/user/{{comment.user.owner.id}}">
           <img src="/media/{{ comment.user.img }}" class="avatar" />
@@ -144,7 +145,7 @@
         </span>
       </div>
     </div>
-<hr>
+    <hr>
     {% endfor %}
   </div>
 
@@ -162,18 +163,18 @@
     function like_or_not() {
       var toggle = new XMLHttpRequest();
       var data = new FormData();
-      var icon=document.getElementById('icon');
-      data.append("value","1");
-      data.append("comment_text","");
-      toggle.open("POST","{{post.id}}/like",true);
-      toggle.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+      var icon = document.getElementById('icon');
+      data.append("value", "1");
+      data.append("comment_text", "");
+      toggle.open("POST", "{{post.id}}/like", true);
+      toggle.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
       toggle.send(data);
       if (icon.innerHTML.trim() == 'favorite') {
-          icon.innerHTML = 'favorite_border';
-        }
+        icon.innerHTML = 'favorite_border';
+      }
       else {
-          icon.innerHTML = 'favorite';
-        }
+        icon.innerHTML = 'favorite';
+      }
     }
   </script>
 
