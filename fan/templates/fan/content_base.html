@@ -5,9 +5,9 @@
   <div class="mdui-grid-tile mdui-shadow-3 mdui-hoverable">
     <a href="{% url 'fan:post_detail' user.id %}">
       {% if user.show_view %}
-      <img src="/media/{{user.post_img1}}" class="post-image post-image-blur" />
+      <img src="/media_/{{user.post_img1}}" class="post-image post-image-blur" />
       {% else %}
-      <img src="/media/{{user.post_img1}}" class="post-image" />
+      <img src="/media_/{{user.post_img1}}" class="post-image" />
       {% endif %}
     </a>
 

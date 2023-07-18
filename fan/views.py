@@ -10,6 +10,9 @@ from .models import UserProfile, Post, Comment, Like
 from django.contrib.auth.decorators import login_required
 from .forms import Userfile
 from datetime import datetime
+import os
+from PIL import Image
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -42,6 +45,7 @@ def home_view(request):
     like_num_list = []
     for i in user_list:
         like_num_list.append(Like.objects.filter(post=i).count())
+        #print(i.post_img1)
     context = {
         "like_num_list1": like_num_list,
         "user_list1": user_list,
@@ -77,10 +81,19 @@ def editarticle_view(request):
         user_profile = UserProfile.objects.get(owner=user_object)
         new_post = Post.objects.create(post_owner=user_object, post_content=content, owner_profile=user_profile, show_view=show_view)
         new_post.post_img1 = request.FILES.get('post_img1')
+        new_post.save()
+        path = './media/' + str(new_post.post_img1)
+        im = Image.open(path)
+        (x, y) = im.size
+        x1 = 360
+        y1 = int(y * x1 / x)
+        path1 = './media_/' + str(new_post.post_img1)
+        out = im.resize((x1, y1), Image.ANTIALIAS)
+        out.save(path1)
+        #print("vwadawdawdaw", str(new_post.post_img1))
         # new_post.post_img2 = request.FILES.get('post_img2')
         # new_post.post_img3 = request.FILES.get('post_img3')
         # new_post.post_img4 = request.FILES.get('post_img4')
-        new_post.save()
         return redirect('fan:home')
     else:
         return render(request, 'fan/editarticle.html')
