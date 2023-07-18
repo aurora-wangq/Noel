@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    {% include "fan/components/head.html" %}
+
+    <style>
+        html {
+            background-image: url('/media/{{ backimg }}');
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        body {
+            background: none;
+            margin: 10%;
+        }
+
+        .mdui-drawer {
+            backdrop-filter: blur(64px) brightness(200%);
+        }
+
+        .profile-view:hover {
+            border: none;
+            background: white;
+            padding: 70px 0;
+            opacity: 1;
+            border-radius: 4px;
+            transition: all .3s;
+        }
+
+        .profile-view>* {
+            opacity: 0;
+            transition: all .3s;
+        }
+
+        .profile-view:hover>* {
+            opacity: 1;
+            transition: all .3s;
+        }
+
+        .profile-view {
+            border: 1px dotted white;
+            background: none;
+            padding: 70px 0;
+            border-radius: 4px;
+            transition: all .3s;
+        }
+
+        .avatar {
+            width: 64px;
+        }
+    </style>
+
+</head>
+
+<body class="mdui-appbar-with-toolbar">
+
+    {% include "fan/components/appbar.html" with page="个人主页" %}
+
+    {% include "fan/components/drawer.html" %}
+
+    <div class="mdui-container profile-view mdui-hoverable">
+        <div class="mdui-row mdui-valign">
+            <div class="mdui-col-xs-1 mdui-col-offset-xs-1">
+                <img class="avatar mdui-img-circle" src="/media/{{avatar}}" />
+            </div>
+            <div class="mdui-col-xs-4">
+                <span style="font-weight: 600; font-size: 24px; color:black">{{nike_name}}</span>
+                {% if title_level == 1 %}
+                {% include "fan/master_title.html" with title=title %}
+                {% endif %}
+                {% if title_level == 2 %}
+                {% include "fan/admin_title.html" with title=title %}
+                {% endif %}
+                {% if title_level == 3 %}
+                {% include "fan/special_title.html" with title=title %}
+                {% endif %}
+                {% if title_level == 4 %}
+                {% include "fan/normal_title.html" with title=title %}
+                {% endif %}
+
+                <br />
+                @{{username}}
+            </div>
+        </div>
+
+        <div class="mdui-row mdui-valign" style="padding-top: 12px">
+            <div class="mdui-col-xs-3 mdui-col-offset-xs-2" style="color:black"><i
+                    class="mdui-icon material-icons">description</i>签名：{{sign}}</div>
+            <div class="mdui-col-xs-2" style="color:black"><i
+                    class="mdui-icon material-icons">location_on</i>位置：{{address}}</div>
+            <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">today</i>生日：{{birthday}}
+            </div>
+            <div class="mdui-col-xs-2" style="color:black"><i
+                    class="mdui-icon material-icons">account_circle</i>UID：{{uid}}</div>
+        </div>
+
+        <br />
+
+        <div class="mdui-row">
+            <div class="mdui-col-xs-6 mdui-col-offset-xs-2 mdui-typo" style="font-size: 24px;color:black">
+                {{desc}}
+            </div>
+        </div>
+
+        <div class="mdui-row">
+            <div class="mdui-col-xs-2 mdui-col-offset-xs-10">
+                <a href="/edit_profile/" class="mdui-btn mdui-ripple">编辑信息</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+</body>
+
+
+</html>
