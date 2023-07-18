@@ -145,4 +145,4 @@ cython_debug/
 #.idea/
 
 media/*/*
-media_/*
+thumbnail/*

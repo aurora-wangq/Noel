@@ -135,8 +135,8 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MEDIA_URL_ = '/media_/'
-MEDIA_ROOT_ = os.path.join(BASE_DIR, 'media_')
+MEDIA_URL_ = '/thumbnail/'
+MEDIA_ROOT_ = os.path.join(BASE_DIR, 'thumbnail')
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 26214400  # 上传文件大小，改成25M
 DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400  # 上传数据大小，也改成了25M
