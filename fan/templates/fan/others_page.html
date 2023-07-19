@@ -73,18 +73,7 @@
             <div class="mdui-col-xs-4">
                 <span style="font-weight: 600; font-size: 24px;color:black">{{nike_name}}</span>
                 <div>
-                    {% if title_level == 1 %}
-                    {% include "fan/master_title.html" with title=title %}
-                    {% endif %}
-                    {% if title_level == 2 %}
-                    {% include "fan/admin_title.html" with title=title %}
-                    {% endif %}
-                    {% if title_level == 3 %}
-                    {% include "fan/special_title.html" with title=title %}
-                    {% endif %}
-                    {% if title_level == 4 %}
-                    {% include "fan/normal_title.html" with title=title %}
-                    {% endif %}
+                    {% include "fan/components/titles/title.html" with title=title title_level=title_level %}
                 </div>
                 <br />
                 @{{username}}
@@ -116,7 +105,7 @@
             document.querySelector('.profile-view').classList.toggle('profile-view-hidden');
         }
     </script>
-    
+
     <button class="mdui-btn mdui-fab mdui-fab-fixed mdui-ripple mdui-color-pink-50" onclick="toggleHidden()">
         <i class="mdui-icon material-icons">
             image

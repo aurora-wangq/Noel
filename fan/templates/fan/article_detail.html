@@ -4,9 +4,7 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Noel</title>
+  {% include "fan/components/head.html" %}
   <!-- <link rel="stylesheet" href="/static/css/style.css" /> -->
   <style>
     .avatar {
@@ -45,7 +43,6 @@
       margin: auto;
     }
   </style>
-  <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
 </head>
 
 <body class="mdui-appbar-with-toolbar">
@@ -69,21 +66,8 @@
         <span class="mdui-valign">
           <span class="nickname">{{nike_name}}</span>
         </span>
-
-
         <div>
-          {% if title_level == 1 %}
-          {% include "fan/master_title.html" with title=title %}
-          {% endif %}
-          {% if title_level == 2 %}
-          {% include "fan/admin_title.html" with title=title %}
-          {% endif %}
-          {% if title_level == 3 %}
-          {% include "fan/special_title.html" with title=title %}
-          {% endif %}
-          {% if title_level == 4 %}
-          {% include "fan/normal_title.html" with title=title %}
-          {% endif %}
+          {% include "fan/components/titles/title.html" with title=title title_level=title_level %}
         </div>
 
         <span class="username">@{{username}}</span>
