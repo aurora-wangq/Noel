@@ -39,7 +39,11 @@ def login_view(request):
 def home_view(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile = UserProfile.objects.get(owner=user_object)
-    user_list = Post.objects.order_by("-id")
+    post_level_list = Post.objects.order_by("id")
+    for i in post_level_list:
+        i.post_level = i.id + i.is_top * 10000
+        i.save()
+    user_list = Post.objects.order_by("-post_level")
     user_name = user_profile.nike_name
     uid = user_object.id
     like_num_list = []
