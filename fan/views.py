@@ -49,7 +49,7 @@ def home_view(request):
                 "creater": i.nike_name,
                 "content": i.notice,             
             })
-    posts = Post.objects.order_by("-post_level", "-id")
+    posts = Post.objects.order_by("-pinned", "-id")
     for i in posts:
         i.likes = Like.objects.filter(post=i).count()
     context = {

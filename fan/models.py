@@ -30,8 +30,7 @@ class Post(models.Model):
     post_content = models.CharField('帖子内容', max_length=10000, blank=True)
     post_img1 = models.ImageField('帖子图片1', upload_to='post_images', blank=True, null=True)
     show_view = models.BooleanField('预览图是否模糊', default=False)
-    post_level = models.IntegerField('文章排序内部运算基准,非必要不修改', default = 0)
-    is_top = models.IntegerField('文章显示优先级,值大则优先级高,尽量不超过10',default = 0)
+    pinned = models.BooleanField('是否顶置',default = 0)
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
