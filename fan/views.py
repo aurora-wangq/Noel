@@ -43,7 +43,7 @@ def home_view(request):
     notices_creator = UserProfile.objects.all()
     notices_list = []
     for i in notices_creator:
-        if i.notice != None:
+        if i.notice:
             print(i.notice)
             notices_list.append({
                 "creater": i.nike_name,

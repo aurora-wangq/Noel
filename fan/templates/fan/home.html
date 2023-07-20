@@ -17,11 +17,24 @@
     border-radius: 12px;
     border: none;
     transition: opacity .1s;
+    position: relative;
   }
 
   .post-image:hover {
     transition: opacity .1s;
     opacity: 80%;
+  }
+
+  .pinned-icon {
+    position: absolute;
+    float: left;
+    left: 8px;
+    top: 12px;
+    font-size: 32px;
+    font-weight: bolder;
+    background-color: rgba(200, 200, 200, 0.5);
+    color: black;
+    z-index: 1;
   }
 
   .post-container {
@@ -50,10 +63,10 @@
   }
 
   .thesaurus {
-    font-size: 32px;
-    font-weight: bold;
+    font-size: 24px;
+    font-weight: lighter;
     text-align: center;
-    padding: 32px 0 32px 0;
+    padding: 16px 0 16px 0;
   }
 
   .post-content > a {
@@ -75,6 +88,7 @@
   }
   
   .post {
+    position: relative;
     padding-top: 12px;
     padding-bottom: 24px;
   }
@@ -84,6 +98,22 @@
     height: 32px;
     margin: auto;
     border-radius: 100%;
+  }
+
+  .notice-container {
+    margin: 12px 0 12px 0;
+    padding: 6px 0 6px 0;
+    border-radius: 4px;
+    border: 1px solid gray;
+  }
+
+  .notice-creator {
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .notice-content {
+    font-size: 16px;
   }
 </style>
 
@@ -162,22 +192,33 @@
 </div>
 </div>
 
+<p class="thesaurus">
+  {{thesaurus|safe}}
+</p>
 <div class="mdui-container">
+  <div class="mdui-row mdui-valign notice-container">
+    <div class="mdui-col-xs-1">
+      <i class="mdui-icon material-icons mdui-center">notifications_active</i>
+    </div>
 
-  <p class="thesaurus">
-    {{thesaurus|safe}}
-  </p>
-  {% for n in notice %}
-  <div>
-    {{n.creater}}
-    {{n.content}}
+    <div class="mdui-container">
+      <div class="mdui-row">
+        {% for n in notice %}
+        <div class="mdui-col-xs-1 notice-creator">
+          {{n.creater}}
+        </div>
+        <div class="mdui-col-xs-11 notice-content">
+          {{n.content}}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
   </div>
-  {% endfor %}
+  
   <div class="mdui-row">
 
     {% for post in posts %}
     {% include "fan/components/content_base.html" with post=post %}
-    {#{% include "fan/components/content_base.html" with username=post.post_owner content=post.post_content nike_name=post.owner_profile title=post.owner_profile.title user_img1=post.owner_profile.img user_img=post like=post.likes%}#}
     {% endfor %}
 
   </div>

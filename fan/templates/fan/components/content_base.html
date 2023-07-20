@@ -1,6 +1,9 @@
 {% if post.post_img1 %}
 <div class="mdui-col-sm-3 post">
 	<a href="{% url 'fan:post_detail' post.id %}">
+		{% if post.pinned %}
+		<i class="mdui-icon material-icons pinned-icon" size="height: 50%">vertical_align_top</i>
+		{% endif %}
 		{% if post.show_view %}
 		<img src="/thumbnail/{{post.post_img1}}" class="post-image post-image-blur" />
 		{% else %}
