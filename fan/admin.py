@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 # Register your models here.
-from .models import UserProfile, Post, Comment, Like
+from .models import UserProfile, Post, Comment, Like, Notice
 
 # 我们看到的这个用户选项就是官方默认通过UserAdmin这个类注册到后台的，那么我们也引入进来，后边继承这个类
 from django.contrib.auth.admin import UserAdmin
@@ -16,9 +16,10 @@ class UserProfileInline(admin.StackedInline):
 
 class PostInline(admin.StackedInline):
     model = Post
-    extra = 5
     fk_name = "post_owner"
-
+class NoticeInline(admin.StackedInline):
+    model = Notice
+    fk_name = "user"
 
 # class Post_imgInline(admin.StackedInline):
 #     model = Post_img
@@ -26,7 +27,7 @@ class PostInline(admin.StackedInline):
 # 关联UserProfile,这里继承UserAdmin
 class UserAdmin(UserAdmin):
     # 内联UserProfile
-    inlines = [UserProfileInline, PostInline]
+    inlines = [UserProfileInline, PostInline, NoticeInline]
 
 
     # inlines = [Post_imgInline]
@@ -35,3 +36,4 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Post)
 admin.site.register(Comment)
 admin.site.register(Like)
+admin.site.register(Notice)

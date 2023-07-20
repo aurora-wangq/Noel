@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import UserProfile, Post, Comment, Like
+from .models import UserProfile, Post, Comment, Like, Notice
 from django.contrib.auth.decorators import login_required
 from .forms import Userfile
 from datetime import datetime
@@ -40,15 +40,7 @@ def login_view(request):
 def home_view(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile = UserProfile.objects.get(owner=user_object)
-    notices_creator = UserProfile.objects.all()
-    notices_list = []
-    for i in notices_creator:
-        if i.notice:
-            print(i.notice)
-            notices_list.append({
-                "creater": i.nike_name,
-                "content": i.notice,             
-            })
+    notice = Notice.objects.all()
     posts = Post.objects.order_by("-pinned", "-id")
     for i in posts:
         i.likes = Like.objects.filter(post=i).count()
@@ -56,7 +48,7 @@ def home_view(request):
         "user": user_profile,
         "posts": posts,
         "thesaurus": random.choice(thesaurus),
-        "notice": notices_list,
+        "notice": notice,
     }
     return render(request, 'fan/home.html', context)
 
