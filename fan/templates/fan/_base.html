@@ -32,7 +32,7 @@
             <a class="mdui-typo-title">{% block title %}[Untitled]{% endblock %}</a>
             <div class="mdui-toolbar-spacer"></div>
             <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#account-menu'}">
-                <i class="mdui-icon material-icons">account_circle</i>
+                <img src="/media/{{ user.img }}" class="avatar" />
             </a>
             <ul class="mdui-menu" id="account-menu">
                 <li class="mdui-menu-item">

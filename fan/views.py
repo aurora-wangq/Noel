@@ -29,12 +29,18 @@ def login_view(request):
             return redirect('fan:home')
         else:
             return redirect('fan:login')
+    default_avatar = {"img": "default/txdefault.jpg",}
+    context = {
+        "user": default_avatar,
+    }
 
-    return render(request, 'fan/login.html')
+    return render(request, 'fan/login.html', context)
 
 
 @login_required(login_url='fan:login')
 def home_view(request):
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = UserProfile.objects.get(owner=user_object)
     notices_creator = UserProfile.objects.all()
     notices_list = []
     for i in notices_creator:
@@ -48,6 +54,7 @@ def home_view(request):
     for i in posts:
         i.likes = Like.objects.filter(post=i).count()
     context = {
+        "user": user_profile,
         "posts": posts,
         "thesaurus": random.choice(thesaurus),
         "notice": notices_list,
@@ -116,6 +123,7 @@ def post_detail_view(request, post_id):
         "user_profile": post.owner_profile,
         "uid": post.post_owner.id,
         "title_level": post.owner_profile.title_level,
+        "user": user_profile,
     }
     if request.method == 'POST':
         text = request.POST['comment_text']
@@ -133,6 +141,7 @@ def user_page_view(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile = UserProfile.objects.get(owner=user_object)
     context = {
+        "user": user_profile,
         "backimg": user_profile.back_img,
         "nike_name": user_profile.nike_name,
         "title": user_profile.title,
@@ -167,6 +176,7 @@ def edit_profile_view(request):
         "backimg": user_profile.back_img,
         "username": user_object.username,
         "uid": user_object.id,
+        "user": user_profile,
     }
     if request.method == 'POST':
         if request.POST['nike_name']:
@@ -219,6 +229,7 @@ def others_page_view(request, user_id):
         "uid": user_object.id,
         "avatar": user_profile.img,
         "title_level": user_profile.title_level,
+        "user": user_profile,
     }
     redirect('fan:others_page', user_id=user_id)
     return render(request, 'fan/others_page.html', context)
