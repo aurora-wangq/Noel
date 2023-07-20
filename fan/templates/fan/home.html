@@ -4,16 +4,23 @@
 
 {% block content %}
 <style>
-  .mdui-grid-tile>a>.post-image-blur {
+  .post-image-blur {
     filter: blur(64px);
     transition: filter 300ms;
   }
 
-  .mdui-grid-tile>a>.post-image {
+  .post-image {
     height: 300px;
     object-fit: cover;
-    transition: filter 300ms;
     width: 100%;
+    border-radius: 12px;
+    border: none;
+    transition: opacity .1s;
+  }
+
+  .post-image:hover {
+    transition: opacity .1s;
+    opacity: 80%;
   }
 
   .post-container {
@@ -25,7 +32,6 @@
   }
 
   html {
-    /* background-image: url('/static/images/homeback.jpg'); */
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -35,7 +41,6 @@
 
   body {
     background: none;
-    /* backdrop-filter: blur(12px); */
   }
 
   .posts-view {
@@ -49,6 +54,31 @@
     text-align: center;
     padding: 32px 0 32px 0;
   }
+
+  .post-content {
+    font-size: 18px;
+    color: black;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .post-username {
+    font-size: 14px;
+    color: #444;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .post {
+    padding-top: 12px;
+    padding-bottom: 24px;
+  }
+
+  .post-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+  }
 </style>
 
 <button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-pink-200" mdui-dialog="{target: '#new-post-dialog'}">
@@ -61,66 +91,71 @@
     <form action="/edit/" method="post" enctype="multipart/form-data" id="submit-form">
       {% csrf_token %}
       <div class="mdui-container">
-        <div class="mdui-row">
-          <div class="mdui-textfield">
-            <i class="mdui-icon material-icons"> >- </i>
-            <textarea class="mdui-textfield-input" name="content" rows="3" placeholder="写点啥呢~"></textarea>
+        <div class="mdui-row mdui-valign">
+
+          <div class="mdui-col-xs-1">
+            <i class="mdui-icon material-icons">short_text</i>
           </div>
+
+          <div class="mdui-col-xs-11">
+            <div class="mdui-textfield">
+              <textarea class="mdui-textfield-input" name="content" rows="3" placeholder="写点啥呢~"></textarea>
+            </div>
+          </div>
+
         </div>
 
         <br />
 
-        <div>
-          <i class="mdui-icon material-icons">visibility</i>
-          <label class="mdui-checkbox" style="margin-left: 24px">
-            <input type="checkbox" name="show_view" value="true" />
-            <i class="mdui-checkbox-icon"></i>是否含有R18内容
-          </label>
-        </div>
-
-        <br />
-
-        <div>
-          <div class="file">
-            <label class="file-label">
-              <input class="file-input" type="file" name="post_img1">
-              <span class="file-cta">
-                <span class="file-icon">
-                  <i class="mdui-icon material-icons">&#xe3e0;</i>
-                </span>
-                <span class="file-label" style="padding: 20px">
-                  选择图片....
-                </span>
-              </span>
+        <div class="mdui-row mdui-valign">
+          <div class="mdui-col-xs-1">
+            <i class="mdui-icon material-icons">visibility</i>
+          </div>
+          <div class="mdui-col-xs-11">
+            <label class="mdui-checkbox">
+              <input type="checkbox" name="show_view" value="true" />
+              <i class="mdui-checkbox-icon"></i>是否含有R18内容
             </label>
           </div>
         </div>
-      </div>
 
-    </form>
+        <br />
+
+        <div class="mdui-row mdui-valign">
+          <div class="mdui-col-xs-1">
+            <i class="mdui-icon material-icons">image</i>
+          </div>
+          <div class="mdui-col-xs-11">
+            <input type="file" name="post_img1">
+          </div>
+        </div>
+      </div>
   </div>
+
+  </form>
   <div class="mdui-dialog-actions">
-    <button class="mdui-btn mdui-ripple" mdui-dialog-close>取消</button>
-    <button class="mdui-btn mdui-ripple" id="submit-button">发布</button>
+    <button class="mdui-btn mdui-ripple" mdui-dialog-close>
+      <i class="mdui-icon material-icons">close</i>
+      取消
+    </button>
+    <button class="mdui-btn mdui-ripple" id="submit-button">
+      <i class="mdui-icon material-icons">check</i>
+      发布
+    </button>
   </div>
+</div>
 </div>
 
 <div class="mdui-container">
 
-
-  <div class="mdui-divider"></div>
   <p class="thesaurus">
     {{thesaurus|safe}}
   </p>
-  <div class="mdui-divider"></div>
 
   <div class="mdui-row">
 
-    {% for user in user_list1 %} {% for num in like_num_list1 %}
-    {% if forloop.counter == forloop.parentloop.counter %}
-    {% include "fan/components/content_base.html" with username=user.post_owner content=user.post_content nike_name=user.owner_profile title=user.owner_profile.title user_img1=user.owner_profile.img user_img=user like=num%}
-    {% endif %}
-    {% endfor %}
+    {% for post in posts %}
+    {% include "fan/components/content_base.html" with username=post.post_owner content=post.post_content nike_name=post.owner_profile title=post.owner_profile.title user_img1=post.owner_profile.img user_img=post like=post.likes%}
     {% endfor %}
 
   </div>

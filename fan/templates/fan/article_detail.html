@@ -40,7 +40,9 @@
 		margin: auto;
 	}
 
-	.nickname, .username, .user-title {
+	.nickname,
+	.username,
+	.user-title {
 		margin-left: 6px;
 		margin-right: 6px;
 	}
@@ -86,18 +88,21 @@
 	</div>
 
 	<div class="mdui-row">
-		<img class="post-image mdui-center" src="/media/{{ post.post_img1 }}">
-	</div>
-</div>
-<div class="mdui-row">
-	<div class="mdui-col-xs-1 mdui-col-offset-xs-9">
-		<button class="mdui-btn mdui-btn-icon btn-toggle-blur mdui-ripple" onclick="like_or_not()">
-			<i class="mdui-icon material-icons" id="icon">favorite{% if liked == 0 %}_border{% endif %}</i>
-		</button>
+		<div class="mdui-col-xs-8 mdui-col-offset-xs-2">
+			<img src="/media/{{ post.post_img1 }}" style="width: 100%;">
+		</div>
 	</div>
 </div>
 
 <div class="mdui-container">
+	<div class="mdui-row">
+		<div class="mdui-col-xs-1 mdui-col-offset-xs-10">
+			<button class="mdui-btn mdui-btn-icon btn-toggle-blur mdui-ripple" onclick="like_or_not()">
+				<i class="mdui-icon material-icons" id="icon">favorite{% if liked == 0 %}_border{% endif %}</i>
+			</button>
+		</div>
+	</div>
+
 	<div class="mdui-row mdui-valign">
 		<div class="mdui-col-xs-6 mdui-col-offset-xs-2">
 			<form action="" method="post" enctype="multipart/form-data">
@@ -121,7 +126,7 @@
 				<img src="/media/{{ comment.user.img }}" class="avatar" />
 			</a>
 		</div>
-		<div class="mdui-col-xs-7">
+		<div class="mdui-col-xs-6">
 			<p class="comment-username">{{comment.user.nike_name}}</p>
 			<p class="comment-content">{{comment.text}}</p>
 		</div>

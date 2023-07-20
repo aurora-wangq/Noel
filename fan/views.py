@@ -35,23 +35,11 @@ def login_view(request):
 
 @login_required(login_url='fan:login')
 def home_view(request):
-    user_object = User.objects.get(username=request.user.username)
-    user_profile = UserProfile.objects.get(owner=user_object)
-    post_level_list = Post.objects.order_by("id")
-    for i in post_level_list:
-        i.post_level = i.id + i.is_top * 10000
-        i.save()
-    user_list = Post.objects.order_by("-post_level")
-    user_name = user_profile.nike_name
-    uid = user_object.id
-    like_num_list = []
-    for i in user_list:
-        like_num_list.append(Like.objects.filter(post=i).count())
+    posts = Post.objects.order_by("-post_level", "-id")
+    for i in posts:
+        i.likes = Like.objects.filter(post=i).count()
     context = {
-        "like_num_list1": like_num_list,
-        "user_list1": user_list,
-        "user_name1": user_name,
-        "uid1": uid,
+        "posts": posts,
         "thesaurus": random.choice(thesaurus)
     }
     return render(request, 'fan/home.html', context)
