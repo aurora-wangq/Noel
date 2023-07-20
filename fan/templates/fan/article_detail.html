@@ -44,6 +44,16 @@
 		margin-left: 6px;
 		margin-right: 6px;
 	}
+
+	.comment-username {
+		font-weight: 300;
+		font-size: 16px;
+	}
+
+	.comment-content {
+		/* padding-top: 2px; */
+		font-size: 18px;
+	}
 </style>
 
 <br />
@@ -111,9 +121,9 @@
 				<img src="/media/{{ comment.user.img }}" class="avatar" />
 			</a>
 		</div>
-		<div class="mdui-col-xs-6">
-			<p style="font-weight:230; font-size: 14px">{{comment.user.nike_name}}</p>
-			<p style="font-weight:530; font-size: 16px;padding-top:4%">{{comment.text}}</p>
+		<div class="mdui-col-xs-7">
+			<p class="comment-username">{{comment.user.nike_name}}</p>
+			<p class="comment-content">{{comment.text}}</p>
 		</div>
 		<div class="mdui-col-xs-1">
 			<span>
