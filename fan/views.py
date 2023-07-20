@@ -213,6 +213,8 @@ def edit_profile_view(request):
         return render(request, 'fan/edit_user.html', context)
 @login_required(login_url='users:login')
 def others_page_view(request, user_id):
+    user_object1 = User.objects.get(username=request.user.username)
+    user_profile1 = UserProfile.objects.get(owner=user_object1)
     user_object = User.objects.get(id=user_id)
     user_profile = UserProfile.objects.get(owner=user_object)
     page = user_profile.nike_name+" 的个人主页"
@@ -229,7 +231,7 @@ def others_page_view(request, user_id):
         "uid": user_object.id,
         "avatar": user_profile.img,
         "title_level": user_profile.title_level,
-        "user": user_profile,
+        "user": user_profile1,
     }
     redirect('fan:others_page', user_id=user_id)
     return render(request, 'fan/others_page.html', context)
