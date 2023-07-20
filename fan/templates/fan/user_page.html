@@ -1,0 +1,106 @@
+{% extends "fan/_base.html" %}
+
+
+{% block title %}{{username}}的个人主页{% endblock %}
+
+{% block content %}
+<style>
+    html {
+        background-image: url('/media/{{ backimg }}');
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    body {
+        background: none;
+        margin: 10%;
+    }
+
+    .mdui-drawer {
+        backdrop-filter: blur(64px) brightness(200%);
+        background-color: white;
+    }
+
+    .profile-view {
+        border: none;
+        background: white;
+        padding: 70px 0;
+        opacity: 1;
+        border-radius: 4px;
+        transition: all .3s;
+    }
+
+    .profile-view>* {
+        opacity: 1;
+        transition: all .3s;
+    }
+
+    .profile-view-hidden>* {
+        opacity: 0;
+        transition: all .3s;
+    }
+
+    .profile-view-hidden {
+        background: none;
+        padding: 70px 0;
+        border-radius: 4px;
+        transition: all .3s;
+    }
+
+    .avatar {
+        width: 64px;
+    }
+</style>
+
+<div class="mdui-container profile-view">
+    <div class="mdui-row mdui-valign">
+        <div class="mdui-col-xs-1 mdui-col-offset-xs-1">
+            <img class="avatar mdui-img-circle" src="/media/{{avatar}}" />
+        </div>
+        <div class="mdui-col-xs-4">
+            <span style="font-weight: 600; font-size: 24px; color:black">{{nike_name}}</span>
+            {% include "fan/components/user_title.html" with title=title title_level=title_level %}
+            <br />
+            @{{username}}
+        </div>
+    </div>
+
+    <div class="mdui-row mdui-valign" style="padding-top: 12px">
+        <div class="mdui-col-xs-3 mdui-col-offset-xs-2" style="color:black"><i
+                class="mdui-icon material-icons">description</i>签名：{{sign}}</div>
+        <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">location_on</i>位置：{{address}}
+        </div>
+        <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">today</i>生日：{{birthday}}
+        </div>
+        <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">account_circle</i>UID：{{uid}}
+        </div>
+    </div>
+
+    <br />
+
+    <div class="mdui-row">
+        <div class="mdui-col-xs-6 mdui-col-offset-xs-2 mdui-typo" style="font-size: 24px;color:black">
+            {{desc}}
+        </div>
+    </div>
+
+    <div class="mdui-row">
+        <div class="mdui-col-xs-2 mdui-col-offset-xs-10">
+            <a href="/edit_profile/" class="mdui-btn mdui-ripple">编辑信息</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleHidden() {
+        document.querySelector('.profile-view').classList.toggle('profile-view-hidden');
+    }
+</script>
+
+<button class="mdui-btn mdui-fab mdui-fab-fixed mdui-ripple mdui-color-pink-50" onclick="toggleHidden()">
+    <i class="mdui-icon material-icons">image</i>
+</button>
+
+{% endblock %}

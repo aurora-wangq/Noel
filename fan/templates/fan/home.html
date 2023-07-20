@@ -1,0 +1,210 @@
+{% extends "fan/_base.html" %}
+
+{% block title %}首页{% endblock %}
+
+{% block content %}
+<style>
+  .post-image-blur {
+    filter: blur(64px);
+    transition: filter 300ms;
+  }
+
+  .post-image {
+    height: 300px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 12px;
+    border: none;
+    transition: opacity .1s;
+  }
+
+  .post-image:hover {
+    transition: opacity .1s;
+    opacity: 80%;
+  }
+
+  .post-container {
+    align-items: center;
+    height: 200px;
+    width: 300px;
+    justify-content: center;
+    display: flex;
+  }
+
+  html {
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  body {
+    background: none;
+  }
+
+  .posts-view {
+    display: block;
+    padding: 70px 0;
+  }
+
+  .thesaurus {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    padding: 32px 0 32px 0;
+  }
+
+  .post-content > a {
+    font-size: 18px;
+    color: black;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .post-content {
+    margin: 4px 0 4px 0;
+  }
+
+  .post-username {
+    font-size: 14px;
+    color: #444;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .post {
+    padding-top: 12px;
+    padding-bottom: 24px;
+  }
+
+  .post-avatar {
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    border-radius: 100%;
+  }
+</style>
+
+<button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-pink-200" mdui-dialog="{target: '#new-post-dialog'}">
+  <i class="mdui-icon material-icons">add</i>
+</button>
+
+<div class="mdui-dialog" id="new-post-dialog">
+  <div class="mdui-dialog-title">新帖子</div>
+  <div class="mdui-dialog-content">
+    <form action="/edit/" method="post" enctype="multipart/form-data" id="submit-form">
+      {% csrf_token %}
+      <div class="mdui-container">
+        <div class="mdui-row mdui-valign">
+
+          <div class="mdui-col-xs-1">
+            <i class="mdui-icon material-icons">short_text</i>
+          </div>
+
+          <div class="mdui-col-xs-11">
+            <div class="mdui-textfield">
+              <textarea class="mdui-textfield-input" name="content" rows="3" placeholder="写点啥呢~"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <br />
+
+        <div class="mdui-row mdui-valign">
+          <div class="mdui-col-xs-1">
+            <i class="mdui-icon material-icons">visibility</i>
+          </div>
+          <div class="mdui-col-xs-11">
+            <label class="mdui-checkbox">
+              <input type="checkbox" name="show_view" value="true" />
+              <i class="mdui-checkbox-icon"></i>是否含有R18内容
+            </label>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="mdui-row mdui-valign">
+          <div class="mdui-col-xs-1">
+            <i class="mdui-icon material-icons">image</i>
+          </div>
+          <div class="mdui-col-xs-11">
+            <input type="file" name="post_img1">
+          </div>
+        </div>
+      </div>
+  </div>
+
+  </form>
+  <div class="mdui-dialog-actions">
+    <button class="mdui-btn mdui-ripple" mdui-dialog-close>
+      <i class="mdui-icon material-icons">close</i>
+      取消
+    </button>
+    <button class="mdui-btn mdui-ripple" id="submit-button">
+      <i class="mdui-icon material-icons">check</i>
+      发布
+    </button>
+  </div>
+</div>
+</div>
+
+<div class="mdui-container">
+
+  <p class="thesaurus">
+    {{thesaurus|safe}}
+  </p>
+  {% for n in notice %}
+  <div>
+    {{n.creater}}
+    {{n.content}}
+  </div>
+  {% endfor %}
+  <div class="mdui-row">
+
+    {% for post in posts %}
+    {% include "fan/components/content_base.html" with username=post.post_owner content=post.post_content nike_name=post.owner_profile title=post.owner_profile.title user_img1=post.owner_profile.img user_img=post like=post.likes%}
+    {% endfor %}
+
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.btn-toggle-blur').forEach(i => {
+    i.addEventListener('click', (event) => {
+      var elem = event.target;
+      var icon;
+      if (elem.tagName == 'I') {
+        icon = elem;
+        elem = elem.parentElement
+      }
+      else {
+        icon = elem.querySelector('i')
+      }
+
+      if (icon.innerHTML.trim() == 'visibility') {
+        icon.innerHTML = 'visibility_off';
+      }
+      else {
+        icon.innerHTML = 'visibility';
+      }
+      elem.parentElement.parentElement.parentElement.querySelector('img').classList.toggle('post-image-blur');
+    })
+  })
+
+  document.querySelector('#submit-button').addEventListener('click', e => {
+    e.target.disabled = true;
+    var elem = document.querySelector('form')
+    if (elem.querySelector('input[type="file"]').value === '') {
+      mdui.snackbar('File cannot be empty')
+      e.target.disabled = false;
+      return;
+    }
+    elem.submit();
+  })
+</script>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% if post.post_img1 %}
+<div class="mdui-col-sm-3 post">
+	<a href="{% url 'fan:post_detail' post.id %}">
+		{% if post.show_view %}
+		<img src="/thumbnail/{{post.post_img1}}" class="post-image post-image-blur" />
+		{% else %}
+		<img src="/thumbnail/{{post.post_img1}}" class="post-image" />
+		{% endif %}
+	</a>
+
+	<br />
+
+	<div class="mdui-text-truncate post-content">
+		<a href="{% url 'fan:post_detail' post.id %}">
+			{{content}}
+		</a>
+	</div>
+
+	<div class="mdui-row mdui-valign">
+		<div class="mdui-col-xs-2">
+			<a href="{% url 'fan:post_detail' post.id %}">
+				<img class="post-avatar" src="/media/{{ post.owner_profile.img }}" />
+			</a>
+		</div>
+		<div class="mdui-col-xs-8">
+			<div class="mdui-text-truncate">
+				<a class="post-username" href="{% url 'fan:others_page' post.post_owner.id %}">
+					{{nike_name}} @{{username}}
+				</a>
+			</div>
+		</div>
+		<div class="mdui-col-xs-2">
+			<div style="float:left"><i class="mdui-icon material-icons">favorite</i> {{like}}</div>
+		</div>
+	</div>
+</div>
+{% endif %}
