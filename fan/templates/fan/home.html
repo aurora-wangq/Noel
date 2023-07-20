@@ -42,6 +42,13 @@
     display: block;
     padding: 70px 0;
   }
+
+  .thesaurus {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    padding: 32px 0 32px 0;
+  }
 </style>
 
 <button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-pink-200" mdui-dialog="{target: '#new-post-dialog'}">
@@ -101,12 +108,11 @@
 <div class="mdui-container">
 
 
-  <hr>
   <div class="mdui-divider"></div>
-  <h1 style="font-weight:300; font-size: 30px;padding:4px; text-align:center">每一个人，只要活着，就会不停的失去。
-  </h1>
+  <p class="thesaurus">
+    {{thesaurus|safe}}
+  </p>
   <div class="mdui-divider"></div>
-  <hr>
 
   <div class="mdui-row">
 

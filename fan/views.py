@@ -10,26 +10,24 @@ from .models import UserProfile, Post, Comment, Like
 from django.contrib.auth.decorators import login_required
 from .forms import Userfile
 from datetime import datetime
-import os
+import random
 from PIL import Image
+import json
 
+thesaurus = []
+
+with open('collection.json', encoding='utf8') as f:
+    thesaurus = json.loads(f.read())
 
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        # 与数据库中的用户名和密码比对，django默认保存密码是以哈希形式存储，并不是明文密码，这里的password验证默认调用的是User类的check_password方法，以哈希值比较。
         user = authenticate(request, username=username, password=password)
-        # Newuser = User.objects.create_user(username='John', password='123456')
-        # user.save()
-        # 验证如果用户不为空
         if user is not None:
-            # login方法登录
             login(request, user)
-            # 返回登录成功信息
             return redirect('fan:home')
         else:
-            # 返回登录失败信息
             return redirect('fan:login')
 
     return render(request, 'fan/login.html')
@@ -49,12 +47,12 @@ def home_view(request):
     like_num_list = []
     for i in user_list:
         like_num_list.append(Like.objects.filter(post=i).count())
-        #print(i.post_img1)
     context = {
         "like_num_list1": like_num_list,
         "user_list1": user_list,
         "user_name1": user_name,
         "uid1": uid,
+        "thesaurus": random.choice(thesaurus)
     }
     return render(request, 'fan/home.html', context)
 
@@ -94,24 +92,9 @@ def editarticle_view(request):
         path1 = './thumbnail/' + str(new_post.post_img1)
         out = im.resize((x1, y1), Image.ANTIALIAS)
         out.save(path1)
-        #print("vwadawdawdaw", str(new_post.post_img1))
-        # new_post.post_img2 = request.FILES.get('post_img2')
-        # new_post.post_img3 = request.FILES.get('post_img3')
-        # new_post.post_img4 = request.FILES.get('post_img4')
         return redirect('fan:home')
     else:
         return render(request, 'fan/editarticle.html')
-
-# @login_required(login_url='fan:login')
-# def editavatar_view(request):
-#     user_object = User.objects.get(username=request.user.username)
-#     user_profile = UserProfile.objects.get(owner=user_object)
-#     if request.method == 'POST':
-#         user_profile.img = request.FILES.get('avatar')
-#         user_profile.save()
-#         return redirect('fan:home')
-#     else:
-#         return render(request, 'fan/editavatar.html')
 
 @login_required(login_url='fan:login')
 def post_detail_view(request, post_id):
