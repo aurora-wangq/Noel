@@ -7,9 +7,9 @@ urlpatterns = [
     path('register/',views.register_view, name='register'),
     path('edit/',views.editarticle_view, name='edit'),
     path('post/<int:post_id>',views.post_detail_view, name='post_detail'),
+    path('post/<int:post_id>/like', views.post_like, name="post_like"),
     path('mypage/',views.user_page_view,name='user_page'),
     path('logout/',views.logout_view,name='logout'),
     path('edit_profile/',views.edit_profile_view,name='editp'),
     path('user/<int:user_id>', views.others_page_view, name='others_page'),
-    path('post/<int:post_id>/like', views.post_detial_like_view, name="post_like"),
 ]

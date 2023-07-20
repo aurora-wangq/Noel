@@ -12,25 +12,25 @@
 
 	<div class="mdui-text-truncate post-content">
 		<a href="{% url 'fan:post_detail' post.id %}">
-			{{content}}
+			{{post.post_content}}
 		</a>
 	</div>
 
 	<div class="mdui-row mdui-valign">
 		<div class="mdui-col-xs-2">
-			<a href="{% url 'fan:post_detail' post.id %}">
+			<a href="{% url 'fan:others_page' post.post_owner.id %}">
 				<img class="post-avatar" src="/media/{{ post.owner_profile.img }}" />
 			</a>
 		</div>
 		<div class="mdui-col-xs-8">
 			<div class="mdui-text-truncate">
 				<a class="post-username" href="{% url 'fan:others_page' post.post_owner.id %}">
-					{{nike_name}} @{{username}}
+					{{post.owner_profile.nike_name}} @{{post.post_owner.username}}
 				</a>
 			</div>
 		</div>
 		<div class="mdui-col-xs-2">
-			<div style="float:left"><i class="mdui-icon material-icons">favorite</i> {{like}}</div>
+			<div style="float:left"><i class="mdui-icon material-icons">favorite</i> {{post.likes}}</div>
 		</div>
 	</div>
 </div>

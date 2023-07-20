@@ -28,15 +28,16 @@
                     e l
                 </h1>
             </a>
-            <!-- <a href="{% url 'fan:home' %}" class="mdui-typo-headline">AenCommunity</a> -->
             <a class="mdui-typo-title">{% block title %}[Untitled]{% endblock %}</a>
             <div class="mdui-toolbar-spacer"></div>
             <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-menu="{target: '#account-menu'}">
-                <img src="/media/{{ user.img }}" class="avatar" />
+                <img src="/media/{{ user.img }}" class="appbar-avatar" />
             </a>
             <ul class="mdui-menu" id="account-menu">
                 <li class="mdui-menu-item">
-                    <a href="{% url 'fan:user_page' %}" class="mdui-ripple">个人主页</a>
+                    <a href="{% url 'fan:user_page' %}" class="mdui-ripple">
+                        <b>{{user.owner.username}}</b>
+                    </a>
                 </li>
                 <li class="mdui-divider"></li>
                 <li class="mdui-menu-item">

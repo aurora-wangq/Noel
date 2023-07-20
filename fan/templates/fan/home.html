@@ -133,7 +133,7 @@
           </div>
           <div class="mdui-col-xs-11">
             <label class="file-label">
-              <input class="file-input" type="file" name="post_img1">
+              <input class="file-input" type="file" name="post_img">
               <span class="file-cta">
                 <span class="file-icon">
                   <i class="mdui-icon material-icons">&#xe864;</i>
@@ -176,7 +176,8 @@
   <div class="mdui-row">
 
     {% for post in posts %}
-    {% include "fan/components/content_base.html" with username=post.post_owner content=post.post_content nike_name=post.owner_profile title=post.owner_profile.title user_img1=post.owner_profile.img user_img=post like=post.likes%}
+    {% include "fan/components/content_base.html" with post=post %}
+    {#{% include "fan/components/content_base.html" with username=post.post_owner content=post.post_content nike_name=post.owner_profile title=post.owner_profile.title user_img1=post.owner_profile.img user_img=post like=post.likes%}#}
     {% endfor %}
 
   </div>

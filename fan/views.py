@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.template import loader
-# Create your views here.
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
 from .models import UserProfile, Post, Comment, Like
@@ -91,7 +90,7 @@ def editarticle_view(request):
         user_object = User.objects.get(username=request.user.username)
         user_profile = UserProfile.objects.get(owner=user_object)
         new_post = Post.objects.create(post_owner=user_object, post_content=content, owner_profile=user_profile, show_view=show_view)
-        new_post.post_img1 = request.FILES.get('post_img1')
+        new_post.post_img1 = request.FILES.get('post_img')
         new_post.save()
         path = './media/' + str(new_post.post_img1)
         im = Image.open(path)
@@ -102,8 +101,6 @@ def editarticle_view(request):
         out = im.resize((x1, y1), Image.ANTIALIAS)
         out.save(path1)
         return redirect('fan:home')
-    else:
-        return render(request, 'fan/editarticle.html')
 
 @login_required(login_url='fan:login')
 def post_detail_view(request, post_id):
@@ -117,17 +114,13 @@ def post_detail_view(request, post_id):
         if i.user == user_object:
             liked = 1
     context = {
+        "user": user_profile,
         "liked": liked,
         "post": post,
-        "comment_list1": comment_list,
-        "post_content": post.post_content,
-        "nike_name": post.owner_profile.nike_name,
-        "username": post.post_owner.username,
-        "title": post.owner_profile.title,
-        "user_profile": post.owner_profile,
-        "uid": post.post_owner.id,
-        "title_level": post.owner_profile.title_level,
-        "user": user_profile,
+        "owner": post.post_owner,
+        "owner_profile": post.owner_profile,
+        "comment_list": comment_list,
+        "content": post.post_content,
     }
     if request.method == 'POST':
         text = request.POST['comment_text']
@@ -142,21 +135,10 @@ def post_detail_view(request, post_id):
 
 @login_required(login_url='fan:login')
 def user_page_view(request):
-    user_object = User.objects.get(username=request.user.username)
-    user_profile = UserProfile.objects.get(owner=user_object)
+    user = User.objects.get(username=request.user.username)
+    profile = UserProfile.objects.get(owner=user)
     context = {
-        "user": user_profile,
-        "backimg": user_profile.back_img,
-        "nike_name": user_profile.nike_name,
-        "title": user_profile.title,
-        "username": user_object.username,
-        "sign": user_profile.sign,
-        "birthday": user_profile.birthday,
-        "address": user_profile.address,
-        "desc": user_profile.desc,
-        "uid": user_object.id,
-        "avatar": user_profile.img,
-        "title_level": user_profile.title_level,
+        "user": profile
     }
     return render(request, 'fan/user_page.html', context)
 
@@ -169,52 +151,29 @@ def logout_view(request):
 def edit_profile_view(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile = UserProfile.objects.get(owner=user_object)
-    user_profile1 = UserProfile.objects.get(owner=user_object)
     context = {
-        "nike_name": user_profile.nike_name,
-        "sign": user_profile.sign,
-        "address": user_profile.address,
-        "desc": user_profile.desc,
-        "birthday": user_profile.birthday,
-        "avatar": user_profile.img,
-        "backimg": user_profile.back_img,
-        "username": user_object.username,
-        "uid": user_object.id,
-        "user": user_profile,
+        "user": user_profile
     }
     if request.method == 'POST':
         if request.POST['nike_name']:
             user_profile.nike_name = request.POST['nike_name']
-        else:
-            user_profile.nike_name = user_profile1.nike_name
         if request.POST['desc']:
             user_profile.desc = request.POST['desc']
-        else:
-            user_profile.desc = user_profile1.desc
         if request.POST['sign']:
             user_profile.sign = request.POST['sign']
-        else:
-            user_profile.sign = user_profile1.sign
         if request.POST['address']:
             user_profile.address = request.POST['address']
-        else:
-            user_profile.address = user_profile1.address
         if request.FILES.get('img'):
             user_profile.img = request.FILES.get('img')
-        else:
-            user_profile.img = user_profile1.img
         if request.FILES.get('backimg'):
             user_profile.back_img = request.FILES.get('backimg')
-        else:
-            user_profile.back_img = user_profile1.back_img
         if request.POST['birthday']:
             user_profile.birthday = datetime.strptime(request.POST['birthday'], "%Y-%m-%d")
-        else:
-            user_profile.birthday = user_profile1.birthday
         user_profile.save()
         return redirect('fan:user_page')
     else:
         return render(request, 'fan/edit_user.html', context)
+
 @login_required(login_url='users:login')
 def others_page_view(request, user_id):
     user_object1 = User.objects.get(username=request.user.username)
@@ -239,26 +198,15 @@ def others_page_view(request, user_id):
     }
     redirect('fan:others_page', user_id=user_id)
     return render(request, 'fan/others_page.html', context)
+
 @login_required(login_url='fan:login')
-def post_detial_like_view(request, post_id):
-    user_object = User.objects.get(username=request.user.username)
-    # user_profile = UserProfile.objects.get(owner=user_object)
+def post_like(request, post_id):
+    user = User.objects.get(username=request.user.username)
     post = Post.objects.get(id=post_id)
-    # comment_list = Comment.objects.filter(post=post)
-    like_list = Like.objects.filter(post=post, user=user_object)
-    liked = 0
-    for i in like_list:
-        if i.user == user_object:
-            liked = 1
     if request.method == 'POST':
-        value = request.POST['value']
-        if liked == 0:
-            new_like = Like.objects.create(user=user_object, post=post)
-            liked = 1
-            print(Like.objects.filter(post=post, user=user_object))
+        if Like.objects.filter(post=post, user=user).count() == 0:
+            Like.objects.create(user=user, post=post)
             return HttpResponse("点赞成功")
         else:
-            Like.objects.filter(user=user_object, post=post).delete()
-            liked = 0
-            print(Like.objects.filter(post=post, user=user_object))
-            return HttpResponse("取消了")
+            Like.objects.filter(user=user, post=post).delete()
+            return HttpResponse("取消点赞")

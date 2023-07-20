@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/static/css/bulma.css" />
 <style>
 	html {
-		background-image: url('/media/{{ backimg }}');
+		background-image: url('/media/{{ user.back_img }}');
 		height: 100%;
 		background-position: center;
 		background-repeat: no-repeat;
@@ -17,61 +17,48 @@
 		background: none;
 		margin: 0%;
 	}
-
-	.profile-view {
-		border: none;
-		background: white;
-		padding: 70px 0;
-		opacity: 1;
-		border-radius: 4px;
-		transition: all .3s;
-	}
-
-	.avatar {
-		width: 64px;
-	}
 </style>
 
 
 <div class="mdui-container profile-view mdui-hoverable" style="opacity: 100%;">
 	<div class="mdui-row mdui-valign">
 		<div class="mdui-col-xs-1 mdui-col-offset-xs-1">
-			<img class="avatar mdui-img-circle" src="/media/{{avatar}}" />
+			<img class="avatar mdui-img-circle" src="/media/{{user.img}}" />
 		</div>
 		<div class="mdui-col-xs-4">
-			<span style="font-weight: 600; font-size: 24px">{{nike_name}}</span>
+			<span style="font-weight: 600; font-size: 24px">{{user.nike_name}}</span>
 			{% if title %}
 			<div class="mdui-chip" style="margin-left: 12px;">
-				<span class="mdui-chip-title">{{title}}</span>
+				<span class="mdui-chip-title">{{user.title}}</span>
 			</div>
 			{% endif %}
 			<br />
-			@{{username}}
+			@{{user.owner.username}}
 		</div>
 	</div>
 
 	<div class="mdui-row mdui-valign" style="padding-top: 12px">
 		<div class="mdui-col-xs-3 mdui-col-offset-xs-2">
 			<i class="mdui-icon material-icons">description</i>
-			签名：{{sign}}
+			签名：{{user.sign}}
 		</div>
 		<div class="mdui-col-xs-2">
 			<i class="mdui-icon material-icons">location_on</i>
-			位置：{{address}}
+			位置：{{user.address}}
 		</div>
 		<div class="mdui-col-xs-2">
 			<i class="mdui-icon material-icons">today</i>
-			生日：{{birthday}}
+			生日：{{user.birthday}}
 		</div>
 		<div class="mdui-col-xs-2">
 			<i class="mdui-icon material-icons">account_circle</i>
-			UID：{{uid}}
+			UID：{{user.owner.id}}
 		</div>
 	</div>
 
 	<div class="mdui-row">
 		<div class="mdui-col-xs-6 mdui-col-offset-xs-2 mdui-typo" style="font-size: 24px">
-			{{desc}}
+			{{user.desc}}
 		</div>
 	</div>
 
@@ -85,7 +72,7 @@
 				<div class="mdui-col-xs-7">
 					<div class="mdui-textfield mdui-textfield-floating-label">
 						<label class="mdui-textfield-label">昵称</label>
-						<input class="mdui-textfield-input" type="text" name="nike_name" value="{{nike_name}}"/>
+						<input class="mdui-textfield-input" type="text" name="nike_name" value="{{user.nike_name}}"/>
 					</div>
 				</div>
 			</div>
@@ -96,7 +83,7 @@
 				<div class="mdui-col-xs-7">
 					<div class="mdui-textfield mdui-textfield-floating-label">
 						<label class="mdui-textfield-label">位置</label>
-						<input class="mdui-textfield-input" type="text" name="address" value="{{address}}" />
+						<input class="mdui-textfield-input" type="text" name="address" value="{{user.address}}" />
 					</div>
 				</div>
 			</div>
@@ -108,7 +95,7 @@
 				<div class="mdui-col-xs-7">
 					<div class="mdui-textfield mdui-textfield-floating-label">
 						<label class="mdui-textfield-label">签名</label>
-						<input class="mdui-textfield-input" type="text" name="sign" value="{{sign}}" />
+						<input class="mdui-textfield-input" type="text" name="sign" value="{{user.sign}}" />
 					</div>
 				</div>
 			</div>
@@ -132,7 +119,7 @@
 				<div class="mdui-col-xs-7">
 					<div class="mdui-textfield mdui-textfield-floating-label">
 						<label class="mdui-textfield-label">简介</label>
-						<input class="mdui-textfield-input" type="text" name="desc" value="{{desc}}" />
+						<input class="mdui-textfield-input" type="text" name="desc" value="{{user.desc}}" />
 					</div>
 				</div>
 			</div>
