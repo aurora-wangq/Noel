@@ -35,12 +35,22 @@ def login_view(request):
 
 @login_required(login_url='fan:login')
 def home_view(request):
+    notices_creator = UserProfile.objects.all()
+    notices_list = []
+    for i in notices_creator:
+        if i.notice != None:
+            print(i.notice)
+            notices_list.append({
+                "creater": i.nike_name,
+                "content": i.notice,             
+            })
     posts = Post.objects.order_by("-post_level", "-id")
     for i in posts:
         i.likes = Like.objects.filter(post=i).count()
     context = {
         "posts": posts,
-        "thesaurus": random.choice(thesaurus)
+        "thesaurus": random.choice(thesaurus),
+        "notice": notices_list,
     }
     return render(request, 'fan/home.html', context)
 

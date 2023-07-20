@@ -156,7 +156,12 @@
   <p class="thesaurus">
     {{thesaurus|safe}}
   </p>
-
+  {% for n in notice %}
+  <div>
+    {{n.creater}}
+    {{n.content}}
+  </div>
+  {% endfor %}
   <div class="mdui-row">
 
     {% for post in posts %}

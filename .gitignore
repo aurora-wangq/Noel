@@ -146,3 +146,5 @@ cython_debug/
 
 media/*
 thumbnail/*
+.idea/
+.history/
