@@ -39,6 +39,11 @@
 		padding: auto;
 		margin: auto;
 	}
+
+	.nickname, .username, .user-title {
+		margin-left: 6px;
+		margin-right: 6px;
+	}
 </style>
 
 <br />
@@ -74,11 +79,12 @@
 		<img class="post-image mdui-center" src="/media/{{ post.post_img1 }}">
 	</div>
 </div>
-<hr>
-<div class="mdui-grid-tile-buttons" style="padding-left:73% ;">
-	<button class="mdui-btn mdui-btn-icon btn-toggle-blur mdui-ripple" onclick="like_or_not()">
-		<i class="mdui-icon material-icons" id="icon">favorite{% if liked == 0 %}_border{% endif %}</i>
-	</button>
+<div class="mdui-row">
+	<div class="mdui-col-xs-1 mdui-col-offset-xs-9">
+		<button class="mdui-btn mdui-btn-icon btn-toggle-blur mdui-ripple" onclick="like_or_not()">
+			<i class="mdui-icon material-icons" id="icon">favorite{% if liked == 0 %}_border{% endif %}</i>
+		</button>
+	</div>
 </div>
 
 <div class="mdui-container">
