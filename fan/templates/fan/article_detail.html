@@ -54,12 +54,9 @@
 		<div class="mdui-col-xs-8">
 			<span class="mdui-valign">
 				<span class="nickname">{{nike_name}}</span>
+				<span class="username">@{{username}}</span>
+				{% include "fan/components/user_title.html" with title=title title_level=title_level %}
 			</span>
-			<div>
-				{% include "fan/components/titles/title.html" with title=title title_level=title_level %}
-			</div>
-
-			<span class="username">@{{username}}</span>
 		</div>
 	</div>
 
