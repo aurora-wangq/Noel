@@ -3,6 +3,7 @@
 {% block title %}首页{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="/static/css/bulma.css" />
 <style>
   .post-image-blur {
     filter: blur(64px);
@@ -119,7 +120,7 @@
           <div class="mdui-col-xs-11">
             <label class="mdui-checkbox">
               <input type="checkbox" name="show_view" value="true" />
-              <i class="mdui-checkbox-icon"></i>是否含有R18内容
+              <i class="mdui-checkbox-icon"></i>隐藏缩略图
             </label>
           </div>
         </div>
@@ -131,7 +132,17 @@
             <i class="mdui-icon material-icons">image</i>
           </div>
           <div class="mdui-col-xs-11">
-            <input type="file" name="post_img1">
+            <label class="file-label">
+              <input class="file-input" type="file" name="post_img1">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="mdui-icon material-icons">&#xe864;</i>
+                </span>
+                <span class="file-label">
+                  上传图片
+                </span>
+              </span>
+            </label>
           </div>
         </div>
       </div>
