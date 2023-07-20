@@ -63,6 +63,10 @@ def home_view(request):
 
 
 def register_view(request):
+    default_avatar = {"img": "default/txdefault.jpg",}
+    context = {
+        "user": default_avatar,
+    }
     if request.method == 'POST':
         username = request.POST['username']
         nike_name = request.POST['nike_name']
@@ -74,7 +78,7 @@ def register_view(request):
         new_userprofile.save()
         return redirect('fan:login')
     else:
-        return render(request, 'fan/register.html')
+        return render(request, 'fan/register.html', context)
 
 
 @login_required(login_url='fan:login')
