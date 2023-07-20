@@ -1,87 +1,76 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+{% extends "fan/_base.html" %}
 
-<head>
-    {% include "fan/components/head.html" %}
-    <style>
-        html {
-            background-image: url('/static/images/loginback.jpg');
-            height: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
+{% block title %}登录{% endblock %}
 
-        body {
-            background: none;
-            margin: 10%;
-        }
+{% block content %}
 
-        .mdui-drawer {
-            backdrop-filter: blur(64px) brightness(200%);
-        }
+<style>
+    html {
+        background-image: url('/static/images/loginback.jpg');
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 
-        .login-view {
-            width: 65%;
-            background-color: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            display: block;
-            padding: 70px 0;
-        }
-    </style>
-</head>
+    body {
+        background: none;
+        margin: 10%;
+    }
 
-<body class="mdui-appbar-with-toolbar mdui-valign">
-    {% csrf_token %}
+    .mdui-drawer {
+        backdrop-filter: blur(64px) brightness(200%);
+    }
 
-    {% include "fan/components/appbar.html" with page="登录" %}
+    .login-view {
+        width: 65%;
+        background-color: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(20px);
+        display: block;
+        padding: 70px 0;
+    }
+</style>
 
-    {% include "fan/components/drawer.html" %}
-
-    <div class="mdui-container login-view">
-        <div class="mdui-row">
-            <div class="mdui-col-offset-xs-3 mdui-col-xs-6">
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <h2>登录😎</h2>
-                    <div class="mdui-textfield mdui-textfield-floating-label">
-                        <label class="mdui-textfield-label">Username</label>
-                        <input class="mdui-textfield-input" name="username" id="input-username" pattern="^[\d\w_]+$"
-                            required />
-                    </div>
-                    <div class="mdui-textfield mdui-textfield-floating-label">
-                        <label class="mdui-textfield-label">Password</label>
-                        <input class="mdui-textfield-input" name="password" type="password" id="input-password"
-                            required />
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="mdui-row">
-            <div class="mdui-col-offset-xs-5 mdui-col-xs-2">
-                <a class="mdui-btn" href="{% url 'fan:register' %}">注册</a>
-            </div>
-            <div class="mdui-col-xs-2">
-                <button class="mdui-btn mdui-ripple" id="button-login">登入</button>
-            </div>
+<div class="mdui-container login-view">
+    <div class="mdui-row">
+        <div class="mdui-col-offset-xs-3 mdui-col-xs-6">
+            <form action="" method="post">
+                {% csrf_token %}
+                <h2>登录😎</h2>
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label">Username</label>
+                    <input class="mdui-textfield-input" name="username" id="input-username" pattern="^[\d\w_]+$"
+                        required />
+                </div>
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label">Password</label>
+                    <input class="mdui-textfield-input" name="password" type="password" id="input-password" required />
+                </div>
+            </form>
         </div>
     </div>
 
-    <script>
-        document.getElementById('button-login').addEventListener('click', e => {
-            if (document.getElementById('input-username').value.length == 0) {
-                mdui.snackbar('Username missing')
-                return
-            }
-            if (document.getElementById('input-password').value.length == 0) {
-                mdui.snackbar('Password missing')
-                return
-            }
-            document.querySelector('form').submit();
-        })
-    </script>
-    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
-</body>
+    <div class="mdui-row">
+        <div class="mdui-col-offset-xs-5 mdui-col-xs-2">
+            <a class="mdui-btn" href="{% url 'fan:register' %}">注册</a>
+        </div>
+        <div class="mdui-col-xs-2">
+            <button class="mdui-btn mdui-ripple" id="button-login">登入</button>
+        </div>
+    </div>
+</div>
 
-</html>
+<script>
+    document.getElementById('button-login').addEventListener('click', e => {
+        if (document.getElementById('input-username').value.length == 0) {
+            mdui.snackbar('Username missing')
+            return
+        }
+        if (document.getElementById('input-password').value.length == 0) {
+            mdui.snackbar('Password missing')
+            return
+        }
+        document.querySelector('form').submit();
+    })
+</script>
+{% endblock %}
