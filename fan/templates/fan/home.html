@@ -207,16 +207,16 @@
     </div>
 
     <div class="mdui-container">
+      {% for n in notice %}
       <div class="mdui-row">
-        {% for n in notice %}
-        <div class="mdui-col-xs-1 notice-creator">
+        <div class="mdui-col-xs-1 notice-creator mdui-valign">
           {{n.creater}}
         </div>
         <div class="mdui-col-xs-11 notice-content">
           {{n.notice}}
         </div>
-        {% endfor %}
       </div>
+      {% endfor %}
     </div>
   </div>
 
