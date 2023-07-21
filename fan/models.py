@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 
 # Create your models here.
@@ -22,6 +23,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.nike_name
 
+class NovelTraveler(models.Model):
+    id = models.AutoField(primary_key=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    name =  models.TextField('小说标题', max_length=999, blank=True)
+    content = RichTextField(verbose_name='小说正文')
 
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
@@ -47,3 +53,12 @@ class Notice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="公告拥有者")#这一条仅用于admin界面能够集成Notice便于管理
     creater = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="公告发布者")
     notice = models.TextField('公告内容', max_length=300, blank=True)
+
+class CommentNovel(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    novel = models.ForeignKey(NovelTraveler, on_delete=models.CASCADE, verbose_name='评论所属小说', blank=True, null=True)
+    text = models.CharField('评论内容', max_length=500, blank=True, null=True)
+
+class LikeNovel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='点赞者', blank=True, null=True)
+    novel = models.ForeignKey(NovelTraveler, on_delete=models.CASCADE, verbose_name='赞所属小说', blank=True, null=True)

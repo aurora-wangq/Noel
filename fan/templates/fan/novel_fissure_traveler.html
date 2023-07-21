@@ -1,0 +1,104 @@
+{% extends "fan/_base.html" %}
+
+{% block title %}界游者{% endblock %}
+
+{% block content %}
+<div>
+    <!-- 小说第id章 -->
+    {{id}}
+    <!-- 小说章节名name -->
+    {{name}}
+    <!-- 小说作者author -->
+    {{author}}
+    <!-- 小说内容content -->
+    <div class="mdui-row">
+		<div class="mdui-col-offset-xs-2 mdui-col-xs-8">
+			<span class="post-content" style="font-weight:500; font-size: 18px">
+				{{content|safe}}
+			</span>
+		</div>
+	</div>
+</div>
+
+<div class="mdui-container">
+	<div class="mdui-row">
+		<div class="mdui-col-xs-1 mdui-col-offset-xs-10">
+			<button class="mdui-btn mdui-btn-icon btn-toggle-blur mdui-ripple" id="like-button" onclick="like_or_not()">
+				<i class="mdui-icon material-icons" id="like-icon">favorite{% if liked == 0 %}_border{% endif %}</i>
+			</button>
+		</div>
+	</div>
+
+	<div class="mdui-row mdui-valign">
+		<div class="mdui-col-xs-7 mdui-col-offset-xs-2">
+			<form action="" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="mdui-textfield">
+					<textarea class="mdui-textfield-input" id="input-comment" name="comment_text"
+						placeholder="说点难听的~"></textarea>
+				</div>
+			</form>
+		</div>
+		<div calss="mdui-col-xs-1">
+			<button class="mdui-btn mdui-center" id="comment-submit">评论</button>
+		</div>
+	</div>
+
+
+	{% for comment in comment_list %}
+	<div class="mdui-row mdui-valign">
+		<div class="mdui-col-offset-xs-2 mdui-col-xs-1">
+			<a href="/user/{{comment.user.owner.id}}">
+				<img src="/media/{{ comment.user.img }}" class="avatar" />
+			</a>
+		</div>
+		<div class="mdui-col-xs-6">
+			<p class="comment-username">{{comment.user.nike_name}}</p>
+			<p class="comment-content">{{comment.text}}</p>
+		</div>
+		<div class="mdui-col-xs-1">
+			<span>
+				#{{forloop.counter}}
+			</span>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+<script>
+	document.getElementById('comment-submit').addEventListener('click', e => {
+		var elem = document.getElementById('input-comment')
+		if (elem.value.trim().length == 0) {
+			mdui.snackbar('Empty comment')
+		}
+		else {
+			document.querySelector('form').submit()
+		}
+	})
+
+	function like_or_not() {
+		var xhr = new XMLHttpRequest();
+		var btn = document.getElementById('like-button');
+		var icon = document.getElementById('like-icon');
+		btn.setAttribute('disabled', 'true');
+		xhr.open("POST", "{{id}}/like");
+		xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+		xhr.send();
+		if (icon.innerHTML.trim() == 'favorite') {
+			icon.innerHTML = 'favorite_border';
+		}
+		else {
+			icon.innerHTML = 'favorite';
+		}
+		xhr.onreadystatechange = function() {
+			btn.removeAttribute('disabled');
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				mdui.snackbar(xhr.responseText);
+			}
+			else if (xhr.readyState == 4) {
+				mdui.snackbar('Failed when connecting to server');
+			}
+		};
+	}
+</script>
+{% endblock %}

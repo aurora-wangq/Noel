@@ -5,13 +5,14 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import UserProfile, Post, Comment, Like, Notice
+from .models import UserProfile, Post, Comment, Like, Notice, NovelTraveler, CommentNovel, LikeNovel
 from django.contrib.auth.decorators import login_required
 from .forms import Userfile
 from datetime import datetime
 import random
 from PIL import Image
 import json
+from django.utils.html import format_html
 
 thesaurus = []
 
@@ -201,4 +202,61 @@ def post_like(request, post_id):
             return HttpResponse("点赞成功")
         else:
             Like.objects.filter(user=user, post=post).delete()
+            return HttpResponse("取消点赞")
+        
+@login_required(login_url='users:login')
+def traveler_select_view(request):
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = UserProfile.objects.get(owner=user_object)
+    novel = NovelTraveler.objects.order_by("id")
+    for i in novel:
+        i.likes = LikeNovel.objects.filter(novel=i).count()
+    context = {
+        "user": user_profile,
+        "novel_list": novel,
+    }
+    return render(request, 'fan/novel_fissure_traveler_select.html', context)
+
+@login_required(login_url='users:login')
+def traveler_view(request, novel_id):
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = UserProfile.objects.get(owner=user_object)
+    novel = NovelTraveler.objects.get(id = novel_id)
+    author = novel.author
+    content = novel.content
+    name = novel.name
+    comment_list = CommentNovel.objects.filter(novel=novel)
+    like_list = LikeNovel.objects.filter(novel=novel)
+    liked = 0
+    for i in like_list:
+        if i.user == user_object:
+            liked = 1
+    context = {
+        "user": user_profile,
+        "liked": liked,
+        "id": novel.id,
+        "author": author,
+        "content": content,
+        "name": name,
+        "comment_list": comment_list,
+    }
+    if request.method == 'POST':
+        text = request.POST['comment_text']
+        if text:
+            new_comment = CommentNovel.objects.create(user=user_profile, novel=novel, text=text)
+            new_comment.save()
+        return redirect('fan:traveler_content', novel_id = novel_id)
+    else:
+        return render(request, 'fan/novel_fissure_traveler.html', context)
+    
+@login_required(login_url='fan:login')
+def novel_like(request, novel_id):
+    user = User.objects.get(username=request.user.username)
+    novel = NovelTraveler.objects.get(id=novel_id)
+    if request.method == 'POST':
+        if LikeNovel.objects.filter(novel=novel, user=user).count() == 0:
+            LikeNovel.objects.create(user=user, novel=novel)
+            return HttpResponse("点赞成功")
+        else:
+            LikeNovel.objects.filter(user=user, novel=novel).delete()
             return HttpResponse("取消点赞")

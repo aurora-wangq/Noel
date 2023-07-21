@@ -1,0 +1,13 @@
+{% extends "fan/_base.html" %}
+
+{% block title %}界游者-选择章节{% endblock %}
+
+{% block content %}
+
+<div class="mdui-row">
+    {% for novel in novel_list %}
+    {% include "fan/components/novel_fissure_traveler_base.html" with novel=novel %}
+    {% endfor %}
+</div>
+
+{% endblock %}
