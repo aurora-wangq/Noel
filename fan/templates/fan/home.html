@@ -35,6 +35,8 @@
     background-color: rgba(200, 200, 200, 0.5);
     color: black;
     z-index: 1;
+    padding: 6px 6px 6px 6px;
+    border-radius: 4px;
   }
 
   .post-container {
@@ -69,7 +71,7 @@
     padding: 16px 0 16px 0;
   }
 
-  .post-content > a {
+  .post-content>a {
     font-size: 18px;
     color: black;
     text-decoration: none;
@@ -86,7 +88,7 @@
     text-decoration: none;
     font-weight: 500;
   }
-  
+
   .post {
     position: relative;
     padding-top: 12px;
@@ -111,7 +113,7 @@
     text-align: center;
     font-weight: bold;
   }
-  
+
   .notice-content {
     font-size: 16px;
   }
@@ -197,9 +199,11 @@
 </p>
 <div class="mdui-container">
   <div class="mdui-row mdui-valign notice-container">
-    <i class="mdui-icon material-icons mdui-center" style="padding-left: 1%;">notifications_active</i>
-    <div class="mdui-col-xs-1" style="padding-left: 1%;">
-      公告：
+    <div class="mdui-col-xs-1">
+      <i class="mdui-icon material-icons mdui-center" style="padding-left: 1%;">notifications_active</i>
+    </div>
+    <div class="mdui-col-xs-1">
+      公告
     </div>
 
     <div class="mdui-container">
@@ -215,7 +219,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="mdui-row">
 
     {% for post in posts %}

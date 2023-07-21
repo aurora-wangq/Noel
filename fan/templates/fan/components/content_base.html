@@ -3,7 +3,7 @@
 <div class="mdui-col-sm-3 post">
 	<a href="{% url 'fan:post_detail' post.id %}">
 		{% if post.pinned %}
-		<i class="layui-icon layui-icon-top pinned-icon" style="font-size: 33px; background-color: rgba(202, 174, 193, 0.823);color: rgb(82, 77, 77);"></i> 
+		<i class="mdui-icon fa-solid fa-thumbtack pinned-icon"></i> 
 		{% endif %}
 		{% if post.show_view %}
 		<img src="/thumbnail/{{post.post_img1}}" class="post-image post-image-blur" />
