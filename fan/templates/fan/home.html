@@ -120,7 +120,7 @@
   }
 </style>
 
-<button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-pink-200" mdui-dialog="{target: '#new-post-dialog'}">
+<button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-pink-200" style="z-index: 1000;" mdui-dialog="{target: '#new-post-dialog'}">
   <i class="mdui-icon material-icons">add</i>
 </button>
 
@@ -203,14 +203,13 @@
     <div class="mdui-col-xs-1">
       <i class="mdui-icon material-icons mdui-center" style="padding-left: 1%;">notifications_active</i>
     </div>
-    <div class="mdui-col-xs-1">
+    <div class="mdui-col-xs-1 mdui-hidden-md-down">
       公告
     </div>
-
     <div class="mdui-container">
       {% for n in notice %}
       <div class="mdui-row">
-        <div class="mdui-col-xs-1 notice-creator mdui-valign mdui-truncate">
+        <div class="mdui-col-xs-1 notice-creator mdui-valign mdui-truncate mdui-hidden-md-down">
           {{n.creater}}
         </div>
         <div class="mdui-col-xs-11 notice-content">

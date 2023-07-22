@@ -23,26 +23,20 @@
 </style>
 
 <div class="mdui-container profile-view mdui-hoverable">
-    <div class="mdui-row mdui-valign">
-        <div class="mdui-col-xs-1 mdui-col-offset-xs-1">
-            <img class="avatar mdui-img-circle" src="/media/{{avatar}}" />
-        </div>
-        <div class="mdui-col-xs-4">
-            <span style="font-weight: 600; font-size: 24px;color:black">{{nike_name}}</span>
-            {% include "fan/components/user_title.html" with title=title title_level=title_level %}
-            <br />
-            @{{username}}
-        </div>
-    </div>
+    {% include "fan/components/user_info.html" with profile=target_profile user=target %}
 
-    <div class="mdui-row mdui-valign" style="padding-top: 12px">
-        <div class="mdui-col-xs-3 mdui-col-offset-xs-2">
-            <i class="mdui-icon fa-solid fa-austral-sign"></i>签名：{{sign}}</div>
-        <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">location_on</i>位置：{{address}}
+    <div class="mdui-row" style="padding-top: 12px">
+        <div class="mdui-col-xs-12 mdui-col-md-3 mdui-col-offset-md-2">
+            <i class="mdui-icon fa-solid fa-austral-sign"></i>签名：{{target_profile.sign}}
         </div>
-        <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">today</i>生日：{{birthday}}
+        <div class="mdui-col-xs-12 mdui-col-md-2">
+            <i class="mdui-icon material-icons">location_on</i>位置：{{target_profile.address}}
         </div>
-        <div class="mdui-col-xs-2" style="color:black"><i class="mdui-icon material-icons">account_circle</i>UID：{{uid}}
+        <div class="mdui-col-xs-12 mdui-col-md-2">
+            <i class="mdui-icon material-icons">today</i>生日：{{target_profile.birthday}}
+        </div>
+        <div class="mdui-col-xs-12 mdui-col-md-2">
+            <i class="mdui-icon material-icons">account_circle</i>UID：{{target.id}}
         </div>
     </div>
 

@@ -15,12 +15,12 @@
 
 {% for comment in comments %}
 <div class="mdui-row mdui-valign">
-    <div class="mdui-col-offset-xs-2 mdui-col-xs-1">
+    <div class="mdui-col-offset-md-2 mdui-col-md-1">
         <a href="/user/{{comment.user.owner.id}}">
             <img src="/media/{{ comment.user.img }}" class="avatar" />
         </a>
     </div>
-    <div class="mdui-col-xs-6">
+    <div class="mdui-col-md-6 mdui-col-xs-10">
         <p class="comment-username">{{comment.user.nike_name}}</p>
         <p class="comment-content">{{comment.text}}</p>
     </div>

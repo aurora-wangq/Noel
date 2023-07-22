@@ -11,6 +11,7 @@
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
+		background-attachment: fixed;
 	}
 
 	body {
@@ -21,38 +22,21 @@
 
 
 <div class="mdui-container profile-view mdui-hoverable" style="opacity: 100%;">
-	<div class="mdui-row mdui-valign">
-		<div class="mdui-col-xs-1 mdui-col-offset-xs-1">
-			<img class="avatar mdui-img-circle" src="/media/{{user.img}}" />
-		</div>
-		<div class="mdui-col-xs-4">
-			<span style="font-weight: 600; font-size: 24px">{{user.nike_name}}</span>
-			{% if title %}
-			<div class="mdui-chip" style="margin-left: 12px;">
-				<span class="mdui-chip-title">{{user.title}}</span>
-			</div>
-			{% endif %}
-			<br />
-			@{{user.owner.username}}
-		</div>
-	</div>
+	{% include "fan/components/user_info.html" with profile=user user=user.owner %}
 
-	<div class="mdui-row mdui-valign" style="padding-top: 12px">
-		<div class="mdui-col-xs-3 mdui-col-offset-xs-2">
-			<i class="mdui-icon fa-solid fa-austral-sign"></i>
-			签名：{{user.sign}}
+
+	<div class="mdui-row" style="padding-top: 12px">
+		<div class="mdui-col-xs-12 mdui-col-md-3 mdui-col-offset-md-2">
+			<i class="mdui-icon fa-solid fa-austral-sign"></i>签名：{{user.sign}}
 		</div>
-		<div class="mdui-col-xs-2">
-			<i class="mdui-icon material-icons">location_on</i>
-			位置：{{user.address}}
+		<div class="mdui-col-xs-12 mdui-col-md-2">
+			<i class="mdui-icon material-icons">location_on</i>位置：{{user.address}}
 		</div>
-		<div class="mdui-col-xs-2">
-			<i class="mdui-icon material-icons">today</i>
-			生日：{{user.birthday}}
+		<div class="mdui-col-xs-12 mdui-col-md-2">
+			<i class="mdui-icon material-icons">today</i>生日：{{user.birthday}}
 		</div>
-		<div class="mdui-col-xs-2">
-			<i class="mdui-icon material-icons">account_circle</i>
-			UID：{{user.owner.id}}
+		<div class="mdui-col-xs-12 mdui-col-md-2">
+			<i class="mdui-icon material-icons">account_circle</i>UID：{{user.owner.id}}
 		</div>
 	</div>
 
@@ -72,7 +56,7 @@
 				<div class="mdui-col-xs-7">
 					<div class="mdui-textfield mdui-textfield-floating-label">
 						<label class="mdui-textfield-label">昵称</label>
-						<input class="mdui-textfield-input" type="text" name="nike_name" value="{{user.nike_name}}"/>
+						<input class="mdui-textfield-input" type="text" name="nike_name" value="{{user.nike_name}}" />
 					</div>
 				</div>
 			</div>
@@ -125,7 +109,7 @@
 			</div>
 
 			<br />
-			
+
 			<div class="mdui-row mdui-valign">
 				<div class="mdui-col-xs-1 mdui-col-offset-xs-2">
 					<i class="mdui-icon material-icons">account_circle</i>
@@ -133,11 +117,11 @@
 				<div class="mdui-col-xs-7">
 					<div class="">
 						<label class="mdui-textfield-label">头像</label>
-						<input type="file" name="img"/>
+						<input type="file" name="img" />
 					</div>
 				</div>
 			</div>
-			
+
 			<br />
 
 			<div class="mdui-row mdui-valign">
@@ -153,7 +137,7 @@
 			</div>
 
 			<div class="mdui-row">
-				<div class="mdui-col-offset-xs-11">
+				<div class="mdui-col-offset-md-10">
 					<button class="mdui-btn mdui-ripple">
 						<i class="mdui-icon material-icons">save</i>
 						保存

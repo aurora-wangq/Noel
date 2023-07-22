@@ -171,22 +171,13 @@ def edit_profile_view(request):
 def others_page_view(request, user_id):
     user_object1 = User.objects.get(username=request.user.username)
     user_profile1 = UserProfile.objects.get(owner=user_object1)
-    user_object = User.objects.get(id=user_id)
-    user_profile = UserProfile.objects.get(owner=user_object)
-    page = user_profile.nike_name+" 的个人主页"
+    target = User.objects.get(id=user_id)
+    target_profile = UserProfile.objects.get(owner=target)
+    page = target_profile.nike_name+" 的个人主页"
     context = {
         "page": page,
-        "backimg": user_profile.back_img,
-        "nike_name": user_profile.nike_name,
-        "title": user_profile.title,
-        "username": user_object.username,
-        "sign": user_profile.sign,
-        "birthday": user_profile.birthday,
-        "address": user_profile.address,
-        "desc": user_profile.desc,
-        "uid": user_object.id,
-        "avatar": user_profile.img,
-        "title_level": user_profile.title_level,
+        "target": target,
+        "target_profile": target_profile,
         "user": user_profile1,
     }
     redirect('fan:others_page', user_id=user_id)

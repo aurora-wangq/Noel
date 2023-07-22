@@ -4,23 +4,6 @@
 
 {% block content %}
 <style>
-	.nickname {
-		font-size: 24px;
-		font-weight: 600;
-	}
-
-	.username {
-		font-size: 16px;
-		color: gray;
-	}
-
-	.title {
-		font-size: 12px;
-		background-color: black;
-		color: white;
-		padding: 2px 2px 2px 2px;
-		border-radius: 6px;
-	}
 
 	.post-content {
 		font-size: 32px;
@@ -55,26 +38,11 @@
 <br />
 
 <div class="mdui-container" style="padding-top: 32px;">
-
-	<div class="mdui-row mdui-valign" style="height: 48px">
-		<div class="mdui-col-offset-xs-1 mdui-col-xs-1">
-			<a href="/user/{{owner.id}}">
-				<img src="/media/{{ owner_profile.img }}" class="avatar" />
-			</a>
-		</div>
-		<div class="mdui-col-xs-8">
-			<span class="mdui-valign">
-				<span class="nickname">{{owner_profile.nike_name}}</span>
-				<span class="username">@{{owner.username}}</span>
-				{% include "fan/components/user_title.html" with title=owner_profile.title title_level=owner_profile.title_level %}
-			</span>
-		</div>
-	</div>
-
+	{% include "fan/components/user_info.html" with profile=owner_profile user=owner %}
 	<br />
 
 	<div class="mdui-row">
-		<div class="mdui-col-offset-xs-2 mdui-col-xs-8">
+		<div class="mdui-col-offset-md-2 mdui-col-md-8 mdui-col-xs-12">
 			<span class="post-content" style="font-weight:500; font-size: 18px">
 				{{content}}
 			</span>
@@ -82,7 +50,7 @@
 	</div>
 
 	<div class="mdui-row">
-		<div class="mdui-col-xs-8 mdui-col-offset-xs-2">
+		<div class="mdui-col-md-8 mdui-col-offset-md-2">
 			<img src="/media/{{ post.post_img1 }}" style="width: 100%;">
 		</div>
 	</div>
@@ -115,7 +83,7 @@
 		else {
 			icon.innerHTML = 'favorite';
 		}
-		xhr.onreadystatechange = function() {
+		xhr.onreadystatechange = function () {
 			btn.removeAttribute('disabled');
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				mdui.snackbar(xhr.responseText);
