@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <style>
+        .message {
+            height: 300px;
+            border: 1px solid #dddddd;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="message" id="message">
+
+    </div>
+
+    <div>
+        <input type="text" placeholder="请输入" id="txt">
+        <input type="button" value="发送" onclick="SendMessage()">
+        <input type="button" value="下线" onclick="Quit()">
+    </div>
+    <script>
+        socket = new WebSocket("ws://127.0.0.1:8000/room/{{group_id}}/");
+        socket.onmessage = function (event) {
+            userMessage = document.createElement("div");
+            userMessage.innerText = event.data;
+            document.getElementById("message").appendChild(userMessage); 
+        }
+        socket.onopen = function (event) {
+            let username = "{{user.username}}";
+            let nickname = "{{user_profile.nike_name}}";  
+            let message = {
+                "username": username,
+                "nickname": nickname,
+                "text": ""
+            };
+            socket.send(JSON.stringify(message));
+            let tag = document.createElement("div");
+            tag.innerText = "[系统消息]已连接🥳";
+            document.getElementById("message").appendChild(tag); 
+        }
+        function SendMessage() {
+            let username = "{{user.username}}";
+            let nickname = "{{user_profile.nike_name}}";  
+            let tag = document.getElementById("txt").value;
+            let message = {
+                "username": username,
+                "nickname": nickname,
+                "text": tag,
+            };
+            if (tag != '')
+            {
+                socket.send(JSON.stringify(message));
+            }
+        }
+        function Quit() {
+            INFO = document.createElement("div");
+            INFO.innerText = "[系统消息]已退出😑";
+            document.getElementById("message").appendChild(INFO);
+            socket.close();
+        }
+    </script>
+</body>
+</html>

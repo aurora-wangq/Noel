@@ -35,9 +35,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
     'fan.apps.FanConfig',
-    'ckeditor', 
+    'ckeditor',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -68,8 +70,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'noel.wsgi.application'
-
+#WSGI_APPLICATION = 'noel.wsgi.application'
+ASGI_APPLICATION = 'noel.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -143,3 +145,9 @@ MEDIA_ROOT_ = os.path.join(BASE_DIR, 'thumbnail')
 FILE_UPLOAD_MAX_MEMORY_SIZE = 26214400  # 上传文件大小，改成25M
 DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400  # 上传数据大小，也改成了25M
 TIMEOUT = 300
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}
