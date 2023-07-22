@@ -27,12 +27,12 @@
         background-color: rgba(255, 255, 255, 0.6);
         backdrop-filter: blur(20px);
         display: block;
-        padding: 70px 0;
+        padding: 5%;
     }
 </style>
 <div class="mdui-container login-view">
     <div class="mdui-row">
-        <div class="mdui-col-offset-xs-3 mdui-col-xs-6">
+        <div class="mdui-col-offset-md-3 mdui-col-md-6 mdui-col-offset-xs-1 mdui-col-xs-10">
             <form action="" method="post">
                 {% csrf_token %}
                 <h2>登录😎</h2>
@@ -50,11 +50,15 @@
     </div>
 
     <div class="mdui-row">
-        <div class="mdui-col-offset-xs-5 mdui-col-xs-2">
-            <a class="mdui-btn" href="{% url 'fan:register' %}">注册</a>
-        </div>
-        <div class="mdui-col-xs-2">
+        <div class="mdui-col-xs-12 mdui-col-offset-md-6 mdui-col-md-2 mdui-valign">
             <button class="mdui-btn mdui-ripple" id="button-login">登入</button>
+        </div>
+    </div>
+    <div class="mdui-row">
+        <div class="mdui-col-offset-md-8 mdui-col-offset-xs-1">
+            <p class="mdui-valign">
+                没有账号？<a href="{% url 'fan:register' %}">注册</a>
+            </p>
         </div>
     </div>
 </div>
