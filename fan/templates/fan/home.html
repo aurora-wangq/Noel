@@ -232,28 +232,6 @@
 </div>
 
 <script>
-  document.querySelectorAll('.btn-toggle-blur').forEach(i => {
-    i.addEventListener('click', (event) => {
-      var elem = event.target;
-      var icon;
-      if (elem.tagName == 'I') {
-        icon = elem;
-        elem = elem.parentElement
-      }
-      else {
-        icon = elem.querySelector('i')
-      }
-
-      if (icon.innerHTML.trim() == 'visibility') {
-        icon.innerHTML = 'visibility_off';
-      }
-      else {
-        icon.innerHTML = 'visibility';
-      }
-      elem.parentElement.parentElement.parentElement.querySelector('img').classList.toggle('post-image-blur');
-    })
-  })
-
   document.querySelector('#submit-button').addEventListener('click', e => {
     e.target.disabled = true;
     var elem = document.querySelector('form')

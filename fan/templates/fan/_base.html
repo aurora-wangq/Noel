@@ -74,6 +74,14 @@
 
 </body>
 
+<script>
+    document.querySelectorAll('.mdui-drawer > ul > a').forEach(function(e) {
+        if (document.location.pathname == e.attributes['href'].value) {
+            e.classList.toggle('mdui-list-item-active');
+        }
+    })
+</script>
+
 <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
 
 </html>
