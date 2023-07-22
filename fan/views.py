@@ -169,18 +169,16 @@ def edit_profile_view(request):
 
 @login_required(login_url='users:login')
 def others_page_view(request, user_id):
-    user_object1 = User.objects.get(username=request.user.username)
-    user_profile1 = UserProfile.objects.get(owner=user_object1)
+    user = User.objects.get(username=request.user.username)
+    user_profile = UserProfile.objects.get(owner=user)
     target = User.objects.get(id=user_id)
     target_profile = UserProfile.objects.get(owner=target)
-    page = target_profile.nike_name+" 的个人主页"
     context = {
-        "page": page,
         "target": target,
         "target_profile": target_profile,
-        "user": user_profile1,
+        "user": user_profile,
     }
-    redirect('fan:others_page', user_id=user_id)
+    # redirect('fan:others_page', user_id=user_id)
     return render(request, 'fan/others_page.html', context)
 
 @login_required(login_url='fan:login')

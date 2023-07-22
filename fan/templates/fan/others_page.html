@@ -1,11 +1,11 @@
 {% extends "fan/_base.html" %}
 
-{% block title %}{{username}}的个人主页{% endblock %}
+{% block title %}{{target.username}}的个人主页{% endblock %}
 
 {% block content %}
 <style>
     html {
-        background-image: url('/media/{{ backimg }}');
+        background-image: url('/media/{{ target_profile.back_img }}');
         height: 100%;
         background-position: center;
         background-repeat: no-repeat;
@@ -24,27 +24,13 @@
 
 <div class="mdui-container profile-view mdui-hoverable">
     {% include "fan/components/user_info.html" with profile=target_profile user=target %}
-
-    <div class="mdui-row" style="padding-top: 12px">
-        <div class="mdui-col-xs-12 mdui-col-md-3 mdui-col-offset-md-2">
-            <i class="mdui-icon fa-solid fa-austral-sign"></i>签名：{{target_profile.sign}}
-        </div>
-        <div class="mdui-col-xs-12 mdui-col-md-2">
-            <i class="mdui-icon material-icons">location_on</i>位置：{{target_profile.address}}
-        </div>
-        <div class="mdui-col-xs-12 mdui-col-md-2">
-            <i class="mdui-icon material-icons">today</i>生日：{{target_profile.birthday}}
-        </div>
-        <div class="mdui-col-xs-12 mdui-col-md-2">
-            <i class="mdui-icon material-icons">account_circle</i>UID：{{target.id}}
-        </div>
-    </div>
+    {% include "fan/components/user_detail.html" with profile=target_profile user=target %}
 
     <br />
 
     <div class="mdui-row">
         <div class="mdui-col-xs-6 mdui-col-offset-xs-2 mdui-typo" style="font-size: 24px;color:black">
-            {{desc}}
+            {{target_profile.desc}}
         </div>
     </div>
 </div>

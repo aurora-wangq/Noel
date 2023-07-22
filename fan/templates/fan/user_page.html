@@ -27,21 +27,9 @@
 
 <div class="mdui-container profile-view">
     {% include "fan/components/user_info.html" with profile=user user=user.owner %}
-
-    <div class="mdui-row" style="padding-top: 12px">
-        <div class="mdui-col-xs-12 mdui-col-md-3 mdui-col-offset-md-2">
-            <i class="mdui-icon fa-solid fa-austral-sign"></i>签名：{{user.sign}}
-        </div>
-        <div class="mdui-col-xs-12 mdui-col-md-2">
-            <i class="mdui-icon material-icons">location_on</i>位置：{{user.address}}
-        </div>
-        <div class="mdui-col-xs-12 mdui-col-md-2">
-            <i class="mdui-icon material-icons">today</i>生日：{{user.birthday}}
-        </div>
-        <div class="mdui-col-xs-12 mdui-col-md-2">
-            <i class="mdui-icon material-icons">account_circle</i>UID：{{user.owner.id}}
-        </div>
-    </div>
+    
+    {% include "fan/components/user_detail.html" with profile=user user=user.owner %}
+    
 
     <br />
 
