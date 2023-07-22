@@ -1,13 +1,95 @@
 {% extends "fan/_base.html" %}
 
-{% block title %}界游者-选择章节{% endblock %}
+{% block title %}界游者 | 选择章节{% endblock %}
+
+{% block head %}
+<style>
+    .novel {
+        margin-top: 12px;
+        position: relative;
+    }
+
+    .novel:hover > .novel-title {
+        opacity: 0;
+        transition: opacity .1s;
+    }
+
+    .novel-image {
+        border-radius: 6px;
+        transition: opacity .1s;
+        opacity: 60%;
+        position: relative;
+        width: 100%;
+        max-height: 256px;
+        object-fit: cover;
+    }
+
+    .novel-image:hover {
+        opacity: 100%;
+        transition: opacity .1s;
+    }
+
+    .novel-likes {
+        position: absolute;
+        float: right;
+        right: 8px;
+        bottom: 4px;
+        font-size: 24px;
+        background-color: rgba(200, 200, 200, 0.9);
+        color: black;
+        z-index: 1;
+        padding: 6px 6px 6px 6px;
+        border-radius: 4px;
+    }
+
+    .novel-likes > .mdui-icon {
+        font-size: 24px;
+    }
+
+    .novel-title {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        text-align: center;
+        height: 100%;
+        width: 100%;
+        font-size: 64px;
+        font-weight: 400;
+        background: none;
+        pointer-events: none;
+        color: black;
+        z-index: 1;
+    }
+
+    .novel-title > p {
+        text-align: center;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 
-<div class="mdui-row">
-    {% for novel in novel_list %}
-    {% include "fan/components/novel_fissure_traveler_base.html" with novel=novel %}
-    {% endfor %}
+<div class="mdui-container">
+    <div class="mdui-row">
+        {% for novel in novel_list %}
+        <div class="mdui-col-sm-12 novel">
+            <a href="{% url 'fan:traveler_content' novel.id %}">
+                <img class="novel-image" src="/static/images/traveler_back_1.jpg" />
+            </a>
+            <div class="novel-likes">
+                <i class="mdui-icon material-icons">favorite</i>
+                {{novel.likes}}
+            </div>
+            <div class="novel-title">
+                <p class>
+                    {{novel.name}}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

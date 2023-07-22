@@ -12,7 +12,7 @@ urlpatterns = [
     path('logout/',views.logout_view,name='logout'),
     path('edit_profile/',views.edit_profile_view,name='editp'),
     path('user/<int:user_id>', views.others_page_view, name='others_page'),
-    path('fissure_traveler_select', views.traveler_select_view, name='traveler_select'),
+    path('fissure_traveler/', views.traveler_select_view, name='traveler_select'),
     path('fissure_traveler/<int:novel_id>', views.traveler_view, name='traveler_content'),
     path('fissure_traveler/<int:novel_id>/like', views.novel_like, name='novel_liket'),
 ]
