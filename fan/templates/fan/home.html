@@ -3,7 +3,6 @@
 {% block title %}首页{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="/static/css/bulma.css" />
 <style>
   .post-image-blur {
     filter: blur(64px);
@@ -120,7 +119,8 @@
   }
 </style>
 
-<button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-pink-200" style="z-index: 1000;" mdui-dialog="{target: '#new-post-dialog'}">
+<button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-pink-200" style="z-index: 1000;"
+  mdui-dialog="{target: '#new-post-dialog'}">
   <i class="mdui-icon material-icons">add</i>
 </button>
 
@@ -165,17 +165,7 @@
             <i class="mdui-icon material-icons">image</i>
           </div>
           <div class="mdui-col-xs-11">
-            <label class="file-label">
-              <input class="file-input" type="file" name="post_img">
-              <span class="file-cta">
-                <span class="file-icon">
-                  <i class="mdui-icon material-icons">&#xe864;</i>
-                </span>
-                <span class="file-label">
-                  上传图片
-                </span>
-              </span>
-            </label>
+            <input class="file-input" type="file" name="post_img">
           </div>
         </div>
       </div>
