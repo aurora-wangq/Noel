@@ -65,7 +65,14 @@ function append_image(elem, src) {
     elem.appendChild(img);
 }
 
-socket = new WebSocket(`ws://${location.hostname}:8000/room/1/`);
+if (location.port) {
+    path = `${location.hostname}:${location.port}/room/1/`;
+}
+else {
+    path = `${location.hostname}/room/1/`;
+}
+
+socket = new WebSocket(`ws://${path}`);
 username = document.getElementById('input-username').value;
 nickname = document.getElementById('input-nickname').value;
 
