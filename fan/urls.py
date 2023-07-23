@@ -15,6 +15,5 @@ urlpatterns = [
     path('fissure_traveler/', views.traveler_select_view, name='traveler_select'),
     path('fissure_traveler/<int:novel_id>', views.traveler_view, name='traveler_content'),
     path('fissure_traveler/<int:novel_id>/like', views.novel_like, name='novel_liket'),
-    #path('chat', views.chat_select_view, name='chat_select'),
-    path('chat', views.chat_view, name='chat'),
+    path('chat/', views.chat_view, name='chat'),
 ]

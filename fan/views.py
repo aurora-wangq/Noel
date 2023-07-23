@@ -263,8 +263,6 @@ def chat_view(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile = UserProfile.objects.get(owner=user_object)
     context = {
-        #"group_id": NcGroup_id,
-        "user": user_object,
-        "user_profile": user_profile,
+        "user": user_profile
     }
     return render(request, 'fan/chat.html', context)
