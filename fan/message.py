@@ -1,6 +1,5 @@
 import json
 import base64
-import requests
 
 class MessageSegment(dict):
     def __init__(self, type = '', data = {}):
