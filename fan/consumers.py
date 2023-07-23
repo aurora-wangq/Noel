@@ -6,7 +6,7 @@ from .message import *
 
 
 class ChatConsumer(WebsocketConsumer):
-    def send_msg(self, msg: Message | MessageSegment | str, sender):
+    def send_msg(self, msg, sender):
         if isinstance(msg, MessageSegment):
             msg = Message([msg])
         elif isinstance(msg, str):

@@ -15,7 +15,7 @@ class MessageSegment(dict):
     def notice(s):
         return MessageSegment('notice', s)
 
-    def image(img: str | bytes):
+    def image(img):
         if isinstance(img, str):
             return MessageSegment('image',{
                 'subtype': 'url',
