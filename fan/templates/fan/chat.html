@@ -21,12 +21,14 @@
         <input type="button" value="下线" onclick="Quit()">
     </div>
     <script>
-        socket = new WebSocket("ws://127.0.0.1:8000/room/{{group_id}}/");
+        socket = new WebSocket("ws://43.138.26.229/room/1/");
+
         socket.onmessage = function (event) {
             userMessage = document.createElement("div");
             userMessage.innerText = event.data;
             document.getElementById("message").appendChild(userMessage); 
         }
+
         socket.onopen = function (event) {
             let username = "{{user.username}}";
             let nickname = "{{user_profile.nike_name}}";  
@@ -40,6 +42,7 @@
             tag.innerText = "[系统消息]已连接🥳";
             document.getElementById("message").appendChild(tag); 
         }
+
         function SendMessage() {
             let username = "{{user.username}}";
             let nickname = "{{user_profile.nike_name}}";  
@@ -54,6 +57,7 @@
                 socket.send(JSON.stringify(message));
             }
         }
+
         function Quit() {
             INFO = document.createElement("div");
             INFO.innerText = "[系统消息]已退出😑";
