@@ -7,6 +7,8 @@ from PIL import Image
 from io import BytesIO
 import time
 
+CHAT_LOG = []
+
 class ChatConsumer(WebsocketConsumer):
     def send_msg(self, msg, sender):
         if isinstance(msg, MessageSegment):
@@ -19,6 +21,8 @@ class ChatConsumer(WebsocketConsumer):
         self.accept()
         group = self.scope['url_route']['kwargs'].get("id")
         self.send_msg(MessageSegment.notice(f"Connected to NChat 0.0.2@Group {group}"), '')
+        for i in CHAT_LOG:
+            self.send_msg(i['message'], i['sender'])
         async_to_sync(self.channel_layer.group_add)(group, self.channel_name)
 
     def websocket_receive(self, message):
@@ -49,6 +53,7 @@ class ChatConsumer(WebsocketConsumer):
         #print("Received:", data['message'])
 
     def SendMessage(self, event):
+        CHAT_LOG.append(event['message'])
         self.send_msg(event['message']['message'], event['message']['sender'])
 
     def websocket_disconnect(self, message):
