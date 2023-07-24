@@ -3,7 +3,9 @@ from channels.exceptions import StopConsumer
 from asgiref.sync import async_to_sync
 import json
 from .message import *
-
+from PIL import Image
+from io import BytesIO
+import time
 
 class ChatConsumer(WebsocketConsumer):
     def send_msg(self, msg, sender):
@@ -16,11 +18,21 @@ class ChatConsumer(WebsocketConsumer):
     def websocket_connect(self, message):
         self.accept()
         group = self.scope['url_route']['kwargs'].get("id")
-        self.send_msg(MessageSegment.notice(f"Connected to NChat 0.0.1@Group {group}"), '')
+        self.send_msg(MessageSegment.notice(f"Connected to NChat 0.0.2@Group {group}"), '')
         async_to_sync(self.channel_layer.group_add)(group, self.channel_name)
 
     def websocket_receive(self, message):
         data = json.loads(message['text'])
+        
+        for i in data['message']:
+            if i['type'] == 'image' and i['data'].startswith('data:image/'):
+                src = Image.open(BytesIO(base64.b64decode(i['data'].split(',')[1])))
+                res = BytesIO()
+                (x, y) = src.size
+                src.resize((160, int(y * 160 / x)), Image.ANTIALIAS).save(res, 'JPEG')
+                base = base64.b64encode(res.getvalue()).decode('ascii')
+                i['data'] = "data:image/jpeg;base64," + base
+
         group = self.scope['url_route']['kwargs'].get("id")
         if data.get('init'):
             async_to_sync(self.channel_layer.group_send)(group, {"type": "SendMessage", "message": {
@@ -34,7 +46,7 @@ class ChatConsumer(WebsocketConsumer):
             }})
         else:
             async_to_sync(self.channel_layer.group_send)(group, {"type": "SendMessage", "message": data})
-        print("Received:", data['message'])
+        #print("Received:", data['message'])
 
     def SendMessage(self, event):
         self.send_msg(event['message']['message'], event['message']['sender'])
