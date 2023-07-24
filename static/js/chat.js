@@ -112,7 +112,11 @@ socket.onopen = function (event) {
 
 function send() {
     let delta = quill.getContents();
-    msg = []
+    msg = [];
+    if (delta.ops.length == 1 && delta.ops[0].insert.trim().length == 0) {
+        mdui.snackbar('消息不能为空');
+        return;
+    }
     delta.ops.forEach(x => {
         if (x.insert.image) {
             msg.push({
