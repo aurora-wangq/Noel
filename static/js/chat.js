@@ -8,7 +8,7 @@ var quill = new Quill('.editor', {
         ]
     },
     theme: 'snow',
-    placeholder: '阿巴阿巴（°∀。）...\n不要从外部直接拖入图片哦，点击上方图片标志选择图片'
+    placeholder: '阿巴阿巴（°∀。）...\n不要从外部直接拖入图片哦，点击上方图片标志选择图片\n版本号：RC0.0.1'
 });
 
 font_sizes = {
