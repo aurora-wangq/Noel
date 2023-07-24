@@ -61,7 +61,6 @@ function append_notice(elem, text) {
 function append_image(elem, src) {
     img = document.createElement('img');
     img.setAttribute('src', src);
-    console.log(src);
     elem.appendChild(img);
 }
 

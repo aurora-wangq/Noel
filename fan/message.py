@@ -1,5 +1,4 @@
 import json
-import base64
 
 class MessageSegment(dict):
     def __init__(self, type = '', data = {}):
@@ -19,6 +18,16 @@ class MessageSegment(dict):
         return MessageSegment('image', img)
         
 class Message(list[MessageSegment]):
+    def __init__(self, s):
+        if isinstance(s, list) or isinstance(s, Message):
+            super().__init__(s)
+        elif isinstance(s, MessageSegment):
+            super().__init__([ s ])
+        elif isinstance(s, str):
+            super().__init__([ MessageSegment.text(s) ])
+        else:
+            raise NotImplementedError("Unknown type")
+
     def __str__(self):
         return json.dumps([ x for x in self])
     
@@ -26,8 +35,8 @@ class Message(list[MessageSegment]):
         return str(self).encode(encoding, errors)
     
 class Event(dict):
-    def __init__(self, msg, sender):
-        self['message'] = msg
+    def __init__(self, msg, sender = ''):
+        self['message'] = Message(msg)
         self['sender'] = sender
     
     def __str__(self) -> str:
