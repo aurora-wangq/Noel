@@ -74,13 +74,27 @@ else {
 socket = new WebSocket(`ws://${path}`);
 username = document.getElementById('input-username').value;
 nickname = document.getElementById('input-nickname').value;
+avatar = document.getElementById('input-useravatar').value;
+title = document.getElementById('input-usertitle').value;
+title_level = document.getElementById('input-usertitle_level').value;
 
 socket.onmessage = function (event) {
     msg = document.createElement("div");
     data = JSON.parse(event.data);
+
+    if (data.avatar) {
+        append_image(msg, '/media/' + data.avatar);
+    }
+    if (data.title) {
+        msg.appendChild(document.createTextNode('头衔：' + data.title));
+    }
+    if (data.title_level) {
+        msg.appendChild(document.createTextNode('头衔等级：' + data.title_level));
+    }
     if (data.sender) {
         msg.appendChild(document.createTextNode(data.sender + ': '));
     }
+
     data.message.forEach(i => {
         if (i.type == 'text') {
             append_text(msg, i.data, i.attr)
@@ -132,6 +146,9 @@ function send() {
         }
     });
     socket.send(JSON.stringify({
+        "title": title,
+        "title_level": title_level,
+        "avatar": avatar,
         "sender": nickname,
         "message": msg
     }));
