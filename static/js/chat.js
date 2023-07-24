@@ -115,6 +115,10 @@ class Message {
         this.messageContainer.appendChild(Message.col(base, 'offset-xs-1'));
     }
 
+    get empty() {
+        return this.messageContainer.children.length == 0;
+    }
+
     get container() {
         if (this.messageContainer.children.length == 0) {
             return null;
@@ -132,8 +136,7 @@ class MessageContainer {
         this.container = container;
     }
     append(msg) {
-        var elem = msg.container;
-        if (elem) {
+        if (!msg.empty) {
             this.container.appendChild(msg.container);
         }
     }
