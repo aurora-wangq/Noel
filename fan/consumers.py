@@ -16,8 +16,7 @@ class ChatConsumer(WebsocketConsumer):
     def websocket_connect(self, message):
         self.accept()
         group = self.scope['url_route']['kwargs'].get("id")
-        self.send_msg(MessageSegment.notice(
-            f"NChat 0.0.1@Group {group}"), '')
+        self.send_msg(MessageSegment.notice(f"Connected to NChat 0.0.1@Group {group}"), '')
         async_to_sync(self.channel_layer.group_add)(group, self.channel_name)
 
     def websocket_receive(self, message):
@@ -42,6 +41,5 @@ class ChatConsumer(WebsocketConsumer):
 
     def websocket_disconnect(self, message):
         group = self.scope['url_route']['kwargs'].get("id")
-        async_to_sync(self.channel_layer.group_discard)(
-            group, self.channel_name)
+        async_to_sync(self.channel_layer.group_discard)(group, self.channel_name)
         raise StopConsumer()

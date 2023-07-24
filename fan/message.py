@@ -16,17 +16,7 @@ class MessageSegment(dict):
         return MessageSegment('notice', s)
 
     def image(img):
-        if isinstance(img, str):
-            return MessageSegment('image',{
-                'subtype': 'url',
-                'data': img
-            })
-        elif isinstance(img, bytes):
-            base = base64.b64encode(img)
-            return MessageSegment('image',{
-                'subtype': 'base64',
-                'data': base
-            })
+        return MessageSegment('image', img)
         
 class Message(list[MessageSegment]):
     def __str__(self):

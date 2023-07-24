@@ -96,15 +96,18 @@ socket.onmessage = function (event) {
     document.getElementById("message").appendChild(msg);
 }
 
+document.querySelector('.editor').addEventListener('keydown', (e) => {
+    if (e.key == 'Enter' && e.ctrlKey) {
+        document.getElementById('send-button').click();
+    }
+});
+
 socket.onopen = function (event) {
     socket.send(JSON.stringify({
         "init": true,
         "sender": nickname,
         "message": []
     }));
-    let tag = document.createElement("div");
-    append_notice(tag, 'Connected');
-    document.getElementById("message").appendChild(tag);
 }
 
 function send() {
@@ -129,4 +132,5 @@ function send() {
         "sender": nickname,
         "message": msg
     }));
+    quill.deleteText(0, quill.getLength());
 }
