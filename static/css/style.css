@@ -50,7 +50,8 @@
 
 .nickname {
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 500;
+    margin: 0 12px 0 12px;
 }
 
 .username {

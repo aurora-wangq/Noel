@@ -15,16 +15,16 @@ class ChatConsumer(WebsocketConsumer):
 
     def broadcast(self, group: int, event: Event):
         if isinstance(event, dict):
-            event = Event(event['message'], event['sender'], event['avatar'], event['title'], event['title_level'])
+            event = Event(event['message'], event['sender'])
         chat_history.append(event)
         async_to_sync(self.channel_layer.group_send)(group, {"type": "SendMessage", "message": event})
 
     def websocket_connect(self, message):
         self.accept()
         group = self.scope['url_route']['kwargs'].get("id")
-        self.send_event(Event(MessageSegment.notice(f"Connected to NChat pre-alpha-2@Group {group}")))
+        self.send_event(Event(MessageSegment.notice(f"Connected to NChat rc-1 @Group {group}")))
         for i in chat_history:
-            self.send_event(Event(i['message'], i['sender'], i['avatar']))
+            self.send_event(Event(i['message'], i['sender']))
         async_to_sync(self.channel_layer.group_add)(group, self.channel_name)
 
     def websocket_receive(self, message):
@@ -41,7 +41,7 @@ class ChatConsumer(WebsocketConsumer):
 
         group = self.scope['url_route']['kwargs'].get("id")
         if data.get('init'):
-            self.broadcast(group, Event(MessageSegment.notice(f"{data['sender']} 进入聊天室")))
+            self.broadcast(group, Event(MessageSegment.notice(f"{data['sender']['nickname']} 进入聊天室")))
         else:
             self.broadcast(group, data)
 
@@ -49,7 +49,7 @@ class ChatConsumer(WebsocketConsumer):
         if isinstance(event['message'], Event):
             self.send_event(event['message'])
         elif isinstance(event['message'], dict):
-            e = Event(event['message']['message'], event['message']['sender'], event['message']['avatar'], event['message']['title'], event['message']['title_level'])
+            e = Event(event['message']['message'], event['message']['sender'])
             self.send_event(e)
 
     def websocket_disconnect(self, message):

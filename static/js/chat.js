@@ -18,51 +18,128 @@ font_sizes = {
     "huge": "2.5em"
 }
 
-function append_text(elem, data, attr) {
-    tag = document.createElement('span');
-    tag.innerText = data;
-    if (attr) {
-        if (attr.bold) {
-            _ = document.createElement('b');
-            _.appendChild(tag);
-            tag = _;
+class Message {
+    constructor() {
+        this.messageContainer = document.createElement('div');
+        this.messageContainer.classList.add('mdui-row', 'message-content');
+        this.headerContainer = document.createElement('div');
+        this.headerContainer.classList.add('mdui-row', 'message-header');
+    }
+
+    static col(element, ...column) {
+        var div = document.createElement('div');
+        div.classList.add(...column.map(x => 'mdui-col-' + x));
+        div.appendChild(element);
+        return div;
+    }
+
+    #appendBase() {
+        var tag = document.createElement('div');
+        tag.classList.add('message');
+        return tag;
+    }
+
+    setSender(sender) {
+        if (sender.avatar) {
+            var avatar = document.createElement('img');
+            avatar.classList.add('message-avatar', 'mdui-center');
+            avatar.src = '/media/' + sender.avatar;
+            this.headerContainer.appendChild(Message.col(avatar, 'md-1', 'xs-2'));
         }
-        if (attr.underline) {
-            _ = document.createElement('u');
-            _.appendChild(tag);
-            tag = _;
+        var col = document.createElement('div');
+        col.classList.add('mdui-col-md-11', 'mdui-col-xs-10', 'mdui-valign');
+        if (sender.nickname) {
+            var nickname = document.createElement('span');
+            nickname.innerText = sender.nickname;
+            nickname.classList.add('message-username');
+            col.appendChild(nickname);
         }
-        if (attr.italic) {
-            _ = document.createElement('i');
-            _.appendChild(tag);
-            tag = _;
+        if (sender.title) {
+            var title = document.createElement('span');
+            title.classList.add('user-title', 'user-title-level-' + sender.title_level);
+            title.innerText = sender.title;
+            col.appendChild(title);
         }
-        if (attr.link) {
-            _ = document.createElement('a');
-            _.setAttribute('href', attr.link)
-            _.appendChild(tag);
-            tag = _;
+        this.headerContainer.appendChild(col);
+    }
+
+    appendText(text, attr) {
+        var base = this.#appendBase();
+        var tag = document.createElement('span');
+        tag.innerText = text;
+        if (attr) {
+            if (attr.bold) {
+                var _ = document.createElement('b');
+                _.appendChild(tag);
+                tag = _;
+            }
+            if (attr.underline) {
+                var _ = document.createElement('u');
+                _.appendChild(tag);
+                tag = _;
+            }
+            if (attr.italic) {
+                var _ = document.createElement('i');
+                _.appendChild(tag);
+                tag = _;
+            }
+            if (attr.link) {
+                var _ = document.createElement('a');
+                _.setAttribute('href', attr.link)
+                _.appendChild(tag);
+                tag = _;
+            }
+            if (attr.size) {
+                tag.style.fontSize = font_sizes[attr.size];
+            }
         }
-        if (attr.size) {
-            tag.style.fontSize = font_sizes[attr.size];
+        base.appendChild(tag);
+        this.messageContainer.appendChild(Message.col(base, 'offset-xs-1'));
+    }
+
+    appendNotice(text) {
+        // var base = this.#appendBase();
+        // var icon = document.createElement('i');
+        // icon.classList.add('mdui-icon', 'material-icons');
+        // icon.innerText = 'notifications_active';
+        // base.appendChild(icon);
+        // base.appendChild(document.createTextNode(text));
+        // this.messageContainer.appendChild(base);
+    }
+
+    appendImage(src) {
+        var base = this.#appendBase();
+        var img = document.createElement('img');
+        img.setAttribute('src', src);
+        base.appendChild(img);
+        this.messageContainer.appendChild(Message.col(base, 'offset-xs-1'));
+    }
+
+    get container() {
+        if (this.messageContainer.children.length == 0) {
+            return null;
+        }
+        var container = document.createElement('div');
+        container.classList.add('mdui-container', 'message');
+        container.appendChild(this.headerContainer);
+        container.appendChild(this.messageContainer);
+        return container;
+    }
+}
+
+class MessageContainer {
+    constructor(container) {
+        this.container = container;
+    }
+    append(msg) {
+        var elem = msg.container;
+        if (elem) {
+            this.container.appendChild(msg.container);
         }
     }
-    elem.appendChild(tag);
 }
 
-function append_notice(elem, text) {
-    icon = document.createElement('i');
-    icon.classList.add('mdui-icon', 'material-icons');
-    icon.innerText = 'notifications_active';
-    elem.appendChild(icon);
-    elem.appendChild(document.createTextNode(text));
-}
-
-function append_image(elem, src) {
-    img = document.createElement('img');
-    img.setAttribute('src', src);
-    elem.appendChild(img);
-}
+container = new MessageContainer(document.querySelector('.message-container'));
 
 if (location.port) {
     path = `${location.hostname}:${location.port}/room/1/`;
@@ -72,41 +149,36 @@ else {
 }
 
 socket = new WebSocket(`ws://${path}`);
-username = document.getElementById('input-username').value;
-nickname = document.getElementById('input-nickname').value;
-avatar = document.getElementById('input-useravatar').value;
-title = document.getElementById('input-usertitle').value;
-title_level = document.getElementById('input-usertitle_level').value;
+sender = {
+    username: document.getElementById('input-username').value,
+    nickname: document.getElementById('input-nickname').value,
+    avatar: document.getElementById('input-useravatar').value,
+    title: document.getElementById('input-usertitle').value,
+    title_level: document.getElementById('input-usertitle_level').value
+};
 
 socket.onmessage = function (event) {
-    msg = document.createElement("div");
     data = JSON.parse(event.data);
 
-    if (data.avatar) {
-        append_image(msg, '/media/' + data.avatar);
-    }
-    if (data.title) {
-        msg.appendChild(document.createTextNode('头衔：' + data.title));
-    }
-    if (data.title_level) {
-        msg.appendChild(document.createTextNode('头衔等级：' + data.title_level));
-    }
+    msg = new Message();
+
     if (data.sender) {
-        msg.appendChild(document.createTextNode(data.sender + ': '));
+        msg.setSender(data.sender);
     }
 
     data.message.forEach(i => {
         if (i.type == 'text') {
-            append_text(msg, i.data, i.attr)
+            msg.appendText(i.data, i.attr)
         }
         else if (i.type == 'notice') {
-            append_notice(msg, i.data);
+            msg.appendNotice(i.data);
         }
         else if (i.type == 'image') {
-            append_image(msg, i.data);
+            msg.appendImage(i.data);
         }
     });
-    document.getElementById("message").appendChild(msg);
+
+    container.append(msg);
 }
 
 document.querySelector('.editor').addEventListener('keydown', (e) => {
@@ -118,7 +190,7 @@ document.querySelector('.editor').addEventListener('keydown', (e) => {
 socket.onopen = function (event) {
     socket.send(JSON.stringify({
         "init": true,
-        "sender": nickname,
+        "sender": sender,
         "message": []
     }));
 }
@@ -146,10 +218,7 @@ function send() {
         }
     });
     socket.send(JSON.stringify({
-        "title": title,
-        "title_level": title_level,
-        "avatar": avatar,
-        "sender": nickname,
+        "sender": sender,
         "message": msg
     }));
     quill.deleteText(0, quill.getLength());

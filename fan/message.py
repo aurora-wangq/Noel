@@ -35,12 +35,14 @@ class Message(list[MessageSegment]):
         return str(self).encode(encoding, errors)
     
 class Event(dict):
-    def __init__(self, msg, sender = '', avatar = '', title = '' ,title_level = ''):
+    def __init__(self, msg, sender = {}):
         self['message'] = Message(msg)
-        self['sender'] = sender
-        self['avatar'] = avatar
-        self['title'] = title
-        self['title_level'] = title_level
+        if isinstance(sender, str):
+            self['sender'] = {
+                'nickname': sender
+            }
+        else:
+            self['sender'] = sender
     
     def __str__(self) -> str:
         return json.dumps(self)
