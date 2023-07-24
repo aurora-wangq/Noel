@@ -13,6 +13,12 @@ class ChatConsumer(WebsocketConsumer):
     def send_event(self, event: Event):
         self.send(str(event))
 
+    def broadcast(self, group: int, event: Event):
+        if isinstance(event, dict):
+            event = Event(event['message'], event['sender'])
+        chat_history.append(event)
+        async_to_sync(self.channel_layer.group_send)(group, {"type": "SendMessage", "message": event})
+
     def websocket_connect(self, message):
         self.accept()
         group = self.scope['url_route']['kwargs'].get("id")
@@ -35,18 +41,15 @@ class ChatConsumer(WebsocketConsumer):
 
         group = self.scope['url_route']['kwargs'].get("id")
         if data.get('init'):
-            async_to_sync(self.channel_layer.group_send)(group, {"type": "SendMessage", "message": Event(MessageSegment.notice(f"{data['sender']} 进入聊天室"))})
+            self.broadcast(group, Event(MessageSegment.notice(f"{data['sender']} 进入聊天室")))
         else:
-            async_to_sync(self.channel_layer.group_send)(group, {"type": "SendMessage", "message": data})
-        #print("Received:", data['message'])
+            self.broadcast(group, data)
 
     def SendMessage(self, event):
         if isinstance(event['message'], Event):
-            chat_history.append(event['message'])
             self.send_event(event['message'])
         elif isinstance(event['message'], dict):
             e = Event(event['message']['message'], event['message']['sender'])
-            chat_history.append(e)
             self.send_event(e)
 
     def websocket_disconnect(self, message):
