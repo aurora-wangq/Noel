@@ -13,9 +13,8 @@
     height: 100px;
 }
 
-.message {
-    min-height: 32px;
-    /* margin: 2px 0 2px 0; */
+.message-container:last-child {
+    min-height: 0px;
 }
 
 .message-avatar {
@@ -28,4 +27,10 @@
     font-size: 14px;
     font-weight: 300;
     margin: 0 12px 0 12px;
+}
+
+.notice {
+    color: gray;
+    text-align: center;
+    font-size: 12px;
 }

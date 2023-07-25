@@ -8,15 +8,15 @@ var quill = new Quill('.editor', {
         ]
     },
     theme: 'snow',
-    placeholder: '阿巴阿巴（°∀。）...\n不要从外部直接拖入图片哦，点击上方图片标志选择图片\n版本号：RC0.0.1'
+    placeholder: '阿巴阿巴（°∀。）...\n不要从外部直接拖入图片哦，点击上方图片标志选择图片'
 });
 
-font_sizes = {
+var font_sizes = {
     "normal": "1.0em",
     "small": "0.75em",
     "large": "1.5em",
     "huge": "2.5em"
-}
+};
 
 function validateImage(src) {
     if (src.startsWith('file:///')) {
@@ -45,9 +45,14 @@ class Message {
         return div;
     }
 
-    #appendBase() {
+    #appendBase(...classList) {
         var tag = document.createElement('div');
-        tag.classList.add('message');
+        if (classList) {
+            tag.classList.add(...classList);
+        }
+        else {
+            tag.classList.add('message');
+        }
         return tag;
     }
 
@@ -110,13 +115,9 @@ class Message {
     }
 
     appendNotice(text) {
-        // var base = this.#appendBase();
-        // var icon = document.createElement('i');
-        // icon.classList.add('mdui-icon', 'material-icons');
-        // icon.innerText = 'notifications_active';
-        // base.appendChild(icon);
-        // base.appendChild(document.createTextNode(text));
-        // this.messageContainer.appendChild(base);
+        var base = this.#appendBase('notice');
+        base.appendChild(document.createTextNode(text));
+        this.messageContainer.appendChild(base);
     }
 
     appendImage(src) {
@@ -137,24 +138,13 @@ class Message {
         }
         var container = document.createElement('div');
         container.classList.add('mdui-container', 'message');
-        container.appendChild(this.headerContainer);
+        if (this.headerContainer.children.length) {
+            container.appendChild(this.headerContainer);
+        }
         container.appendChild(this.messageContainer);
         return container;
     }
 }
-
-class MessageContainer {
-    constructor(container) {
-        this.container = container;
-    }
-    append(msg) {
-        if (!msg.empty) {
-            this.container.appendChild(msg.container);
-        }
-    }
-}
-
-container = new MessageContainer(document.querySelector('.message-container'));
 
 if (location.port) {
     path = `${location.hostname}:${location.port}/room/1/`;
@@ -163,22 +153,24 @@ else {
     path = `${location.hostname}/room/1/`;
 }
 
-socket = new WebSocket(`ws://${path}`);
-sender = {
+var socket = new WebSocket(`ws://${path}`);
+var sender = {
     username: document.getElementById('input-username').value,
     nickname: document.getElementById('input-nickname').value,
     avatar: document.getElementById('input-useravatar').value,
     title: document.getElementById('input-usertitle').value,
     title_level: document.getElementById('input-usertitle_level').value
 };
+var lastSender = '';
 
 socket.onmessage = function (event) {
     data = JSON.parse(event.data);
 
     msg = new Message();
 
-    if (data.sender) {
+    if (data.sender && data.sender.username != lastSender) {
         msg.setSender(data.sender);
+        lastSender = data.sender.username;
     }
 
     data.message.forEach(i => {
@@ -193,7 +185,9 @@ socket.onmessage = function (event) {
         }
     });
 
-    container.append(msg);
+    if (msg.empty) return;
+
+    document.querySelector('.message-container').appendChild(msg.container);
 }
 
 document.querySelector('.editor').addEventListener('keydown', (e) => {
