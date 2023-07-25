@@ -18,6 +18,18 @@ font_sizes = {
     "huge": "2.5em"
 }
 
+function validateImage(src) {
+    if (src.startsWith('file:///')) {
+        return false;
+    }
+    else if (src.startsWith('data:image/') && src.indexOf('base64') != -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 class Message {
     constructor() {
         this.messageContainer = document.createElement('div');
@@ -207,6 +219,10 @@ function send() {
     }
     delta.ops.forEach(x => {
         if (x.insert.image) {
+            if (!validateImage(x.insert.image)) {
+                mdui.snackbar('Unrecognized image');
+                return;
+            }
             msg.push({
                 'type': 'image',
                 'data': x.insert.image
