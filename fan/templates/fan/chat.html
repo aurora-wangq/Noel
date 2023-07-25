@@ -23,18 +23,28 @@
             <div class="message-container mdui-container" id="message"></div>
         </div>
     </div>
-
+    
     <div class="mdui-row">
         <div class="mdui-col-md-10 mdui-col-offset-md-1 mdui-col-xs-12">
             <div class="editor"></div>
+        </div>
+    </div>
+    <div class="mdui-row">
+        <div class="mdui-col-offset-md-1">
+            <label class="mdui-checkbox mdui-center">
+                <input type="checkbox" id="autoscroll-checkbox" checked />
+                <i class="mdui-checkbox-icon"></i>
+                自动滚动
+            </label>
         </div>
     </div>
 
     <br />
 
     <div class="mdui-row">
-        <div class="mdui-col-md-10 mdui-col-offset-md-1 mdui-col-xs-12">
-            <button class="mdui-btn mdui-ripple mdui-center" id="send-button" onclick="send()" mdui-tooltip="{content: 'Ctrl+Enter也可发送', delay: 300}">
+        <div class="mdui-center">
+            <button class="mdui-btn mdui-ripple mdui-center" id="send-button" onclick="send()"
+                mdui-tooltip="{content: 'Ctrl+Enter也可发送', delay: 300}">
                 <i class="mdui-icon fa-solid fa-paper-plane"></i> 发送
             </button>
         </div>

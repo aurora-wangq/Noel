@@ -146,6 +146,26 @@ class Message {
     }
 }
 
+class Sender {
+    #username = document.getElementById('input-username').value;
+    #nickname = document.getElementById('input-nickname').value;
+    #avatar = document.getElementById('input-useravatar').value;
+    #title = document.getElementById('input-usertitle').value;
+    #title_level = document.getElementById('input-usertitle_level').value;
+
+    constructor() { }
+
+    get data() {
+        return {
+            username: this.#username,
+            nickname: this.#nickname,
+            avatar: this.#avatar,
+            title: this.#title,
+            title_level: this.#title_level
+        }
+    }
+}
+
 if (location.port) {
     path = `${location.hostname}:${location.port}/room/1/`;
 }
@@ -154,13 +174,7 @@ else {
 }
 
 var socket = new WebSocket(`ws://${path}`);
-var sender = {
-    username: document.getElementById('input-username').value,
-    nickname: document.getElementById('input-nickname').value,
-    avatar: document.getElementById('input-useravatar').value,
-    title: document.getElementById('input-usertitle').value,
-    title_level: document.getElementById('input-usertitle_level').value
-};
+var sender = new Sender();
 var lastSender = '';
 
 socket.onmessage = function (event) {
@@ -188,6 +202,14 @@ socket.onmessage = function (event) {
     if (msg.empty) return;
 
     document.querySelector('.message-container').appendChild(msg.container);
+
+    if (document.getElementById('autoscroll-checkbox').value == 'on') {
+        var elem = document.querySelector('.message-container');
+        elem.scroll({
+            top: elem.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
 }
 
 document.querySelector('.editor').addEventListener('keydown', (e) => {
@@ -199,7 +221,7 @@ document.querySelector('.editor').addEventListener('keydown', (e) => {
 socket.onopen = function (event) {
     socket.send(JSON.stringify({
         "init": true,
-        "sender": sender,
+        "sender": sender.data,
         "message": []
     }));
 }
@@ -231,7 +253,7 @@ function send() {
         }
     });
     socket.send(JSON.stringify({
-        "sender": sender,
+        "sender": sender.data,
         "message": msg
     }));
     quill.deleteText(0, quill.getLength());
