@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 # Register your models here.
-from .models import UserProfile, Post, Comment, Like, Notice, NovelTraveler, CommentNovel, LikeNovel
+from .models import UserProfile, Post, Comment, Like, Notice, NovelTraveler, CommentNovel, LikeNovel, Follow
 
 # 我们看到的这个用户选项就是官方默认通过UserAdmin这个类注册到后台的，那么我们也引入进来，后边继承这个类
 from django.contrib.auth.admin import UserAdmin
@@ -41,3 +41,4 @@ admin.site.register(Notice)
 admin.site.register(NovelTraveler)
 admin.site.register(CommentNovel)
 admin.site.register(LikeNovel)
+admin.site.register(Follow)

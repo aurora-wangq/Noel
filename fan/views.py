@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import UserProfile, Post, Comment, Like, Notice, NovelTraveler, CommentNovel, LikeNovel
+from .models import UserProfile, Post, Comment, Like, Notice, NovelTraveler, CommentNovel, LikeNovel, Follow
 from django.contrib.auth.decorators import login_required
 from .forms import Userfile
 from datetime import datetime
@@ -130,8 +130,10 @@ def post_detail_view(request, post_id):
 def user_page_view(request):
     user = User.objects.get(username=request.user.username)
     profile = UserProfile.objects.get(owner=user)
+    fans_count = Follow.objects.filter(up=user).count()
     context = {
-        "user": profile
+        "user": profile,
+        "fans_count": fans_count,
     }
     return render(request, 'fan/user_page.html', context)
 
@@ -173,10 +175,23 @@ def others_page_view(request, user_id):
     user_profile = UserProfile.objects.get(owner=user)
     target = User.objects.get(id=user_id)
     target_profile = UserProfile.objects.get(owner=target)
+    follow_list = Follow.objects.all()
+    fans_count = Follow.objects.filter(up=user_id).count()
+    following = 0
+    for i in follow_list:
+        if i.user == user:
+            following = 1
+            break
+    is_me = 0
+    if user_id == user.id:
+        is_me = 1
     context = {
         "target": target,
         "target_profile": target_profile,
         "user": user_profile,
+        "following": following,
+        "is_me": is_me,
+        "fans_count": fans_count,
     }
     # redirect('fan:others_page', user_id=user_id)
     return render(request, 'fan/others_page.html', context)
@@ -220,6 +235,7 @@ def traveler_view(request, novel_id):
     for i in like_list:
         if i.user == user_object:
             liked = 1
+            break
     context = {
         "user": user_profile,
         "liked": liked,
@@ -249,14 +265,6 @@ def novel_like(request, novel_id):
         else:
             LikeNovel.objects.filter(user=user, novel=novel).delete()
             return HttpResponse("取消点赞")
-        
-# @login_required(login_url='fan:login')
-# def chat_select_view(request):
-#     group = {"id": 1}
-#     context = {
-#         "group": group,
-#     }
-#     return render(request, 'fan/chat_select.html', context)
 
 @login_required(login_url='fan:login')
 def chat_view(request):
@@ -266,3 +274,15 @@ def chat_view(request):
         "user": user_profile
     }
     return render(request, 'fan/chat.html', context)
+
+@login_required(login_url='fan:login')
+def follow_view(request, user_id):
+    user = User.objects.get(username=request.user.username)
+    up = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        if Follow.objects.filter(up=up, user=user).count() == 0:
+            Follow.objects.create(up=up, user=user)
+            return HttpResponse("关注成功")
+        else:
+            Follow.objects.filter(up=up, user=user).delete()
+            return HttpResponse("取消关注")

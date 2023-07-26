@@ -19,7 +19,6 @@ class UserProfile(models.Model):
     img = models.ImageField('头像', upload_to='profile_images',  default='/default/txdefault.jpg',blank=True)
     back_img = models.ImageField('个人主页背景', upload_to='user_page_backimg',  default='/default/backimg.jpg', blank=True, null=True)
     title_level = models.IntegerField('头衔类别,1站主,2管理员,3特殊,4普通', default=4)
-    notice = models.TextField('发布公告', max_length=1000, null=True, blank=True, default='')
     def __str__(self):
         return self.nike_name
 
@@ -62,3 +61,7 @@ class CommentNovel(models.Model):
 class LikeNovel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='点赞者', blank=True, null=True)
     novel = models.ForeignKey(NovelTraveler, on_delete=models.CASCADE, verbose_name='赞所属小说', blank=True, null=True)
+
+class Follow(models.Model):
+    up = models.ForeignKey(User, on_delete=models.CASCADE, related_name="博主")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="粉丝")

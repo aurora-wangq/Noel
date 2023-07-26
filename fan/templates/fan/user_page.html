@@ -28,7 +28,7 @@
 <div class="mdui-container profile-view">
     {% include "fan/components/user_info.html" with profile=user user=user.owner %}
     
-    {% include "fan/components/user_detail.html" with profile=user user=user.owner %}
+    {% include "fan/components/user_detail.html" with profile=user user=user.owner fans_count=fans_count%}
     
 
     <br />
