@@ -15,6 +15,11 @@ import json
 from django.utils.html import format_html
 
 thesaurus = []
+#page:chat[不让进聊天室]，home[不让进网站主页]，edit_article[不让发帖]，post_detial[不让看帖子]，user_page[不让看自己的个人主页]，
+# others_page[不让看别人的主页]，traveler[不让看小说]，all[哪个页面都白搭]
+ban_user = [
+    {"page": "chat", "UID": 12},
+]
 
 with open('collection.json', encoding='utf8') as f:
     thesaurus = json.loads(f.read())
@@ -40,6 +45,9 @@ def login_view(request):
 @login_required(login_url='fan:login')
 def home_view(request):
     user_object = User.objects.get(username=request.user.username)
+    for i in ban_user:
+        if i['page'] == 'home' or i['page'] == 'all' and i['UID'] == user_object.id:
+            return redirect('fan:error')  
     user_profile = UserProfile.objects.get(owner=user_object)
     notice = Notice.objects.all()
     posts = Post.objects.order_by("-pinned", "-id")
@@ -75,6 +83,9 @@ def register_view(request):
 
 @login_required(login_url='fan:login')
 def editarticle_view(request):
+    for i in ban_user:
+        if i['page'] == 'edit_article' or i['page'] == 'all' and i['UID'] == user_object.id:
+            return redirect('fan:error')  
     if request.method == 'POST':
         content = request.POST['content']
         show_view = request.POST.get('show_view', False)
@@ -98,6 +109,9 @@ def editarticle_view(request):
 @login_required(login_url='fan:login')
 def post_detail_view(request, post_id):
     user_object = User.objects.get(username=request.user.username)
+    for i in ban_user:
+        if i['page'] == 'post_detial' or i['page'] == 'all' and i['UID'] == user_object.id:
+            return redirect('fan:error')      
     user_profile = UserProfile.objects.get(owner=user_object)
     post = Post.objects.get(id=post_id)
     comment_list = Comment.objects.filter(post=post)
@@ -129,6 +143,9 @@ def post_detail_view(request, post_id):
 @login_required(login_url='fan:login')
 def user_page_view(request):
     user = User.objects.get(username=request.user.username)
+    for i in ban_user:
+        if i['page'] == 'user_page' or i['page'] == 'all' and i['UID'] == user.id:
+            return redirect('fan:error')  
     profile = UserProfile.objects.get(owner=user)
     fans_count = Follow.objects.filter(up=user).count()
     context = {
@@ -172,6 +189,9 @@ def edit_profile_view(request):
 @login_required(login_url='users:login')
 def others_page_view(request, user_id):
     user = User.objects.get(username=request.user.username)
+    for i in ban_user:
+        if i['page'] == 'others_page' or i['page'] == 'all' and i['UID'] == user.id:
+            return redirect('fan:error')  
     user_profile = UserProfile.objects.get(owner=user)
     target = User.objects.get(id=user_id)
     target_profile = UserProfile.objects.get(owner=target)
@@ -210,7 +230,7 @@ def post_like(request, post_id):
         
 @login_required(login_url='users:login')
 def traveler_select_view(request):
-    user_object = User.objects.get(username=request.user.username)
+    user_object = User.objects.get(username=request.user.username)     
     user_profile = UserProfile.objects.get(owner=user_object)
     novel = NovelTraveler.objects.order_by("id")
     for i in novel:
@@ -224,6 +244,9 @@ def traveler_select_view(request):
 @login_required(login_url='users:login')
 def traveler_view(request, novel_id):
     user_object = User.objects.get(username=request.user.username)
+    for i in ban_user:
+            if i['page'] == 'traveler' or i['page'] == 'all' and i['UID'] == user_object.id:
+                return redirect('fan:error') 
     user_profile = UserProfile.objects.get(owner=user_object)
     novel = NovelTraveler.objects.get(id = novel_id)
     author = novel.author
@@ -269,6 +292,9 @@ def novel_like(request, novel_id):
 @login_required(login_url='fan:login')
 def chat_view(request):
     user_object = User.objects.get(username=request.user.username)
+    for i in ban_user:
+        if i['page'] == 'chat' or i['page'] == 'all' and i['UID'] == user_object.id:
+            return redirect('fan:error')
     user_profile = UserProfile.objects.get(owner=user_object)
     context = {
         "user": user_profile
@@ -286,3 +312,6 @@ def follow_view(request, user_id):
         else:
             Follow.objects.filter(up=up, user=user).delete()
             return HttpResponse("取消关注")
+        
+def error_view(request):
+    return render(request, 'fan/error.html')

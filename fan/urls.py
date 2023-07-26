@@ -17,4 +17,5 @@ urlpatterns = [
     path('fissure_traveler/<int:novel_id>/like', views.novel_like, name='novel_liket'),
     path('chat/', views.chat_view, name='chat'),
     path('user/<int:user_id>/follow', views.follow_view, name='follow'),
+    path('error', views.error_view, name='error'),
 ]
