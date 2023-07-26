@@ -223,14 +223,19 @@ else {
 var socket = new WebSocket(`ws://${path}`);
 var sender = new Sender();
 var lastSender = '';
+var loading = false;
 
 socket.onmessage = function (event) {
     data = JSON.parse(event.data);
 
     if (data.message.length && data.message[0].type == 'sys') {
+        if (data.message[0].data == 'history.begin') {
+            loading = true;
+        }
         if (data.message[0].data == 'history.end') {
             document.querySelector('.status-indicator-ready').classList.toggle('mdui-hidden');
             document.querySelector('.status-indicator-loading').classList.toggle('mdui-hidden');
+            loading = false;
         }
     }
 
@@ -262,10 +267,18 @@ socket.onmessage = function (event) {
 
     if (document.getElementById('autoscroll-checkbox').checked) {
         var elem = document.querySelector('.message-container');
-        elem.scroll({
-            top: elem.scrollHeight,
-            behavior: 'smooth'
-        });
+        if (loading) {
+            elem.scroll({
+                top: elem.scrollHeight,
+                behavior: 'instant'
+            });
+        }
+        else {
+            elem.scroll({
+                top: elem.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
     }
 }
 
