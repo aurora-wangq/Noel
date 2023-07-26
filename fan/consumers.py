@@ -6,8 +6,11 @@ from .message import *
 from PIL import Image
 from io import BytesIO
 import base64
+import collections
 
-chat_history = []
+MAX_HISTORY_LENGTH = 100
+
+chat_history = collections.deque(maxlen=MAX_HISTORY_LENGTH)
 
 class ChatConsumer(WebsocketConsumer):
     def send_event(self, event: Event):
