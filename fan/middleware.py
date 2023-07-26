@@ -11,7 +11,7 @@ class BlacklistMiddleware:
         self.get_response = get_response
         self.blacklist = [
             {
-                "uid": 2,
+                "uid": 12,
                 "banned_from": [
                     '/fissure_traveler',
                     '/chat'
