@@ -23,9 +23,32 @@
             <div class="message-container mdui-container" id="message"></div>
         </div>
     </div>
-    
+
     <div class="mdui-row">
         <div class="mdui-col-md-10 mdui-col-offset-md-1 mdui-col-xs-12">
+            <div id="quill-toolbar">
+                <span class="ql-formats">
+                    <select class="ql-size">
+                        <option value="small"></option>
+                        <option selected></option>
+                        <option value="large"></option>
+                        <option value="huge"></option>
+                    </select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                    <button class="ql-strike"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-image"></button>
+                    <button class="ql-link"></button>
+                    <button class="mention-button">
+                        <i class="fa-solid fa-at"></i>
+                    </button>
+                </span>
+            </div>
             <div class="editor"></div>
         </div>
     </div>
@@ -33,7 +56,7 @@
         <div class="mdui-col-offset-md-1">
             <label class="mdui-checkbox mdui-center">
                 <input type="checkbox" id="autoscroll-checkbox" checked />
-                <i class="mdui-checkbox-icon"></i>
+                <i class="mdui-checkbox-icon" style="left: 8px;"></i>
                 自动滚动
             </label>
         </div>

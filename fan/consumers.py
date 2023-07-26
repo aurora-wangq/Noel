@@ -24,7 +24,7 @@ class ChatConsumer(WebsocketConsumer):
         group = self.scope['url_route']['kwargs'].get("id")
         self.send_event(Event(MessageSegment.notice(f"Connected to NChat rc-1 @Group {group}")))
         for i in chat_history:
-            self.send_event(Event(i['message'], i['sender']))
+            self.send_event(i)
         async_to_sync(self.channel_layer.group_add)(group, self.channel_name)
 
     def websocket_receive(self, message):
@@ -35,13 +35,16 @@ class ChatConsumer(WebsocketConsumer):
                 src = Image.open(BytesIO(base64.b64decode(i['data'].split(',')[1])))
                 res = BytesIO()
                 (x, y) = src.size
-                src.resize((160, int(y * 160 / x)), Image.ANTIALIAS).save(res, src.format)
+                if x > 160:
+                    src.resize((160, int(y * 160 / x)), Image.ANTIALIAS).save(res, src.format)
+                else:
+                    src.save(res, src.format)
                 base = base64.b64encode(res.getvalue()).decode('ascii')
                 i['data'] = f"data:image/{src.format};base64," + base
 
         group = self.scope['url_route']['kwargs'].get("id")
         if data.get('init'):
-            self.broadcast(group, Event(MessageSegment.notice(f"{data['sender']['nickname']} 进入聊天室")))
+            self.broadcast(group, Event(MessageSegment.notice(f"@{data['sender']['username']} 进入聊天室")))
         else:
             self.broadcast(group, data)
 

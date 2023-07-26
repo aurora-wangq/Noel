@@ -11,6 +11,9 @@ class MessageSegment(dict):
     def text(s):
         return MessageSegment('text', s)
     
+    def mention(s):
+        return MessageSegment('mention', s)
+    
     def notice(s):
         return MessageSegment('notice', s)
 
@@ -39,7 +42,7 @@ class Event(dict):
         self['message'] = Message(msg)
         if isinstance(sender, str):
             self['sender'] = {
-                'nickname': sender
+                'username': sender
             }
         else:
             self['sender'] = sender

@@ -1,15 +1,47 @@
+let Embed = Quill.import('blots/embed');
+
+class Mention extends Embed { 
+    static create(value) {
+        let node = super.create();
+        node.classList.add('mention');
+        node.setAttribute('mention', value);
+        node.innerText = value;
+        return node;
+    }
+
+    static value(node) {
+        return node.attributes.mention.value;
+    }
+}
+Mention.blotName = 'mention';
+Mention.tagName = 'span';
+
+Quill.register(Mention);
 
 var quill = new Quill('.editor', {
     modules: {
-        toolbar: [
-            [{ size: ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline'],
-            ['image', 'link']
-        ]
+        toolbar: {
+            container: '#quill-toolbar'
+        }
     },
     theme: 'snow',
     placeholder: '阿巴阿巴（°∀。）...\n不要从外部直接拖入图片哦，点击上方图片标志选择图片'
 });
+
+document.querySelector('.mention-button').addEventListener('click', e => {
+    let value = prompt('输入要提及的用户名');
+    let index = 0;
+    if (quill.getSelection()) {
+        index = quill.getSelection().index;
+    }
+    else {
+        index = quill.getLength();
+    }
+
+    quill.insertEmbed(index, "mention", value, Quill.sources.USER);
+
+    quill.setSelection(index + 1, 0);
+})
 
 var font_sizes = {
     "normal": "1.0em",
@@ -33,7 +65,7 @@ function validateImage(src) {
 class Message {
     constructor() {
         this.messageContainer = document.createElement('div');
-        this.messageContainer.classList.add('mdui-row', 'message-content');
+        this.messageContainer.classList.add('mdui-row', 'message-content', 'mdui-col-offset-xs-1');
         this.headerContainer = document.createElement('div');
         this.headerContainer.classList.add('mdui-row', 'message-header');
     }
@@ -65,11 +97,11 @@ class Message {
         }
         var col = document.createElement('div');
         col.classList.add('mdui-col-md-11', 'mdui-col-xs-10', 'mdui-valign');
-        if (sender.nickname) {
-            var nickname = document.createElement('span');
-            nickname.innerText = sender.nickname;
-            nickname.classList.add('message-username');
-            col.appendChild(nickname);
+        if (sender.username) {
+            var username = document.createElement('span');
+            username.innerText = '@' + sender.username;
+            username.classList.add('message-username');
+            col.appendChild(username);
         }
         if (sender.title) {
             var title = document.createElement('span');
@@ -81,7 +113,6 @@ class Message {
     }
 
     appendText(text, attr) {
-        var base = this.#appendBase();
         var tag = document.createElement('span');
         tag.innerText = text;
         if (attr) {
@@ -106,12 +137,16 @@ class Message {
                 _.appendChild(tag);
                 tag = _;
             }
+            if (attr.strike) {
+                var _ = document.createElement('s');
+                _.appendChild(tag);
+                tag = _;
+            }
             if (attr.size) {
                 tag.style.fontSize = font_sizes[attr.size];
             }
         }
-        base.appendChild(tag);
-        this.messageContainer.appendChild(Message.col(base, 'offset-xs-1'));
+        this.messageContainer.appendChild(tag);
     }
 
     appendNotice(text) {
@@ -120,12 +155,25 @@ class Message {
         this.messageContainer.appendChild(base);
     }
 
+    appendBlockquote(text) {
+        var bq = document.createElement('blockquote');
+        bq.inner
+    }
+
+    appendMention(text) {
+        var span = document.createElement('span');
+        span.classList.add('mention');
+        if (text == sender.data.username) {
+            span.classList.add('mention-hit');
+        }
+        span.innerText = text;
+        this.messageContainer.appendChild(span);
+    }
+
     appendImage(src) {
-        var base = this.#appendBase();
         var img = document.createElement('img');
         img.setAttribute('src', src);
-        base.appendChild(img);
-        this.messageContainer.appendChild(Message.col(base, 'offset-xs-1'));
+        this.messageContainer.appendChild(img);
     }
 
     get empty() {
@@ -191,6 +239,12 @@ socket.onmessage = function (event) {
         if (i.type == 'text') {
             msg.appendText(i.data, i.attr)
         }
+        else if (i.type == 'blockquote') {
+            msg.appendBlockquote(i.data);
+        }
+        else if (i.type == 'mention') {
+            msg.appendMention(i.data);
+        }
         else if (i.type == 'notice') {
             msg.appendNotice(i.data);
         }
@@ -203,7 +257,7 @@ socket.onmessage = function (event) {
 
     document.querySelector('.message-container').appendChild(msg.container);
 
-    if (document.getElementById('autoscroll-checkbox').value == 'on') {
+    if (document.getElementById('autoscroll-checkbox').checked) {
         var elem = document.querySelector('.message-container');
         elem.scroll({
             top: elem.scrollHeight,
@@ -242,6 +296,15 @@ function send() {
             msg.push({
                 'type': 'image',
                 'data': x.insert.image
+            });
+        }
+        else if (x.insert.blockquote) {
+            msg[msg.length - 1].type = 'blockquote';
+        }
+        else if (x.insert.mention) {
+            msg.push({
+                'type': 'mention',
+                'data': x.insert.mention
             });
         }
         else if (typeof x.insert == 'string') {
