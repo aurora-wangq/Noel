@@ -23,8 +23,10 @@ class ChatConsumer(WebsocketConsumer):
         self.accept()
         group = self.scope['url_route']['kwargs'].get("id")
         self.send_event(Event(MessageSegment.notice(f"Connected to NChat rc-1 @Group {group}")))
+        self.send_event(Event(MessageSegment.sys('history.begin')))
         for i in chat_history:
             self.send_event(i)
+        self.send_event(Event(MessageSegment.sys('history.end')))
         async_to_sync(self.channel_layer.group_add)(group, self.channel_name)
 
     def websocket_receive(self, message):

@@ -16,6 +16,9 @@ class MessageSegment(dict):
     
     def notice(s):
         return MessageSegment('notice', s)
+    
+    def sys(s):
+        return MessageSegment('sys', s)
 
     def image(img):
         return MessageSegment('image', img)

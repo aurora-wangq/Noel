@@ -20,9 +20,16 @@
 
     <div class="mdui-row">
         <div class="mdui-col-md-10 mdui-col-offset-md-1 mdui-col-xs-12">
-            <div class="message-container mdui-container" id="message"></div>
+            <div class="message-container mdui-container" id="message">
+                <div class="mdui-spinner status-indicator status-indicator-loading"></div>
+                <div class="status-indicator status-indicator-ready mdui-hidden">
+                    <i class="mdui-icon material-icons">check</i>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div style="height: 5%;"></div>
 
     <div class="mdui-row">
         <div class="mdui-col-md-10 mdui-col-offset-md-1 mdui-col-xs-12">
@@ -52,6 +59,7 @@
             <div class="editor"></div>
         </div>
     </div>
+
     <div class="mdui-row">
         <div class="mdui-col-offset-md-1">
             <label class="mdui-checkbox mdui-center">

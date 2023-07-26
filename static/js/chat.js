@@ -31,6 +31,10 @@ var quill = new Quill('.editor', {
 document.querySelector('.mention-button').addEventListener('click', e => {
     let value = prompt('输入要提及的用户名');
     let index = 0;
+
+    if (value === null) {
+        return;
+    }
     if (quill.getSelection()) {
         index = quill.getSelection().index;
     }
@@ -222,6 +226,13 @@ var lastSender = '';
 
 socket.onmessage = function (event) {
     data = JSON.parse(event.data);
+
+    if (data.message.length && data.message[0].type == 'sys') {
+        if (data.message[0].data == 'history.end') {
+            document.querySelector('.status-indicator-ready').classList.toggle('mdui-hidden');
+            document.querySelector('.status-indicator-loading').classList.toggle('mdui-hidden');
+        }
+    }
 
     msg = new Message();
 
