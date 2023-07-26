@@ -155,11 +155,6 @@ class Message {
         this.messageContainer.appendChild(base);
     }
 
-    appendBlockquote(text) {
-        var bq = document.createElement('blockquote');
-        bq.inner
-    }
-
     appendMention(text) {
         var span = document.createElement('span');
         span.classList.add('mention');
@@ -239,9 +234,6 @@ socket.onmessage = function (event) {
         if (i.type == 'text') {
             msg.appendText(i.data, i.attr)
         }
-        else if (i.type == 'blockquote') {
-            msg.appendBlockquote(i.data);
-        }
         else if (i.type == 'mention') {
             msg.appendMention(i.data);
         }
@@ -297,9 +289,6 @@ function send() {
                 'type': 'image',
                 'data': x.insert.image
             });
-        }
-        else if (x.insert.blockquote) {
-            msg[msg.length - 1].type = 'blockquote';
         }
         else if (x.insert.mention) {
             msg.push({
