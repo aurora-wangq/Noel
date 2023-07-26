@@ -1,1 +1,196 @@
-<img src="/static/images/error.jpg" />
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title></title>
+    <script>
+        document.querySelector('title').innerText = location.hostname;
+    </script>
+    <style>
+        a {
+            color: rgb(88, 88, 88);
+        }
+
+        body {
+            background: white;
+            color: rgb(95, 99, 104);
+            word-wrap: break-word;
+        }
+
+        html {
+            font-size: 125%;
+        }
+    </style>
+    <style>
+        .error-code {
+            color: rgb(95, 99, 104);
+            font-size: .8em;
+            margin-top: 12px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            color: rgb(32, 33, 36);
+            font-size: 1.6em;
+            font-weight: normal;
+            line-height: 1.25em;
+            margin-bottom: 16px;
+        }
+
+        .icon {
+            height: 72px;
+            margin: 0 0 40px;
+            width: 72px;
+        }
+
+        .interstitial-wrapper {
+            box-sizing: border-box;
+            font-size: 1em;
+            line-height: 1.6em;
+            margin: 14vh auto 0;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #main-message>p {
+            display: inline;
+        }
+
+        @media (max-width: 700px) {
+            .interstitial-wrapper {
+                padding: 0 10%;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .interstitial-wrapper {
+                padding: 0 5%;
+            }
+        }
+
+        @media (min-width: 421px) and (min-height: 500px) and (max-height: 560px) {
+            .interstitial-wrapper {
+                margin-top: 10vh;
+            }
+        }
+
+        @media (min-height: 400px) and (orientation:portrait) {
+            .interstitial-wrapper {
+                margin-bottom: 145px;
+            }
+        }
+
+        @media (min-height: 500px) and (max-height: 650px) and (max-width: 414px) and (orientation: portrait) {
+            .interstitial-wrapper {
+                margin-top: 7vh;
+            }
+        }
+
+        @media (min-height: 650px) and (max-width: 414px) and (orientation: portrait) {
+            .interstitial-wrapper {
+                margin-top: 10vh;
+            }
+        }
+
+        /* Small mobile screens. No fixed nav. */
+        @media (max-height: 400px) and (orientation: portrait),
+        (max-height: 239px) and (orientation: landscape),
+        (max-width: 419px) and (max-height: 399px) {
+            .interstitial-wrapper {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 0;
+            }
+
+            #main-content {
+                flex: 1 1 auto;
+                order: 0;
+            }
+        }
+
+        html:not([subframe]) #sub-frame-error {
+            display: none;
+        }
+
+        h1 {
+            margin-top: 0;
+            word-wrap: break-word;
+        }
+
+        h1 span {
+            font-weight: 500;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .icon {
+            user-select: none;
+            display: inline-block;
+        }
+
+        .icon-generic {
+            content: -webkit-image-set(url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABIAQMAAABvIyEEAAAABlBMVEUAAABTU1OoaSf/AAAAAXRSTlMAQObYZgAAAENJREFUeF7tzbEJACEQRNGBLeAasBCza2lLEGx0CxFGG9hBMDDxRy/72O9FMnIFapGylsu1fgoBdkXfUHLrQgdfrlJN1BdYBjQQm3UAAAAASUVORK5CYII=) 1x,
+                    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJAAAACQAQMAAADdiHD7AAAABlBMVEUAAABTU1OoaSf/AAAAAXRSTlMAQObYZgAAAFJJREFUeF7t0cENgDAMQ9FwYgxG6WjpaIzCCAxQxVggFuDiCvlLOeRdHR9yzjncHVoq3npu+wQUrUuJHylSTmBaespJyJQoObUeyxDQb3bEm5Au81c0pSCD8HYAAAAASUVORK5CYII=) 2x);
+        }
+
+        #suggestions-list a {
+            color: rgb(26, 115, 232);
+        }
+
+        #suggestions-list p {
+            margin-block-end: 0;
+        }
+
+        #suggestions-list ul {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body class="neterror" style="font-family: 'Segoe UI',Arial,'Microsoft Yahei',sans-serif; font-size: 75%">
+    <div id="main-frame-error" class="interstitial-wrapper">
+        <div id="main-content">
+            <div class="icon icon-generic"></div>
+            <div id="main-message">
+                <h1>
+                    <span>无法访问此网站</span>
+                </h1>
+                <p>
+                    <strong>
+                        <script>
+                            document.write(location.hostname);
+                        </script>
+                    </strong> {% if hit %}拒绝冲泡咖啡，因为其是茶壶{% else %}意外终止了连接。{% endif %}
+                </p>
+                <div id="error-information-popup-container">
+                    <div id="error-information-popup">
+                        <div id="error-information-popup-box">
+                            <div id="error-information-popup-content">
+                                <div id="suggestions-list">
+                                    <p>请试试以下办法：</p>
+                                    <ul class="">
+                                        <li>{% if hit %}将内容物换为茶叶{% else %}检查网络连接{% endif %}</li>
+                                        <li>
+                                            <a href="#">{% if hit %}购置一把咖啡壶{% else %}检查代理服务器和防火墙{% endif %}</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">{% if hit %}购置一些茶叶{% else %}运行 Windows 网络诊断{% endif %}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="error-code">
+                                    {% if hit %}ERR_IM_A_TEAPOT{% else %}ERR_CONNECTION_CLOSED{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
