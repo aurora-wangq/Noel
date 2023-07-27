@@ -1,11 +1,12 @@
 let Embed = Quill.import('blots/embed');
+let Delta = Quill.import('delta');
 
 class Mention extends Embed { 
     static create(value) {
         let node = super.create();
         node.classList.add('mention');
         node.setAttribute('mention', value);
-        node.innerText = value;
+        node.innerText = '@' + value;
         return node;
     }
 
@@ -42,7 +43,11 @@ document.querySelector('.mention-button').addEventListener('click', e => {
         index = quill.getLength();
     }
 
-    quill.insertEmbed(index, "mention", value, Quill.sources.USER);
+    quill.updateContents(new Delta().retain(index).insert({
+        'mention': value
+    }), Quill.sources.USER);
+
+    // quill.insertEmbed(index - 1, "mention", value, Quill.sources.USER);
 
     quill.setSelection(index + 1, 0);
 })
@@ -96,7 +101,23 @@ class Message {
         if (sender.avatar) {
             var avatar = document.createElement('img');
             avatar.classList.add('message-avatar', 'mdui-center');
+            avatar.setAttribute('source-user', sender.username);
             avatar.src = '/media/' + sender.avatar;
+            avatar.addEventListener('dblclick', e => {
+                let sel = quill.getSelection();
+                if (sel) {
+                    quill.updateContents(new Delta().retain(sel.index).insert({
+                        'mention': e.target.getAttribute('source-user')
+                    }), 'user');
+                    quill.setSelection(sel.index + 1);
+                }
+                else {
+                    quill.updateContents(new Delta().retain(quill.getLength() - 1).insert({
+                        'mention': e.target.getAttribute('source-user')
+                    }), 'user');
+                    quill.setSelection(quill.getLength() - 1);
+                }
+            });
             this.headerContainer.appendChild(Message.col(avatar, 'md-1', 'xs-2'));
         }
         var col = document.createElement('div');
@@ -120,31 +141,28 @@ class Message {
         var tag = document.createElement('span');
         tag.innerText = text;
         if (attr) {
+            var createParent = (tag, child, ...attributes) => {
+                var parent = document.createElement(tag);
+                parent.appendChild(child);
+                for (var name in attributes) {
+                    parent.setAttribute(name, attributes[name]);
+                }
+                return parent;
+            }
             if (attr.bold) {
-                var _ = document.createElement('b');
-                _.appendChild(tag);
-                tag = _;
+                tag = createParent('b', tag);
             }
             if (attr.underline) {
-                var _ = document.createElement('u');
-                _.appendChild(tag);
-                tag = _;
+                tag = createParent('u', tag);
             }
             if (attr.italic) {
-                var _ = document.createElement('i');
-                _.appendChild(tag);
-                tag = _;
+                tag = createParent('i', tag);
             }
             if (attr.link) {
-                var _ = document.createElement('a');
-                _.setAttribute('href', attr.link)
-                _.appendChild(tag);
-                tag = _;
+                tag = createParent('a', tag, { 'href': attr.link });
             }
             if (attr.strike) {
-                var _ = document.createElement('s');
-                _.appendChild(tag);
-                tag = _;
+                tag = createParent('s', tag);
             }
             if (attr.size) {
                 tag.style.fontSize = font_sizes[attr.size];
@@ -165,7 +183,7 @@ class Message {
         if (text == sender.data.username) {
             span.classList.add('mention-hit');
         }
-        span.innerText = text;
+        span.innerText = '@' + text;
         this.messageContainer.appendChild(span);
     }
 

@@ -55,6 +55,5 @@
 }
 
 .mention::before {
-    content: "@ ";
     font-weight: 600;
 }
