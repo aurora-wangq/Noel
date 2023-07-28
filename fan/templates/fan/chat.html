@@ -25,6 +25,9 @@
                 <div class="status-indicator status-indicator-ready mdui-hidden">
                     <i class="mdui-icon material-icons">check</i>
                 </div>
+                <div class="status-indicator status-indicator-fail mdui-hidden" mdui-tooltip="{content: '连接意外关闭，刷新以重试'}">
+                    <i class="mdui-icon material-icons">error</i>
+                </div>
             </div>
         </div>
     </div>
@@ -82,5 +85,6 @@
     </div>
 </div>
 
-<script src="/static/js/chat.js"></script>
+<script src="/static/js/chat/ql-extension.js"></script>
+<script src="/static/js/chat/chat.js"></script>
 {% endblock %}

@@ -13,42 +13,41 @@ class MessageSegment(dict):
     
     def mention(s):
         return MessageSegment('mention', s)
-    
-    def notice(s):
-        return MessageSegment('notice', s)
-    
-    def sys(s):
-        return MessageSegment('sys', s)
 
     def image(img):
         return MessageSegment('image', img)
         
-class Message(list[MessageSegment]):
-    def __init__(self, s):
-        if isinstance(s, list) or isinstance(s, Message):
-            super().__init__(s)
-        elif isinstance(s, MessageSegment):
-            super().__init__([ s ])
-        elif isinstance(s, str):
-            super().__init__([ MessageSegment.text(s) ])
+class Message(dict):
+    def __init__(self, msg, sender):
+        if isinstance(msg, list) or isinstance(msg, Message):
+            self['message'] = msg
+        elif isinstance(msg, MessageSegment):
+            self['message'] = [ msg ]
+        elif isinstance(msg, str):
+            self['message'] = [ MessageSegment.text(msg) ]
         else:
             raise NotImplementedError("Unknown type")
+        self['sender'] = sender
 
     def __str__(self):
         return json.dumps([ x for x in self])
     
-    def encode(self, encoding = 'utf-8', errors = 'strict'):
-        return str(self).encode(encoding, errors)
-    
 class Event(dict):
-    def __init__(self, msg, sender = {}):
-        self['message'] = Message(msg)
-        if isinstance(sender, str):
-            self['sender'] = {
-                'username': sender
-            }
-        else:
-            self['sender'] = sender
+    def __init__(self, type, data):
+        self['type'] = type
+        self['data'] = data
     
     def __str__(self) -> str:
         return json.dumps(self)
+    
+    def message(msg: Message):
+        return Event('message', msg)
+    
+    def modification(data):
+        return Event('modification', data)
+
+    def notice(s: str):
+        return Event('notice', s)
+    
+    def info(s: str):
+        return Event('info', s)

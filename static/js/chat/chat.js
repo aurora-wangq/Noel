@@ -1,24 +1,3 @@
-let Embed = Quill.import('blots/embed');
-let Delta = Quill.import('delta');
-
-class Mention extends Embed { 
-    static create(value) {
-        let node = super.create();
-        node.classList.add('mention');
-        node.setAttribute('mention', value);
-        node.innerText = '@' + value;
-        return node;
-    }
-
-    static value(node) {
-        return node.attributes.mention.value;
-    }
-}
-Mention.blotName = 'mention';
-Mention.tagName = 'span';
-
-Quill.register(Mention);
-
 var quill = new Quill('.editor', {
     modules: {
         toolbar: {
@@ -28,6 +7,7 @@ var quill = new Quill('.editor', {
     theme: 'snow',
     placeholder: '阿巴阿巴（°∀。）...\n不要从外部直接拖入图片哦，点击上方图片标志选择图片'
 });
+
 
 document.querySelector('.mention-button').addEventListener('click', e => {
     let value = prompt('输入要提及的用户名');
@@ -46,8 +26,6 @@ document.querySelector('.mention-button').addEventListener('click', e => {
     quill.updateContents(new Delta().retain(index).insert({
         'mention': value
     }), Quill.sources.USER);
-
-    // quill.insertEmbed(index - 1, "mention", value, Quill.sources.USER);
 
     quill.setSelection(index + 1, 0);
 })
@@ -84,17 +62,6 @@ class Message {
         div.classList.add(...column.map(x => 'mdui-col-' + x));
         div.appendChild(element);
         return div;
-    }
-
-    #appendBase(...classList) {
-        var tag = document.createElement('div');
-        if (classList) {
-            tag.classList.add(...classList);
-        }
-        else {
-            tag.classList.add('message');
-        }
-        return tag;
     }
 
     setSender(sender) {
@@ -171,12 +138,6 @@ class Message {
         this.messageContainer.appendChild(tag);
     }
 
-    appendNotice(text) {
-        var base = this.#appendBase('notice');
-        base.appendChild(document.createTextNode(text));
-        this.messageContainer.appendChild(base);
-    }
-
     appendMention(text) {
         var span = document.createElement('span');
         span.classList.add('mention');
@@ -244,44 +205,48 @@ var lastSender = '';
 var loading = false;
 
 socket.onmessage = function (event) {
-    data = JSON.parse(event.data);
+    var _ = JSON.parse(event.data);
+    var type = _.type;
+    var data = _.data;
 
-    if (data.message.length && data.message[0].type == 'sys') {
-        if (data.message[0].data == 'history.begin') {
+    if (type == 'info') {
+        if (data == 'history.begin') {
             loading = true;
         }
-        if (data.message[0].data == 'history.end') {
+        if (data == 'history.end') {
             document.querySelector('.status-indicator-ready').classList.toggle('mdui-hidden');
             document.querySelector('.status-indicator-loading').classList.toggle('mdui-hidden');
             loading = false;
         }
     }
-
-    msg = new Message();
-
-    if (data.sender && data.sender.username != lastSender) {
-        msg.setSender(data.sender);
-        lastSender = data.sender.username;
+    else if (type == 'notice') {
+        var base = document.createElement('div');
+        base.classList.add('notice');
+        base.appendChild(document.createTextNode(data));
+        document.querySelector('.message-container').appendChild(base);
     }
+    else if (type == 'message') {
+        msg = new Message();
+        if (data.sender && data.sender.username != lastSender) {
+            msg.setSender(data.sender);
+            lastSender = data.sender.username;
+        }
+        data.message.forEach(i => {
+            if (i.type == 'text') {
+                msg.appendText(i.data, i.attr)
+            }
+            else if (i.type == 'mention') {
+                msg.appendMention(i.data);
+            }
+            else if (i.type == 'image') {
+                msg.appendImage(i.data);
+            }
+        });
 
-    data.message.forEach(i => {
-        if (i.type == 'text') {
-            msg.appendText(i.data, i.attr)
-        }
-        else if (i.type == 'mention') {
-            msg.appendMention(i.data);
-        }
-        else if (i.type == 'notice') {
-            msg.appendNotice(i.data);
-        }
-        else if (i.type == 'image') {
-            msg.appendImage(i.data);
-        }
-    });
+        if (msg.empty) return;
 
-    if (msg.empty) return;
-
-    document.querySelector('.message-container').appendChild(msg.container);
+        document.querySelector('.message-container').appendChild(msg.container);
+    }
 
     if (document.getElementById('autoscroll-checkbox').checked) {
         var elem = document.querySelector('.message-container');
@@ -308,10 +273,17 @@ document.querySelector('.editor').addEventListener('keydown', (e) => {
 
 socket.onopen = function (event) {
     socket.send(JSON.stringify({
-        "init": true,
-        "sender": sender.data,
-        "message": []
+        "type": "init",
+        "data": {
+            "sender": sender.data
+        }
     }));
+}
+
+socket.onclose = function (event) {
+    document.querySelector('.status-indicator-ready').classList.toggle('mdui-hidden');
+    document.querySelector('.status-indicator-fail').classList.toggle('mdui-hidden');
+    quill.disable();
 }
 
 function send() {
@@ -347,8 +319,11 @@ function send() {
         }
     });
     socket.send(JSON.stringify({
-        "sender": sender.data,
-        "message": msg
+        "type": "message",
+        "data": {
+            "sender": sender.data,
+            "message": msg
+        }
     }));
     quill.deleteText(0, quill.getLength());
 }
