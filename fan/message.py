@@ -16,6 +16,9 @@ class MessageSegment(dict):
 
     def image(img):
         return MessageSegment('image', img)
+    
+    def ncm(id):
+        return MessageSegment('ncm', id)
         
 class Message(dict):
     def __init__(self, msg, sender):

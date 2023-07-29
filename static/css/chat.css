@@ -57,3 +57,7 @@
 .mention::before {
     font-weight: 600;
 }
+
+.ncm-player {
+    border: none;
+}

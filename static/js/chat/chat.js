@@ -28,7 +28,40 @@ document.querySelector('.mention-button').addEventListener('click', e => {
     }), Quill.sources.USER);
 
     quill.setSelection(index + 1, 0);
-})
+});
+
+document.getElementById('insert-ncm-button').addEventListener('click', e => {
+    let s = document.getElementById('insert-ncm-input').value;
+    let value, index;
+
+    if (s == '') {
+        return;
+    }
+    if (quill.getSelection()) {
+        index = quill.getSelection().index;
+    }
+    else {
+        index = quill.getLength();
+    }
+
+    if (/^\d+$/.test(value)) {
+        value = s;
+    }
+    else if (s.match(/https:\/\/music\.163\.com\/(#\/)?song\?id=\d+(&userid=\d+)?/)) {
+        value = s.match(/song\?id=(\d+)/)[1];
+    }
+    else {
+        mdui.snackbar('未知的ID或链接格式');
+        return;
+    }
+
+    quill.updateContents(new Delta().retain(index).insert({
+        'ncm': value
+    }), Quill.sources.USER);
+
+    quill.setSelection(index + 1, 0);
+
+});
 
 var font_sizes = {
     "normal": "1.0em",
@@ -154,6 +187,17 @@ class Message {
         this.messageContainer.appendChild(img);
     }
 
+    appendNCM(id) {
+        var iframe = document.createElement('iframe');
+        iframe.classList.add('ncm-player');
+        iframe.setAttribute('width', '330');
+        iframe.setAttribute('height', '86');
+        iframe.setAttribute('marginwidth', '0');
+        iframe.setAttribute('marginheight', '0');
+        iframe.src = `//music.163.com/outchain/player?type=2&id=${id}&auto=0&height=66`;
+        this.messageContainer.appendChild(iframe);
+    }
+
     get empty() {
         return this.messageContainer.children.length == 0;
     }
@@ -201,7 +245,7 @@ else {
 
 var socket = new WebSocket(`ws://${path}`);
 var sender = new Sender();
-var lastSender = '';
+var lastSender = null;
 var loading = false;
 
 socket.onmessage = function (event) {
@@ -220,6 +264,7 @@ socket.onmessage = function (event) {
         }
     }
     else if (type == 'notice') {
+        lastSender = null;
         var base = document.createElement('div');
         base.classList.add('notice');
         base.appendChild(document.createTextNode(data));
@@ -240,6 +285,9 @@ socket.onmessage = function (event) {
             }
             else if (i.type == 'image') {
                 msg.appendImage(i.data);
+            }
+            else if (i.type == 'ncm') {
+                msg.appendNCM(i.data);
             }
         });
 
@@ -308,6 +356,12 @@ function send() {
             msg.push({
                 'type': 'mention',
                 'data': x.insert.mention
+            });
+        }
+        else if (x.insert.ncm) {
+            msg.push({
+                'type': 'ncm',
+                'data': x.insert.ncm
             });
         }
         else if (typeof x.insert == 'string') {
