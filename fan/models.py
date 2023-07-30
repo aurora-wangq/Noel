@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from PIL import Image
 from django.utils import timezone
 from ckeditor.fields import RichTextField
-
+from mdeditor.fields import MDTextField
 
 # Create your models here.
 
@@ -65,3 +65,9 @@ class LikeNovel(models.Model):
 class Follow(models.Model):
     up = models.ForeignKey(User, on_delete=models.CASCADE, related_name="博主")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="粉丝")
+
+class Blog(models.Model):
+    title = models.CharField(max_length=100, default="原神，启动！", blank=False, null=False)
+    content = MDTextField(verbose_name='博文内容')
+    blog_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

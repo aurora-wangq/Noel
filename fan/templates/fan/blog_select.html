@@ -1,0 +1,7 @@
+{% for blog in blog_list %}
+<div>
+    <a href="{% url 'fan:blog' blog.id%}">
+        {{blog.title}}
+    </a>
+</div>
+{% endfor %}

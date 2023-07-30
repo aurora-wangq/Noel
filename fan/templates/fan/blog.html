@@ -1,0 +1,10 @@
+{% extends "fan/_base.html" %}
+
+{% block title %}博客{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/default.css' %}"/>
+<link rel="stylesheet" href="{% static 'mdeditor/css/editormd.preview.css' %}"/>
+{{blog.content|safe}}
+{% endblock %}

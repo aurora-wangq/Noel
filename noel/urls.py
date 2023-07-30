@@ -24,6 +24,7 @@ urlpatterns = [
     re_path(r'favicon\.[ico|png]$', favicon_view),
     path('admin/', admin.site.urls),
     path('', include('fan.urls')),
+    path('mdeditor/', include('mdeditor.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

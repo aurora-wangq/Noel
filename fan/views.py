@@ -5,14 +5,15 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import UserProfile, Post, Comment, Like, Notice, NovelTraveler, CommentNovel, LikeNovel, Follow
+from .models import UserProfile, Post, Comment, Like, Notice, NovelTraveler, CommentNovel, LikeNovel, Follow, Blog
 from django.contrib.auth.decorators import login_required
-from .forms import Userfile
 from datetime import datetime
 import random
 from PIL import Image
 import json
+from .forms import MarkdownForm
 from django.utils.html import format_html
+import markdown
 
 thesaurus = []
 
@@ -100,6 +101,12 @@ def post_detail_view(request, post_id):
     user_object = User.objects.get(username=request.user.username)
     user_profile = UserProfile.objects.get(owner=user_object)
     post = Post.objects.get(id=post_id)
+    content = markdown.markdown(post.post_content,
+    extensions=[
+                'markdown.extensions.extra',
+                'markdown.extensions.codehilite',
+                'markdown.extensions.toc',
+    ])
     comment_list = Comment.objects.filter(post=post)
     like_list = Like.objects.filter(post=post)
     liked = 0
@@ -113,7 +120,7 @@ def post_detail_view(request, post_id):
         "owner": post.post_owner,
         "owner_profile": post.owner_profile,
         "comment_list": comment_list,
-        "content": post.post_content,
+        "content": content,
     }
     if request.method == 'POST':
         text = request.POST['comment_text']
@@ -280,3 +287,47 @@ def follow_view(request, user_id):
         
 def error_view(request):
     return render(request, 'fan/error.html')
+
+@login_required(login_url='fan:login')
+def edit_blog_view(request):
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = UserProfile.objects.get(owner=user_object)
+    form = MarkdownForm()
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        Blog.objects.create(title=title, content=content, blog_owner=user_object, owner_profile=user_profile)
+        return redirect('fan:select_blog')
+    context = {
+        "form": form,
+    }
+    return render(request, 'fan/edit_blog.html', context=context)
+
+@login_required(login_url='fan:login')
+def blog_select_view(request):
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = UserProfile.objects.get(owner=user_object)
+    blog_list = Blog.objects.order_by('-id')
+    print(blog_list)
+    context = {
+        "blog_list": blog_list,
+    }
+    return render(request, 'fan/blog_select.html', context=context)
+
+@login_required(login_url='fan:login')
+def blog_view(request, blog_id):
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = UserProfile.objects.get(owner=user_object)
+    try:
+        blog = Blog.objects.get(id=blog_id)
+    except:
+        return HttpResponse('你来这是要玩原神吗')    
+    blog.content = markdown.markdown(blog.content,extensions=[
+        'markdown.extensions.extra',
+        'markdown.extensions.codehilite',
+        'markdown.extensions.toc',
+    ])
+    context = {
+        "blog": blog,
+    }
+    return render(request, 'fan/blog.html', context=context)

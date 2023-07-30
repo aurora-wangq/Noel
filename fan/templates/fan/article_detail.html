@@ -3,6 +3,9 @@
 {% block title %}帖子{% endblock %}
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/default.css' %}"/>
+<link rel="stylesheet" href="{% static 'mdeditor/css/editormd.preview.css' %}"/>
 <style>
 
 	.post-content {
@@ -34,7 +37,6 @@
 		font-size: 18px;
 	}
 </style>
-
 <br />
 
 <div class="mdui-container" style="padding-top: 32px;">
@@ -42,8 +44,8 @@
 	<br />
 
 	<div class="mdui-row">
-		<div class="mdui-col-offset-md-2 mdui-col-md-8 mdui-col-xs-12">
-			<span class="post-content" style="font-weight:500; font-size: 18px">
+		<div class="mdui-col-offset-md-2 mdui-col-md-8 mdui-col-xs-12 editormd-preview-container">
+			<span class="post-content markdown-body editormd-preview-container" style="font-weight:500; font-size: 18px">
 				{{content}}
 			</span>
 		</div>
@@ -94,5 +96,4 @@
 		};
 	}
 </script>
-
 {% endblock %}

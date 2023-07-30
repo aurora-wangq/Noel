@@ -18,4 +18,7 @@ urlpatterns = [
     path('chat/', views.chat_view, name='chat'),
     path('user/<int:user_id>/follow', views.follow_view, name='follow'),
     path('error', views.error_view, name='error'),
+    path('edit_blog/', views.edit_blog_view, name='edit_blog'),
+    path('select_blog/', views.blog_select_view, name='select_blog'),
+    path('blog/<int:blog_id>', views.blog_view, name='blog'),
 ]
