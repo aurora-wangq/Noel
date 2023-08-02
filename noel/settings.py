@@ -84,19 +84,6 @@ ASGI_APPLICATION = 'noel.asgi.application'
 #     }
 # }
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 配置数据库类型
-        'NAME': 'fans1',  # 数据库名字
-        'USER': 'root',  # 数据库用户
-        'PASSWORD': 'MyNewPass4!',  # 数据库密码
-        'HOST': '43.138.26.229',  # 数据库地址
-        'PORT': '3306',  # 数据库端口
-        'OPTIONS': {'charset': 'utf8mb4'},
-    }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
